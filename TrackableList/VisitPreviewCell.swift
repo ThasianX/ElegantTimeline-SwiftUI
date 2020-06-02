@@ -17,8 +17,8 @@ struct VisitPreviewCell: View {
 
             Spacer()
         }
-        .padding(VisitPreviewConstants.cellPadding)
         .frame(height: VisitPreviewConstants.cellHeight)
+        .padding(VisitPreviewConstants.cellPadding)
     }
 
 }
