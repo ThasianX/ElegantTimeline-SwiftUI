@@ -9,8 +9,8 @@ struct VisitsPreviewList: View {
 
     @Environment(\.appTheme) private var appTheme: AppTheme
 
-    @State private var currentMonthComponent: DateComponents // may have to be inside observableobject as @published
     @State private var selectedDayComponent: DateComponents = DateComponents()
+    @ObservedObject private var sideBarTracker: VisitsSideBarTracker
 
     private let visitsForDayComponents: [DateComponents: [Visit]]
     private let descendingDayComponents: [DateComponents]
@@ -27,7 +27,7 @@ struct VisitsPreviewList: View {
             // dict[dayComponent] = indexOfDayComponent
             $0[$1.1] = $1.0
         }
-        _currentMonthComponent = State(initialValue: descendingDayComponents.first!.monthAndYear)
+        sideBarTracker = VisitsSideBarTracker(descendingDayComponents: descendingDayComponents)
         // OK u know what. basically with the offset, I know exactly what daycomponent is currently being showed.
         // I am able to get the index by -> (int)(offset/30). I can use this index to key the current day component
         // and use that to set the current month component state
@@ -36,7 +36,7 @@ struct VisitsPreviewList: View {
     var body: some View {
         VStack(spacing: 0) {
             leftAlignedHeader
-            visitsPreviewList
+            timelineView
                 .edgesIgnoringSafeArea(.all)
         }
     }
@@ -64,10 +64,23 @@ private extension VisitsPreviewList {
 
 private extension VisitsPreviewList {
 
+    var timelineView: some View {
+        HStack {
+            monthYearSideBarText
+                .animation(.easeInOut)
+            visitsPreviewList
+        }
+    }
+
+    private var monthYearSideBarText: MonthYearSideBar {
+        MonthYearSideBar(date: sideBarTracker.currentMonthYearComponent.date,
+                         color: appTheme.primary)
+    }
+
     var visitsPreviewList: some View {
         GeometryReader { geometry in
             List {
-                ForEach(self.descendingDayComponents.indices) { i in
+                ForEach(self.descendingDayComponents.indices, id: \.self) { i in
                     self.daySideBarWithPreviewBlockView(
                         dayComponent: self.descendingDayComponents[i],
                         isFilled: i%2 == 0)
@@ -76,6 +89,9 @@ private extension VisitsPreviewList {
             }
             .onAppear {
                 self.configureListAppearance(withMinY: geometry.frame(in: .global).minY)
+            }
+            .introspectTableView { tableView in
+                tableView.delegate = self.sideBarTracker
             }
         }
     }
@@ -86,6 +102,8 @@ private extension VisitsPreviewList {
         let footerHeightWhereOnlyLastCellIsVisible = screen.height - minY - VisitPreviewConstants.blockHeight
         UITableView.appearance().tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: screen.width, height: footerHeightWhereOnlyLastCellIsVisible))
         UITableView.appearance().separatorStyle = .none
+        UITableView.appearance().allowsSelection = false
+        UITableViewCell.appearance().selectionStyle = .none
     }
 
     func daySideBarWithPreviewBlockView(dayComponent: DateComponents, isFilled: Bool) -> some View {

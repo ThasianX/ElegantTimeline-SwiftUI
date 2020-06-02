@@ -21,6 +21,8 @@ private extension MonthYearSideBar {
             .foregroundColor(color)
             .font(.caption)
             .fontWeight(.semibold)
+            .lineLimit(1)
+            .animation(nil)
             .padding(.vertical, 8)
             .rotated(.degrees(-90))
     }
