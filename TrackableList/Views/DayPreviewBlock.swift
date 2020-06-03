@@ -24,8 +24,10 @@ struct DayPreviewBlock: View {
     var body: some View {
         ZStack {
             backgroundColor
-            visitsPreviewList
-                .animation(.easeInOut)
+            if !visits.isEmpty {
+                visitsPreviewList
+                    .animation(.easeInOut)
+            }
         }
         .onAppear(perform: setUpVisitsSlideShow)
         .onReceive(timer) { _ in
@@ -50,11 +52,11 @@ struct DayPreviewBlock: View {
 }
 
 private extension DayPreviewBlock {
-    private var backgroundColor: Color {
+    var backgroundColor: Color {
         isFilled ? appTheme.primary : appTheme.complementary
     }
 
-    private var visitsPreviewList: some View {
+    var visitsPreviewList: some View {
         VStack(spacing: 0) {
             ForEach(visits[range]) { visit in
                 VisitPreviewCell(visit: visit)

@@ -16,21 +16,13 @@ struct VisitsPreviewList: View {
     private let descendingDayComponents: [DateComponents]
     private let indexForDayComponents: [DateComponents: Int]
 
-    private let dateComponentsPredicate: (Visit) -> DateComponents = {
-        $0.arrivalDate.dateComponents
-    }
-
     init(visits: [Visit]) {
-        visitsForDayComponents = Dictionary(grouping: visits, by: dateComponentsPredicate).visitsSortedAscByArrivalDate
-        descendingDayComponents = visitsForDayComponents.descendingKeys
-        indexForDayComponents = zip(descendingDayComponents.indices, descendingDayComponents).reduce(into: [DateComponents: Int]()) {
-            // dict[dayComponent] = indexOfDayComponent
-            $0[$1.1] = $1.0
-        }
-        sideBarTracker = VisitsSideBarTracker(descendingDayComponents: descendingDayComponents)
-        // OK u know what. basically with the offset, I know exactly what daycomponent is currently being showed.
-        // I am able to get the index by -> (int)(offset/30). I can use this index to key the current day component
-        // and use that to set the current month component state
+        visitsForDayComponents = Dictionary(grouping: visits,
+                                            by: { $0.arrivalDate.dateComponents }).visitsSortedAscByArrivalDate
+        descendingDayComponents = visitsForDayComponents.descendingDatesWithGapsFilledIn
+        indexForDayComponents = descendingDayComponents.pairKeysWithIndex
+        sideBarTracker = VisitsSideBarTracker(descendingDayComponents: descendingDayComponents,
+                                              visitsForDayComponents: visitsForDayComponents)
     }
 
     var body: some View {
@@ -66,14 +58,13 @@ private extension VisitsPreviewList {
 
     var timelineView: some View {
         HStack {
-            monthYearSideBarText
-                .animation(.easeInOut)
+            monthYearSideBarView
             visitsPreviewList
         }
     }
 
-    private var monthYearSideBarText: MonthYearSideBar {
-        MonthYearSideBar(date: sideBarTracker.currentMonthYearComponent.date,
+    var monthYearSideBarView: MonthYearSideBar {
+        MonthYearSideBar(sideBarTracker: sideBarTracker,
                          color: appTheme.primary)
     }
 
@@ -109,7 +100,7 @@ private extension VisitsPreviewList {
     func daySideBarWithPreviewBlockView(dayComponent: DateComponents, isFilled: Bool) -> some View {
         HStack(spacing: 4) {
             DaySideBar(date: dayComponent.date)
-            DayPreviewBlock(visits: visitsForDayComponents[dayComponent]!,
+            DayPreviewBlock(visits: visitsForDayComponents[dayComponent] ?? [],
                             isFilled: isFilled)
         }
         .frame(height: VisitPreviewConstants.blockHeight)
@@ -129,6 +120,26 @@ private extension Array where Element == Visit {
 
     var sortAscByArrivalDate: Array {
         sorted(by: { $0.arrivalDate < $1.arrivalDate })
+    }
+
+}
+
+private extension Dictionary where Key == DateComponents {
+
+    var descendingDatesWithGapsFilledIn: [Key] {
+        Array(stride(from: keys.max()!,
+                     through: keys.min()!, by: -1)) // most recent to oldest
+    }
+
+}
+
+private extension Array where Element == DateComponents {
+
+    var pairKeysWithIndex: [Element: Int] {
+        zip(indices, self).reduce(into: [DateComponents: Int]()) {
+            // dict[dayComponent] = indexOfDayComponent
+            $0[$1.1] = $1.0
+        }
     }
 
 }

@@ -7,10 +7,12 @@ class VisitsSideBarTracker: NSObject, ObservableObject {
     @Published var currentMonthYearComponent: DateComponents
 
     private let descendingDayComponents: [DateComponents]
+    private let visitsForDayComponents: [DateComponents: [Visit]]
 
-    init(descendingDayComponents: [DateComponents]) {
+    init(descendingDayComponents: [DateComponents], visitsForDayComponents: [DateComponents: [Visit]]) {
         currentMonthYearComponent = descendingDayComponents.first!.monthAndYear
         self.descendingDayComponents = descendingDayComponents
+        self.visitsForDayComponents = visitsForDayComponents
     }
 
 }
