@@ -4,7 +4,8 @@ import SwiftUI
 
 struct MonthYearSideBar: View {
 
-    let date: Date
+    @ObservedObject var sideBarTracker: VisitsSideBarTracker
+
     let color: Color
 
     var body: some View {
@@ -16,26 +17,20 @@ struct MonthYearSideBar: View {
 private extension MonthYearSideBar {
 
     var monthYearText: some View {
-        Text(date.fullMonthWithYear.uppercased())
+        Text(currentFullMonthWithYear.uppercased())
             .tracking(10)
             .foregroundColor(color)
             .font(.caption)
             .fontWeight(.semibold)
             .lineLimit(1)
-            .animation(nil)
             .padding(.vertical, 8)
+            .transition(.opacity)
+            .id("MonthYearSideBar" + currentFullMonthWithYear)
             .rotated(.degrees(-90))
     }
 
-}
-
-struct MonthSideBar_Previews: PreviewProvider {
-
-    static var previews: some View {
-        ZStack {
-            Color.black.edgesIgnoringSafeArea(.all)
-            MonthYearSideBar(date: Date(), color: .red)
-        }
+    var currentFullMonthWithYear: String {
+        sideBarTracker.currentMonthYearComponent.date.fullMonthWithYear
     }
 
 }
