@@ -13,9 +13,12 @@ extension View {
 struct RotatedModifier: ViewModifier {
 
     @State private var size: CGSize = .zero
-    var angle: Angle
+    let angle: Angle
 
     func body(content: Content) -> some View {
+        // The first calculation of `newFrame` where `size` is 0 doesn't matter.
+        // It's after the `captureSize` modifier is called that `size`
+        // gets updated to the correct `size` of `content`
         let newFrame = CGRect(origin: .zero, size: size)
             .offsetBy(dx: -size.width / 2, dy: -size.height / 2)
             .applying(.init(rotationAngle: CGFloat(angle.radians)))
@@ -28,39 +31,4 @@ struct RotatedModifier: ViewModifier {
             .frame(width: newFrame.width, height: newFrame.height)
     }
 
-}
-
-private extension View {
-
-    func captureSize(in binding: Binding<CGSize>) -> some View {
-        modifier(SizeModifier())
-            .onPreferenceChange(SizePreferenceKey.self) {
-                binding.wrappedValue = $0
-        }
-    }
-
-}
-
-struct SizeModifier: ViewModifier {
-
-    private var sizeView: some View {
-        GeometryReader { geometry in
-            Color.clear.preference(key: SizePreferenceKey.self, value: geometry.size)
-        }
-    }
-
-    func body(content: Content) -> some View {
-        content.overlay(sizeView)
-    }
-
-}
-
-struct SizePreferenceKey: PreferenceKey {
-
-    static var defaultValue: CGSize = .zero
-
-    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
-        value = nextValue()
-    }
-    
 }

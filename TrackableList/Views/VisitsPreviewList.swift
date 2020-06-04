@@ -21,15 +21,13 @@ struct VisitsPreviewList: View {
                                             by: { $0.arrivalDate.dateComponents }).visitsSortedAscByArrivalDate
         descendingDayComponents = visitsForDayComponents.descendingDatesWithGapsFilledIn
         indexForDayComponents = descendingDayComponents.pairKeysWithIndex
-        sideBarTracker = VisitsSideBarTracker(descendingDayComponents: descendingDayComponents,
-                                              visitsForDayComponents: visitsForDayComponents)
+        sideBarTracker = VisitsSideBarTracker(descendingDayComponents: descendingDayComponents)
     }
 
     var body: some View {
         VStack(spacing: 0) {
             leftAlignedHeader
             timelineView
-                .edgesIgnoringSafeArea(.all)
         }
     }
     
@@ -57,10 +55,20 @@ private extension VisitsPreviewList {
 private extension VisitsPreviewList {
 
     var timelineView: some View {
-        HStack {
-            monthYearSideBarView
-            visitsPreviewList
+        GeometryReader { geometry in
+            HStack(alignment: .top) {
+                self.monthYearSideBarView
+                self.visitsPreviewList
+            }
+            .onAppear {
+                self.configureSideBarTracker(withListHeight: geometry.size.height)
+            }
         }
+    }
+
+    func configureSideBarTracker(withListHeight listHeight: CGFloat) {
+        sideBarTracker.listHeight = listHeight
+        sideBarTracker.setInitialScrollOffset()
     }
 
     var monthYearSideBarView: MonthYearSideBar {
@@ -69,32 +77,26 @@ private extension VisitsPreviewList {
     }
 
     var visitsPreviewList: some View {
-        GeometryReader { geometry in
-            List {
-                ForEach(self.descendingDayComponents.indices, id: \.self) { i in
-                    self.daySideBarWithPreviewBlockView(
-                        dayComponent: self.descendingDayComponents[i],
-                        isFilled: i%2 == 0)
-                }
-                .listRowInsets(EdgeInsets())
+        List {
+            // Has to be in foreach for list row insets to work
+            ForEach(descendingDayComponents.indices, id: \.self) { i in
+                self.daySideBarWithPreviewBlockView(
+                    dayComponent: self.descendingDayComponents[i],
+                    isFilled: (i % 2) == 0)
             }
-            .onAppear {
-                self.configureListAppearance(withMinY: geometry.frame(in: .global).minY)
-            }
-            .introspectTableView { tableView in
-                tableView.delegate = self.sideBarTracker
-            }
+            .listRowInsets(EdgeInsets())
         }
+        .introspectTableView(customize: customizeList)
     }
 
-    func configureListAppearance(withMinY minY: CGFloat) {
-        UITableView.appearance().backgroundColor = .clear
-        UITableViewCell.appearance().backgroundColor = .clear
-        let footerHeightWhereOnlyLastCellIsVisible = screen.height - minY - VisitPreviewConstants.blockHeight
-        UITableView.appearance().tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: screen.width, height: footerHeightWhereOnlyLastCellIsVisible))
-        UITableView.appearance().separatorStyle = .none
-        UITableView.appearance().allowsSelection = false
-        UITableViewCell.appearance().selectionStyle = .none
+    func customizeList(_ tableView: UITableView) {
+        // May interfere with list row `onTap`?
+        tableView.allowsSelection = false
+        tableView.delegate = sideBarTracker
+        let footerHeightWhereOnlyLastCellIsVisible = sideBarTracker.listHeight - VisitPreviewConstants.blockHeight
+        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0,
+                                                         width: screen.width,
+                                                         height: footerHeightWhereOnlyLastCellIsVisible))
     }
 
     func daySideBarWithPreviewBlockView(dayComponent: DateComponents, isFilled: Bool) -> some View {

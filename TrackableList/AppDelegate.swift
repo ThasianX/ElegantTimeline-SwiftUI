@@ -6,14 +6,13 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-//        configureListAppearance()
+        configureGlobalListAppearance()
         return true
     }
 
-    private func configureListAppearance() {
+    private func configureGlobalListAppearance() {
         UITableView.appearance().backgroundColor = .clear
         UITableViewCell.appearance().backgroundColor = .clear
-        UITableView.appearance().tableFooterView = UIView()
         UITableView.appearance().separatorStyle = .none
     }
 
