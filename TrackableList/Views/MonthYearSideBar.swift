@@ -2,14 +2,25 @@
 
 import SwiftUI
 
+fileprivate let angle: Angle = .degrees(-90)
+
 struct MonthYearSideBar: View {
 
-    @ObservedObject var sideBarTracker: VisitsSideBarTracker
+    @State private var size: CGSize = .zero
 
+    @ObservedObject var sideBarTracker: VisitsSideBarTracker
     let color: Color
 
     var body: some View {
         monthYearText
+            .rotated(angle)
+            .captureSize(in: $size)
+            .offset(y: offset)
+    }
+
+    private var offset: CGFloat {
+        let offset = sideBarTracker.offset - (size.height / 2)
+        return offset >= 15 ? offset : 15
     }
 
 }
@@ -26,7 +37,6 @@ private extension MonthYearSideBar {
             .padding(.vertical, 8)
             .transition(.opacity)
             .id("MonthYearSideBar" + currentFullMonthWithYear)
-            .rotated(.degrees(-90))
     }
 
     var currentFullMonthWithYear: String {

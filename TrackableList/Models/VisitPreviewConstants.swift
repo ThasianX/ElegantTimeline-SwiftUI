@@ -4,6 +4,7 @@ import Foundation
 import UIKit
 
 struct VisitPreviewConstants {
+    
     static let cellHeight: CGFloat = 30
     static let cellPadding: CGFloat = 10
     static let numberOfCellsInBlock: Int = 3
@@ -17,4 +18,8 @@ struct VisitPreviewConstants {
     static func height(forBlockCount count: Int) -> CGFloat {
         return blockHeight * CGFloat(count)
     }
+
+    static let blocksInShiftRange: CGFloat = 1
+    static let shiftRangeHeight: CGFloat = blockHeight * blocksInShiftRange
+
 }
