@@ -14,6 +14,8 @@ class VisitsSideBarTracker: NSObject, ObservableObject {
     private var tableView: UITableView!
     private var oldDelegate: UITableViewDelegate?
 
+    private var previousMaxY: CGFloat = .zero
+
     init(descendingDayComponents: [DateComponents]) {
         self.descendingDayComponents = descendingDayComponents
         maxYForDayComponents = descendingDayComponents.pairWithMaxY
@@ -69,6 +71,10 @@ extension VisitsSideBarTracker: UITableViewDelegate {
         setSideBarOffsetAndCorrespondingMonthYearComponent(scrollOffset: scrollView.contentOffset.y)
     }
 
+    private var listCenter: CGFloat {
+        listHeight / 2
+    }
+
     private func setSideBarOffsetAndCorrespondingMonthYearComponent(scrollOffset: CGFloat) {
         // To get the current index, we divide the current scroll offset by the height of the
         // day block, which is constant. By casting the result to an Int, we essentially perform
@@ -83,14 +89,16 @@ extension VisitsSideBarTracker: UITableViewDelegate {
         let gapBetweenMaxYandCurrentScrollOffset = maxY - scrollOffset
         
         if listHeight > gapBetweenMaxYandCurrentScrollOffset {
-            let isWithinShiftRangeToNextMonthAndYear = gapBetweenMaxYandCurrentScrollOffset <= VisitPreviewConstants.shiftRangeHeight
+            let isWithinShiftRangeToNextMonthAndYear = gapBetweenMaxYandCurrentScrollOffset <= VisitPreviewConstants.endShiftRangeHeight
             if isWithinShiftRangeToNextMonthAndYear {
                 let isNotLastCell = currentIndex < descendingDayComponents.endIndex-1
                 if isNotLastCell {
                     // make it start offsetting to middle of screen if it's not last cell
-                    let delta = (listHeight / 2) / VisitPreviewConstants.shiftRangeHeight
-                    let factor = VisitPreviewConstants.shiftRangeHeight - gapBetweenMaxYandCurrentScrollOffset
+                    // this is only the first half of the animation
+                    let delta = VisitPreviewConstants.blocksInEndShiftRange * (listCenter / VisitPreviewConstants.blocksInShiftRange) / VisitPreviewConstants.endShiftRangeHeight
+                    let factor = VisitPreviewConstants.endShiftRangeHeight - gapBetweenMaxYandCurrentScrollOffset
                     offset = delta * factor
+                    previousMaxY = maxY
                 }
             } else {
                 // Not within shift range but near. Keep aligning the sideBar to the
@@ -99,11 +107,24 @@ extension VisitsSideBarTracker: UITableViewDelegate {
                 offset = gapBetweenMaxYandCurrentScrollOffset / 2
             }
         } else {
-            // We want the sideBar to be centered to the list if the current
-            // monthAndYear's part inside the list is bigger than the visible
-            // portion of the list on the screen
-            if offset != listHeight / 2 {
-                offset = listHeight / 2
+            let gapBetweenCurrentScrollOffsetAndPreviousMaxY = scrollOffset - previousMaxY
+            let isWithinShiftRangeFromLastMonthAndYear = gapBetweenCurrentScrollOffsetAndPreviousMaxY <= VisitPreviewConstants.startShiftRangeHeight
+
+            if isWithinShiftRangeFromLastMonthAndYear {
+                let isNotLastCell = currentIndex < descendingDayComponents.endIndex-1
+                if isNotLastCell {
+                    // second half of the animation to offset to the middle of the list
+                    let delta = VisitPreviewConstants.blocksInStartShiftRange * (listCenter / VisitPreviewConstants.blocksInShiftRange) / VisitPreviewConstants.startShiftRangeHeight
+                    let factor = VisitPreviewConstants.startShiftRangeHeight - (VisitPreviewConstants.startShiftRangeHeight - gapBetweenCurrentScrollOffsetAndPreviousMaxY)
+                    offset = VisitPreviewConstants.endShiftRangeHeight + (delta * factor)
+                }
+            } else {
+                // We want the sideBar to be centered to the list if the current
+                // monthAndYear's part inside the list is bigger than the visible
+                // portion of the list on the screen
+                if offset != listHeight / 2 {
+                    offset = listHeight / 2
+                }
             }
         }
 
