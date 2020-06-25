@@ -11,9 +11,21 @@ class VisitsSideBarTracker: NSObject, ObservableObject {
     private let descendingDayComponents: [DateComponents]
     private let maxYForDayComponents: [DateComponents: CGFloat]
 
+    private var tableView: UITableView!
+    private var oldDelegate: UITableViewDelegate?
+
     init(descendingDayComponents: [DateComponents]) {
         self.descendingDayComponents = descendingDayComponents
         maxYForDayComponents = descendingDayComponents.pairWithMaxY
+    }
+
+    func attach(to tableView: UITableView) {
+        if self.tableView == nil {
+            self.tableView = tableView.withNearlyFullPageFooter(listHeight: listHeight)
+
+            oldDelegate = tableView.delegate
+            tableView.delegate = self
+        }
     }
 
     func setInitialScrollOffset() {
@@ -22,7 +34,37 @@ class VisitsSideBarTracker: NSObject, ObservableObject {
 
 }
 
+private extension UITableView {
+
+    func withNearlyFullPageFooter(listHeight: CGFloat) -> UITableView {
+        allowsSelection = false
+        backgroundColor = .clear
+        separatorStyle = .none
+        separatorInset = .zero
+
+        let footerHeightWhereOnlyLastCellIsVisible = listHeight - VisitPreviewConstants.blockHeight
+
+        tableFooterView = UIView(frame: CGRect(x: 0, y: 0,
+                                               width: screen.width,
+                                               height: footerHeightWhereOnlyLastCellIsVisible))
+
+        return self
+    }
+
+}
+
 extension VisitsSideBarTracker: UITableViewDelegate {
+
+    override func responds(to aSelector: Selector!) -> Bool {
+        super.responds(to: aSelector) || oldDelegate?.responds(to: aSelector) ?? false
+    }
+
+    override func forwardingTarget(for aSelector: Selector!) -> Any? {
+        if aSelector != #selector(UITableViewDelegate.scrollViewDidScroll) {
+            return oldDelegate
+        }
+        return nil
+    }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         setSideBarOffsetAndCorrespondingMonthYearComponent(scrollOffset: scrollView.contentOffset.y)

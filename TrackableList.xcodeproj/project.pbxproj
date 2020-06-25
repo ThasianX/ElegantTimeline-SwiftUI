@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E0D92E024A52355007F41DE /* ElegantCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 1E0D92DF24A52355007F41DE /* ElegantCalendar */; };
 		1E5017FB2488B4C1002496DE /* View+CaptureSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5017FA2488B4C1002496DE /* View+CaptureSize.swift */; };
 		1E8A3DE4248557C200CBA65E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A3DE3248557C200CBA65E /* AppDelegate.swift */; };
 		1E8A3DE6248557C200CBA65E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A3DE5248557C200CBA65E /* SceneDelegate.swift */; };
@@ -67,6 +68,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E8A3DFF24858A6200CBA65E /* Introspect in Frameworks */,
+				1E0D92E024A52355007F41DE /* ElegantCalendar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,6 +172,7 @@
 			name = TrackableList;
 			packageProductDependencies = (
 				1E8A3DFE24858A6200CBA65E /* Introspect */,
+				1E0D92DF24A52355007F41DE /* ElegantCalendar */,
 			);
 			productName = TrackableList;
 			productReference = 1E8A3DE0248557C200CBA65E /* TrackableList.app */;
@@ -201,6 +204,7 @@
 			mainGroup = 1E8A3DD7248557C200CBA65E;
 			packageReferences = (
 				1E8A3DFD24858A6200CBA65E /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+				1E0D92DE24A52355007F41DE /* XCRemoteSwiftPackageReference "ElegantCalendar" */,
 			);
 			productRefGroup = 1E8A3DE1248557C200CBA65E /* Products */;
 			projectDirPath = "";
@@ -444,6 +448,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		1E0D92DE24A52355007F41DE /* XCRemoteSwiftPackageReference "ElegantCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ThasianX/ElegantCalendar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		1E8A3DFD24858A6200CBA65E /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
@@ -455,6 +467,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1E0D92DF24A52355007F41DE /* ElegantCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1E0D92DE24A52355007F41DE /* XCRemoteSwiftPackageReference "ElegantCalendar" */;
+			productName = ElegantCalendar;
+		};
 		1E8A3DFE24858A6200CBA65E /* Introspect */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1E8A3DFD24858A6200CBA65E /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;

@@ -2,6 +2,24 @@
   "object": {
     "pins": [
       {
+        "package": "ElegantCalendar",
+        "repositoryURL": "https://github.com/ThasianX/ElegantCalendar",
+        "state": {
+          "branch": null,
+          "revision": "979302b89e3d4324914489c5223639a4249d697a",
+          "version": "1.0.0"
+        }
+      },
+      {
+        "package": "ElegantPages",
+        "repositoryURL": "https://github.com/ThasianX/ElegantPages",
+        "state": {
+          "branch": null,
+          "revision": "890aa0e01dcd04bf77ae8250dd6fc6c9228f54bf",
+          "version": "1.0.0"
+        }
+      },
+      {
         "package": "Introspect",
         "repositoryURL": "https://github.com/siteline/SwiftUI-Introspect",
         "state": {
