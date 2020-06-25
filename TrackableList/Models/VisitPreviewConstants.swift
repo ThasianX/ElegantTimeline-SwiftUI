@@ -19,7 +19,12 @@ struct VisitPreviewConstants {
         return blockHeight * CGFloat(count)
     }
 
-    static let blocksInShiftRange: CGFloat = 1
-    static let shiftRangeHeight: CGFloat = blockHeight * blocksInShiftRange
+    static let blocksInEndShiftRange: CGFloat = 1
+    static let endShiftRangeHeight: CGFloat = blockHeight * blocksInEndShiftRange
+
+    static let blocksInStartShiftRange: CGFloat = 2
+    static let startShiftRangeHeight: CGFloat = blockHeight * blocksInStartShiftRange
+
+    static let blocksInShiftRange: CGFloat = Self.blocksInStartShiftRange + Self.blocksInEndShiftRange
 
 }
