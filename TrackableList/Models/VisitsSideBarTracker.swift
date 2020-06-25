@@ -108,7 +108,7 @@ extension VisitsSideBarTracker: UITableViewDelegate {
             }
         } else {
             let gapBetweenCurrentScrollOffsetAndPreviousMaxY = scrollOffset - previousMaxY
-            let isWithinShiftRangeFromLastMonthAndYear = gapBetweenCurrentScrollOffsetAndPreviousMaxY <= VisitPreviewConstants.startShiftRangeHeight
+            let isWithinShiftRangeFromLastMonthAndYear = abs(gapBetweenCurrentScrollOffsetAndPreviousMaxY) <= VisitPreviewConstants.startShiftRangeHeight
 
             if isWithinShiftRangeFromLastMonthAndYear {
                 let isNotLastCell = currentIndex < descendingDayComponents.endIndex-1
