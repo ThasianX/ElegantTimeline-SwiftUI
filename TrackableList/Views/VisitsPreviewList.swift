@@ -86,17 +86,7 @@ private extension VisitsPreviewList {
             }
             .listRowInsets(EdgeInsets())
         }
-        .introspectTableView(customize: customizeList)
-    }
-
-    func customizeList(_ tableView: UITableView) {
-        // May interfere with list row `onTap`?
-        tableView.allowsSelection = false
-        tableView.delegate = sideBarTracker
-        let footerHeightWhereOnlyLastCellIsVisible = sideBarTracker.listHeight - VisitPreviewConstants.blockHeight
-        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0,
-                                                         width: screen.width,
-                                                         height: footerHeightWhereOnlyLastCellIsVisible))
+        .introspectTableView(customize: sideBarTracker.attach)
     }
 
     func daySideBarWithPreviewBlockView(dayComponent: DateComponents, isFilled: Bool) -> some View {
