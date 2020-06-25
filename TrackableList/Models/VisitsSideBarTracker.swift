@@ -40,7 +40,6 @@ private extension UITableView {
         allowsSelection = false
         backgroundColor = .clear
         separatorStyle = .none
-        separatorInset = .zero
 
         let footerHeightWhereOnlyLastCellIsVisible = listHeight - VisitPreviewConstants.blockHeight
 
