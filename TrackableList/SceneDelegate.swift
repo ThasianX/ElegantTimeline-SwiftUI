@@ -11,7 +11,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = UIHostingController(
-                rootView: VisitsPreviewList(
+                rootView: VisitsPreviewView(
                     visits: Visit.mocks(
                         start: .daysFromToday(-365*2),
                         end: Date()))
