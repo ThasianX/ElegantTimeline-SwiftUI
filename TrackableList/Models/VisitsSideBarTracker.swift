@@ -4,6 +4,9 @@ import SwiftUI
 
 class VisitsSideBarTracker: NSObject, ObservableObject {
 
+    @Published var currentDayComponent: DateComponents = .init()
+    @Published var isDragging: Bool = false
+
     @Published var currentMonthYearComponent: DateComponents = .init()
     @Published var offset: CGFloat = .zero
 
@@ -36,23 +39,16 @@ class VisitsSideBarTracker: NSObject, ObservableObject {
 
 }
 
-private extension UITableView {
+extension VisitsSideBarTracker: FromTodayPopupProvider {
 
-    func withNearlyFullPageFooter(listHeight: CGFloat) -> UITableView {
-        allowsSelection = false
-        backgroundColor = .clear
-        separatorStyle = .none
-
-        let footerHeightWhereOnlyLastCellIsVisible = listHeight - VisitPreviewConstants.blockHeight
-
-        tableFooterView = UIView(frame: CGRect(x: 0, y: 0,
-                                               width: screen.width,
-                                               height: footerHeightWhereOnlyLastCellIsVisible))
-
-        return self
+    var weeksFromCurrentMonthToToday: Int {
+        let startOfToday = Calendar.current.startOfDay(for: Date())
+        let startOfSelectedDate = Calendar.current.startOfDay(for: currentDayComponent.date)
+        return Calendar.current.dateComponents([.weekOfYear], from: startOfToday, to: startOfSelectedDate).weekOfYear!
     }
 
 }
+extension VisitsSideBarTracker: MonthYearSideBarProvider {}
 
 extension VisitsSideBarTracker: UITableViewDelegate {
 
@@ -65,6 +61,24 @@ extension VisitsSideBarTracker: UITableViewDelegate {
             return oldDelegate
         }
         return nil
+    }
+
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        if abs(weeksFromCurrentMonthToToday) > 3 {
+            DispatchQueue.main.async {
+                withAnimation(.easeInOut) {
+                    self.isDragging = true
+                }
+            }
+        }
+    }
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            withAnimation(.easeInOut) {
+                self.isDragging = false
+            }
+        }
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -83,7 +97,8 @@ extension VisitsSideBarTracker: UITableViewDelegate {
         // User may scroll beyond the top or bottom of the list, in which we don't want to offset the side bar
         guard scrollOffset >= 0 && currentIndex < descendingDayComponents.endIndex else { return }
 
-        let scrolledMonthYearComponent = descendingDayComponents[currentIndex].monthAndYear
+        let scrolledDayComponent = descendingDayComponents[currentIndex]
+        let scrolledMonthYearComponent = scrolledDayComponent.monthAndYear
 
         let maxY = maxYForDayComponents[scrolledMonthYearComponent]!
         let gapBetweenMaxYandCurrentScrollOffset = maxY - scrollOffset
@@ -133,10 +148,13 @@ extension VisitsSideBarTracker: UITableViewDelegate {
                 currentMonthYearComponent = scrolledMonthYearComponent
             }
         }
+
+        withAnimation {
+            currentDayComponent = scrolledDayComponent
+        }
     }
 
 }
-
 
 private extension Array where Element == DateComponents {
 
@@ -148,6 +166,24 @@ private extension Array where Element == DateComponents {
             currentOffset += VisitPreviewConstants.blockHeight
             $0[$1.monthAndYear, default: .zero] = currentOffset
         }
+    }
+
+}
+
+private extension UITableView {
+
+    func withNearlyFullPageFooter(listHeight: CGFloat) -> UITableView {
+        allowsSelection = false
+        backgroundColor = .clear
+        separatorStyle = .none
+
+        let footerHeightWhereOnlyLastCellIsVisible = listHeight - VisitPreviewConstants.blockHeight
+
+        tableFooterView = UIView(frame: CGRect(x: 0, y: 0,
+                                               width: screen.width,
+                                               height: footerHeightWhereOnlyLastCellIsVisible))
+
+        return self
     }
 
 }
