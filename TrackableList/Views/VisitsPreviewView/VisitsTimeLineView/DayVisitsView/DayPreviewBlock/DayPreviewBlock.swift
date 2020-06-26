@@ -31,7 +31,7 @@ struct DayPreviewBlock: View {
             }
         }
         .frame(height: VisitPreviewConstants.blockHeight)
-        .onAppear(perform: setUpVisitsSlideShow)
+        .onAppear(perform: setUpVisitsSlideShow) // TODO: sometimes, the timer doesn't work after dequeueing
         .onReceive(timer) { _ in
             self.shiftActivePreviewVisitIndex()
         }

@@ -10,6 +10,7 @@ protocol MonthYearSideBarProvider: ObservableObject {
 }
 
 fileprivate let angle: Angle = .degrees(-90)
+fileprivate let offsetLowerBound: CGFloat = statusBarHeight - 10
 
 struct MonthYearSideBar<Provider>: View where Provider: MonthYearSideBarProvider {
 
@@ -19,16 +20,16 @@ struct MonthYearSideBar<Provider>: View where Provider: MonthYearSideBarProvider
 
     @ObservedObject var provider: Provider
 
+    private var offset: CGFloat {
+        let offset = provider.offset - (size.height / 2)
+        return (offset >= offsetLowerBound) ? offset : offsetLowerBound
+    }
+
     var body: some View {
         monthYearText
             .rotated(angle)
             .captureSize(in: $size)
             .offset(y: offset)
-    }
-
-    private var offset: CGFloat {
-        let offset = provider.offset - (size.height / 2)
-        return offset >= 15 ? offset : 15
     }
 
 }

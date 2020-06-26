@@ -10,6 +10,8 @@ class VisitsSideBarTracker: NSObject, ObservableObject {
     @Published var currentMonthYearComponent: DateComponents = .init()
     @Published var offset: CGFloat = .zero
 
+    private let indexForDayComponents: [DateComponents: Int]
+
     var listHeight: CGFloat!
     private let descendingDayComponents: [DateComponents]
     private let maxYForDayComponents: [DateComponents: CGFloat]
@@ -21,6 +23,7 @@ class VisitsSideBarTracker: NSObject, ObservableObject {
 
     init(descendingDayComponents: [DateComponents]) {
         self.descendingDayComponents = descendingDayComponents
+        indexForDayComponents = descendingDayComponents.pairKeysWithIndex
         maxYForDayComponents = descendingDayComponents.pairWithMaxY
     }
 
@@ -228,6 +231,17 @@ private extension UITableView {
 
         // TODO: remove the scroll indicator and add custom scroll indicator using the month year side bar as a scroll mechanism
         return self
+    }
+
+}
+
+private extension Array where Element == DateComponents {
+
+    var pairKeysWithIndex: [Element: Int] {
+        zip(indices, self).reduce(into: [DateComponents: Int]()) {
+            // dict[dayComponent] = indexOfDayComponent
+            $0[$1.1] = $1.0
+        }
     }
 
 }
