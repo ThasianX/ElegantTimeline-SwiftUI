@@ -7,7 +7,6 @@ struct DaySideBar: View {
     let date: Date
 
     var body: some View {
-        // TODO: Add extra white indicator on the side if is today
         VStack {
             abbreviatedDayOfWeek
             dayOfMonth
@@ -30,6 +29,7 @@ private extension DaySideBar {
             .fontWeight(.bold)
             .foregroundColor(.white)
     }
+    
 }
 
 struct DaySideBar_Previews: PreviewProvider {
