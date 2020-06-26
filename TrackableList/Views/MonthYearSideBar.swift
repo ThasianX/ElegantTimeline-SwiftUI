@@ -37,13 +37,18 @@ private extension MonthYearSideBar {
     var monthYearText: some View {
         Text(currentFullMonthWithYear.uppercased())
             .tracking(10)
-            .foregroundColor(color)
+            .foregroundColor(isSameMonthAndYearAsToday ? color : nil)
             .font(.caption)
             .fontWeight(.semibold)
             .lineLimit(1)
             .padding(.vertical, 8)
             .transition(.opacity)
             .id("MonthYearSideBar" + currentFullMonthWithYear)
+    }
+
+    var isSameMonthAndYearAsToday: Bool {
+        Calendar.current.isDate(provider.currentMonthYearComponent.date, equalTo: Date(), toGranularity: .month) &&
+            Calendar.current.isDate(provider.currentMonthYearComponent.date, equalTo: Date(), toGranularity: .year)
     }
 
     var currentFullMonthWithYear: String {

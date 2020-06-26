@@ -25,36 +25,14 @@ struct VisitsPreviewList: View {
     }
 
     var body: some View {
-        // TODO: Remove the header
         // TODO: Also add a button to scroll back to today
         ZStack {
-            VStack(spacing: 0) {
-                leftAlignedHeader
-                timelineView
-            }
+            timelineView
+                .edgesIgnoringSafeArea(.all)
             fromTodayPopupView
         }
     }
     
-}
-
-private extension VisitsPreviewList {
-
-    var leftAlignedHeader: some View {
-        HStack {
-            headerText
-                .padding(.leading)
-            Spacer()
-        }
-        .padding()
-    }
-
-    var headerText: some View {
-        Text("Visits")
-            .font(.largeTitle)
-            .foregroundColor(appTheme.primary)
-    }
-
 }
 
 private extension VisitsPreviewList {
