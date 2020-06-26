@@ -43,7 +43,7 @@ extension Visit {
 
 }
 
-fileprivate let visitCountRange = 1...5
+fileprivate let visitCountRange = 0...3
 
 private extension Calendar {
 
@@ -59,6 +59,10 @@ private extension Calendar {
                     for _ in 0..<Int.random(in: visitCountRange) {
                         visits.append(.mock(withDate: date))
                     }
+                } else if date == end {
+                    // This is just to guarantee that the today visit block does have visits
+                    visits.append(.mock(withDate: date))
+                    visits.append(.mock(withDate: date))
                 } else {
                     stop = true
                 }
