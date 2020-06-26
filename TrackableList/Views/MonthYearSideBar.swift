@@ -2,13 +2,20 @@
 
 import SwiftUI
 
+protocol MonthYearSideBarProvider: ObservableObject {
+
+    var offset: CGFloat { get }
+    var currentMonthYearComponent: DateComponents { get }
+
+}
+
 fileprivate let angle: Angle = .degrees(-90)
 
-struct MonthYearSideBar: View {
+struct MonthYearSideBar<Provider>: View where Provider: MonthYearSideBarProvider {
 
     @State private var size: CGSize = .zero
 
-    @ObservedObject var sideBarTracker: VisitsSideBarTracker
+    @ObservedObject var provider: Provider
     let color: Color
 
     var body: some View {
@@ -19,7 +26,7 @@ struct MonthYearSideBar: View {
     }
 
     private var offset: CGFloat {
-        let offset = sideBarTracker.offset - (size.height / 2)
+        let offset = provider.offset - (size.height / 2)
         return offset >= 15 ? offset : 15
     }
 
@@ -40,7 +47,7 @@ private extension MonthYearSideBar {
     }
 
     var currentFullMonthWithYear: String {
-        sideBarTracker.currentMonthYearComponent.date.fullMonthWithYear
+        provider.currentMonthYearComponent.date.fullMonthWithYear
     }
 
 }

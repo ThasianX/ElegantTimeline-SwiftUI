@@ -25,11 +25,14 @@ struct VisitsPreviewList: View {
     }
 
     var body: some View {
-        // TODO: Remove the header and also add a pop up in the middle of the screen when dragging that displays how many days from today the user is currently scrolled at(timepage for reference)
+        // TODO: Remove the header
         // TODO: Also add a button to scroll back to today
-        VStack(spacing: 0) {
-            leftAlignedHeader
-            timelineView
+        ZStack {
+            VStack(spacing: 0) {
+                leftAlignedHeader
+                timelineView
+            }
+            fromTodayPopupView
         }
     }
     
@@ -73,8 +76,8 @@ private extension VisitsPreviewList {
         sideBarTracker.setInitialScrollOffset()
     }
 
-    var monthYearSideBarView: MonthYearSideBar {
-        MonthYearSideBar(sideBarTracker: sideBarTracker,
+    var monthYearSideBarView: some View {
+        MonthYearSideBar(provider: sideBarTracker,
                          color: appTheme.primary)
     }
 
@@ -98,6 +101,14 @@ private extension VisitsPreviewList {
                             isFilled: isFilled)
         }
         .frame(height: VisitPreviewConstants.blockHeight)
+    }
+
+}
+
+private extension VisitsPreviewList {
+
+    var fromTodayPopupView: some View {
+        FromTodayPopupView(provider: sideBarTracker)
     }
 
 }

@@ -28,6 +28,7 @@
 		1E8A3E0F2485AAE000CBA65E /* DayPreviewBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A3E0E2485AAE000CBA65E /* DayPreviewBlock.swift */; };
 		1E8A3E112485AEAD00CBA65E /* EnvironmentKey+AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A3E102485AEAD00CBA65E /* EnvironmentKey+AppTheme.swift */; };
 		1E995AF924A573BC00F436BE /* LightDarkThemePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E995AF824A573BC00F436BE /* LightDarkThemePreview.swift */; };
+		1E995AFB24A5845900F436BE /* FromTodayPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E995AFA24A5845900F436BE /* FromTodayPopupView.swift */; };
 		1EAAC5332485C5A0006DBB8E /* Date+toDateComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAAC5322485C5A0006DBB8E /* Date+toDateComponents.swift */; };
 		1EAAC5352485DBED006DBB8E /* DateComponents+Subcomponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAAC5342485DBED006DBB8E /* DateComponents+Subcomponents.swift */; };
 		1EAAC537248607A1006DBB8E /* EnvironmentKey+StatusBarHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAAC536248607A1006DBB8E /* EnvironmentKey+StatusBarHeight.swift */; };
@@ -57,6 +58,7 @@
 		1E8A3E0E2485AAE000CBA65E /* DayPreviewBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPreviewBlock.swift; sourceTree = "<group>"; };
 		1E8A3E102485AEAD00CBA65E /* EnvironmentKey+AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentKey+AppTheme.swift"; sourceTree = "<group>"; };
 		1E995AF824A573BC00F436BE /* LightDarkThemePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightDarkThemePreview.swift; sourceTree = "<group>"; };
+		1E995AFA24A5845900F436BE /* FromTodayPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FromTodayPopupView.swift; sourceTree = "<group>"; };
 		1EAAC5322485C5A0006DBB8E /* Date+toDateComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+toDateComponents.swift"; sourceTree = "<group>"; };
 		1EAAC5342485DBED006DBB8E /* DateComponents+Subcomponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateComponents+Subcomponents.swift"; sourceTree = "<group>"; };
 		1EAAC536248607A1006DBB8E /* EnvironmentKey+StatusBarHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentKey+StatusBarHeight.swift"; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				1E8A3E0824859EF400CBA65E /* MonthYearSideBar.swift */,
 				1E8A3E0C24859F7000CBA65E /* VisitPreviewCell.swift */,
 				1E8A3DFB24855F0600CBA65E /* VisitsPreviewList.swift */,
+				1E995AFA24A5845900F436BE /* FromTodayPopupView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -241,6 +244,7 @@
 				1EAAC5332485C5A0006DBB8E /* Date+toDateComponents.swift in Sources */,
 				1E8A3E0524859ECB00CBA65E /* DaySideBar.swift in Sources */,
 				1E8A3DE4248557C200CBA65E /* AppDelegate.swift in Sources */,
+				1E995AFB24A5845900F436BE /* FromTodayPopupView.swift in Sources */,
 				1E8A3DFC24855F0600CBA65E /* VisitsPreviewList.swift in Sources */,
 				1E8A3E0924859EF400CBA65E /* MonthYearSideBar.swift in Sources */,
 				1EAAC53B24875D14006DBB8E /* DateComponents+Strideable.swift in Sources */,
