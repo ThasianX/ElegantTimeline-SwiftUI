@@ -208,6 +208,7 @@ private extension UITableView {
         allowsSelection = false
         backgroundColor = .clear
         separatorStyle = .none
+        scrollsToTop = false
 
         contentInset = UIEdgeInsets(top: -adjustedContentInset.top,
                                     left: -adjustedContentInset.left,
@@ -217,9 +218,10 @@ private extension UITableView {
         let footerHeightWhereOnlyLastCellIsVisible = listHeight - VisitPreviewConstants.blockHeight
 
         // TODO: should include like quote
+        // The 10 probably is an arbitrary value depending on phone. I'm using an iPhone 11 to test
         tableHeaderView = UIView(frame: CGRect(x: 0, y: 0,
                                                width: screen.width,
-                                               height: statusBarHeight))
+                                               height: statusBarHeight-10))
         tableFooterView = UIView(frame: CGRect(x: 0, y: 0,
                                                width: screen.width,
                                                height: footerHeightWhereOnlyLastCellIsVisible))
