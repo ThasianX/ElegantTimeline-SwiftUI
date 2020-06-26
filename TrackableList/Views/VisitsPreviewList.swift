@@ -25,11 +25,15 @@ struct VisitsPreviewList: View {
     }
 
     var body: some View {
-        // TODO: Also add a button to scroll back to today
         ZStack {
             timelineView
                 .edgesIgnoringSafeArea(.all)
             fromTodayPopupView
+            VStack {
+                Spacer()
+                scrollToTodayButton
+                    .padding()
+            }
         }
     }
     
@@ -87,6 +91,14 @@ private extension VisitsPreviewList {
 
     var fromTodayPopupView: some View {
         FromTodayPopupView(provider: sideBarTracker)
+    }
+
+}
+
+private extension VisitsPreviewList {
+
+    var scrollToTodayButton: some View {
+        ScrollBackToTodayButton(provider: sideBarTracker)
     }
 
 }

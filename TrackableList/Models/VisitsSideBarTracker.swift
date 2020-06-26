@@ -37,6 +37,23 @@ class VisitsSideBarTracker: NSObject, ObservableObject {
         setSideBarOffsetAndCorrespondingMonthYearComponent(scrollOffset: 0)
     }
 
+    func scroll(to date: Date) {
+        let startOfTodayForDate = Calendar.current.startOfDay(for: date)
+        let startOfTodayForFirstDay = descendingDayComponents.first!.date
+
+        // because the list is descending, we reverse the from and to date
+        let index = Calendar.current.dateComponents([.day], from: startOfTodayForDate, to: startOfTodayForFirstDay).day!
+        self.tableView.scrollToRow(at: IndexPath(row: index, section: 0), at: .top, animated: true)
+    }
+
+}
+
+private extension VisitsSideBarTracker {
+
+    var listCenter: CGFloat {
+        listHeight / 2
+    }
+
 }
 
 extension VisitsSideBarTracker: FromTodayPopupProvider {
@@ -48,7 +65,16 @@ extension VisitsSideBarTracker: FromTodayPopupProvider {
     }
 
 }
+
 extension VisitsSideBarTracker: MonthYearSideBarProvider {}
+
+extension VisitsSideBarTracker: ScrollToTodayProvider {
+
+    func scrollToToday() {
+        scroll(to: Date())
+    }
+
+}
 
 extension VisitsSideBarTracker: UITableViewDelegate {
 
@@ -85,16 +111,14 @@ extension VisitsSideBarTracker: UITableViewDelegate {
         setSideBarOffsetAndCorrespondingMonthYearComponent(scrollOffset: scrollView.contentOffset.y)
     }
 
-    private var listCenter: CGFloat {
-        listHeight / 2
-    }
-
     private func setSideBarOffsetAndCorrespondingMonthYearComponent(scrollOffset: CGFloat) {
         // To get the current index, we divide the current scroll offset by the height of the
         // day block, which is constant. By casting the result to an Int, we essentially perform
         // a floor operation, giving us the current day component's index
         let currentIndex = Int(scrollOffset / VisitPreviewConstants.blockHeight)
         // User may scroll beyond the top or bottom of the list, in which we don't want to offset the side bar
+        print("scrollviewdidscroll(scrollOffset): \(scrollOffset)")
+        print("scrollviewdidscroll(index): \(currentIndex)")
         guard scrollOffset >= 0 && currentIndex < descendingDayComponents.endIndex else { return }
 
         let scrolledDayComponent = descendingDayComponents[currentIndex]
@@ -177,12 +201,19 @@ private extension UITableView {
         backgroundColor = .clear
         separatorStyle = .none
 
+        contentInset = UIEdgeInsets(top: -adjustedContentInset.top,
+                                    left: -adjustedContentInset.left,
+                                    bottom: -adjustedContentInset.bottom,
+                                    right: -adjustedContentInset.right)
+
         let footerHeightWhereOnlyLastCellIsVisible = listHeight - VisitPreviewConstants.blockHeight
 
         tableFooterView = UIView(frame: CGRect(x: 0, y: 0,
                                                width: screen.width,
                                                height: footerHeightWhereOnlyLastCellIsVisible))
 
+        // TODO: Add a table header that has a quote
+        // TODO: remove the scroll indicator and add custom scroll indicator using the month year side bar as a scroll mechanism
         return self
     }
 
