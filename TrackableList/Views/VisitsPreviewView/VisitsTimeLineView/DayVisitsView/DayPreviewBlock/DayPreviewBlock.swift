@@ -22,6 +22,7 @@ struct DayPreviewBlock: View {
         return visitIndex..<exclusiveEndIndex
     }
 
+    // TODO: Sometimes, the cells becomes uneven. weird.
     var body: some View {
         ZStack {
             backgroundColor

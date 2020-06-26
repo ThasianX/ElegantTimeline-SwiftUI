@@ -10,7 +10,7 @@ struct VisitPreviewCell: View {
         HStack {
             tagView
 
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 3) {
                 locationName
                 visitDurationAndAddress
             }
@@ -35,12 +35,13 @@ private extension VisitPreviewCell {
     var locationName: some View {
         Text(visit.locationName)
             .font(.system(size: 16))
+            .fontWeight(.light)
             .lineLimit(1)
     }
 
     var visitDurationAndAddress: some View {
         Text("\(visit.duration)    \(visit.locationAddress)")
-            .font(.system(size: 10))
+            .font(.system(size: 9))
             .lineLimit(1)
     }
 
