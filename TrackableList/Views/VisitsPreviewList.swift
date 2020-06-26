@@ -61,8 +61,7 @@ private extension VisitsPreviewList {
     }
 
     var monthYearSideBarView: some View {
-        MonthYearSideBar(provider: sideBarTracker,
-                         color: appTheme.primary)
+        MonthYearSideBar(provider: sideBarTracker)
     }
 
     var visitsPreviewList: some View {

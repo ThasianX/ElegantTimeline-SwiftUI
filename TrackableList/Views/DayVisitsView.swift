@@ -4,6 +4,8 @@ import SwiftUI
 
 struct DayVisitsView: View {
 
+    @Environment(\.appTheme) private var appTheme: AppTheme
+
     let date: Date
     let visits: [Visit]
     let isFilled: Bool
@@ -15,7 +17,7 @@ struct DayVisitsView: View {
     var body: some View {
         HStack(spacing: 0) {
             DaySideBar(date: date,
-                       color: isDateInToday ? .blackPearl : nil)
+                       color: isDateInToday ? appTheme.primary : nil)
                 .padding(.trailing, 4)
 
             if isDateInToday {
