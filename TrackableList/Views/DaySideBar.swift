@@ -5,6 +5,7 @@ import SwiftUI
 struct DaySideBar: View {
 
     let date: Date
+    var color: Color? = nil
 
     var body: some View {
         VStack {
@@ -21,13 +22,13 @@ private extension DaySideBar {
     var abbreviatedDayOfWeek: some View {
         Text(date.abbreviatedDayOfWeek.uppercased())
             .font(.caption)
-            .foregroundColor(.gray)
+            .foregroundColor(color ?? .gray)
     }
 
     var dayOfMonth: some View {
         Text(date.dayOfMonth)
             .fontWeight(.bold)
-            .foregroundColor(.white)
+            .foregroundColor(color ?? .white)
     }
     
 }
