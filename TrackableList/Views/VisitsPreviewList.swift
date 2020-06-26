@@ -67,7 +67,7 @@ private extension VisitsPreviewList {
         List {
             // Has to be in foreach for list row insets to work
             ForEach(descendingDayComponents.indices, id: \.self) { i in
-                self.daySideBarWithPreviewBlockView(
+                self.dayVisitsView(
                     dayComponent: self.descendingDayComponents[i],
                     isFilled: (i % 2) == 0)
             }
@@ -76,13 +76,10 @@ private extension VisitsPreviewList {
         .introspectTableView(customize: sideBarTracker.attach)
     }
 
-    func daySideBarWithPreviewBlockView(dayComponent: DateComponents, isFilled: Bool) -> some View {
-        HStack(spacing: 4) {
-            DaySideBar(date: dayComponent.date)
-            DayPreviewBlock(visits: visitsForDayComponents[dayComponent] ?? [],
-                            isFilled: isFilled)
-        }
-        .frame(height: VisitPreviewConstants.blockHeight)
+    func dayVisitsView(dayComponent: DateComponents, isFilled: Bool) -> some View {
+        DayVisitsView(date: dayComponent.date,
+                      visits: visitsForDayComponents[dayComponent] ?? [],
+                      isFilled: isFilled)
     }
 
 }
