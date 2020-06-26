@@ -14,7 +14,7 @@ class VisitsSideBarTracker: NSObject, ObservableObject {
     private var tableView: UITableView!
     private var oldDelegate: UITableViewDelegate?
 
-    private var previousMaxY: CGFloat = .zero
+    private var previousMaxY: CGFloat = -VisitPreviewConstants.startShiftRangeHeight-1
 
     init(descendingDayComponents: [DateComponents]) {
         self.descendingDayComponents = descendingDayComponents
@@ -81,14 +81,13 @@ extension VisitsSideBarTracker: UITableViewDelegate {
         // a floor operation, giving us the current day component's index
         let currentIndex = Int(scrollOffset / VisitPreviewConstants.blockHeight)
         // User may scroll beyond the top or bottom of the list, in which we don't want to offset the side bar
-        guard currentIndex >= 0 && currentIndex < descendingDayComponents.endIndex else { return }
+        guard scrollOffset >= 0 && currentIndex < descendingDayComponents.endIndex else { return }
 
         let scrolledMonthYearComponent = descendingDayComponents[currentIndex].monthAndYear
 
         let maxY = maxYForDayComponents[scrolledMonthYearComponent]!
         let gapBetweenMaxYandCurrentScrollOffset = maxY - scrollOffset
 
-        // TODO: Initial offset is wrong for larger views
         if listHeight > gapBetweenMaxYandCurrentScrollOffset {
             let isWithinShiftRangeToNextMonthAndYear = gapBetweenMaxYandCurrentScrollOffset <= VisitPreviewConstants.endShiftRangeHeight
             if isWithinShiftRangeToNextMonthAndYear {
