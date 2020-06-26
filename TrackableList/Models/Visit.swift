@@ -43,7 +43,7 @@ extension Visit {
 
 }
 
-fileprivate let visitCountRange = 0...5
+fileprivate let visitCountRange = 1...5
 
 private extension Calendar {
 
