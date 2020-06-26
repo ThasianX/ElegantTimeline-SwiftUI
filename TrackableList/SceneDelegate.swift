@@ -11,7 +11,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = UIHostingController(
-                rootView: VisitsPreviewList(visits: Visit.mocks)
+                rootView: VisitsPreviewList(visits: Visit.mocks(start: .daysFromToday(-365*5), end: .daysFromToday(365*5)))
                     .environment(\.statusBarHeight, window.windowScene?.statusBarManager?.statusBarFrame.height ?? .zero)
             )
             self.window = window
