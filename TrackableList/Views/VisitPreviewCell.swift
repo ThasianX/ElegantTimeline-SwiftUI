@@ -49,7 +49,9 @@ private extension VisitPreviewCell {
 struct LocationPreviewCell_Previews: PreviewProvider {
 
     static var previews: some View {
-        VisitPreviewCell(visit: .mock)
+        DarkThemePreview {
+            VisitPreviewCell(visit: .mock(withDate: Date()))
+        }
     }
     
 }

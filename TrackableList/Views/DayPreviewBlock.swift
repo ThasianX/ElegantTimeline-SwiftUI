@@ -3,6 +3,7 @@
 import SwiftUI
 
 struct DayPreviewBlock: View {
+
     @Environment(\.appTheme) private var appTheme: AppTheme
 
     private let timer = Timer.publish(every: VisitPreviewConstants.previewTime,
@@ -29,6 +30,7 @@ struct DayPreviewBlock: View {
                     .animation(.easeInOut)
             }
         }
+        .frame(height: VisitPreviewConstants.blockHeight)
         .onAppear(perform: setUpVisitsSlideShow)
         .onReceive(timer) { _ in
             self.shiftActivePreviewVisitIndex()
@@ -49,9 +51,11 @@ struct DayPreviewBlock: View {
         let startingVisitIndexOfNextSlideIsValid = startingVisitIndexOfNextSlide < visits.count
         visitIndex = startingVisitIndexOfNextSlideIsValid ? startingVisitIndexOfNextSlide : 0
     }
+
 }
 
 private extension DayPreviewBlock {
+
     var backgroundColor: Color {
         isFilled ? appTheme.primary : appTheme.complementary
     }
@@ -63,12 +67,13 @@ private extension DayPreviewBlock {
             }
         }
     }
+
 }
 
 struct DayPreviewBlock_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            DayPreviewBlock(visits: [], isFilled: false)
+        DarkThemePreview {
+            DayPreviewBlock(visits: Visit.mocks(start: Date(), end: .daysFromToday(1)), isFilled: true)
         }
     }
 }

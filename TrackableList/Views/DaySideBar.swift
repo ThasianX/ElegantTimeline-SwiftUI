@@ -34,8 +34,7 @@ private extension DaySideBar {
 struct DaySideBar_Previews: PreviewProvider {
 
     static var previews: some View {
-        ZStack {
-            Color.black.edgesIgnoringSafeArea(.all)
+        DarkThemePreview {
             DaySideBar(date: Date())
         }
     }

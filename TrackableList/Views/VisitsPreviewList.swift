@@ -10,7 +10,7 @@ struct VisitsPreviewList: View {
     @Environment(\.appTheme) private var appTheme: AppTheme
 
     @State private var selectedDayComponent: DateComponents = DateComponents()
-    @ObservedObject private var sideBarTracker: VisitsSideBarTracker
+    let sideBarTracker: VisitsSideBarTracker
 
     private let visitsForDayComponents: [DateComponents: [Visit]]
     private let descendingDayComponents: [DateComponents]
@@ -25,6 +25,8 @@ struct VisitsPreviewList: View {
     }
 
     var body: some View {
+        // TODO: Remove the header and also add a pop up in the middle of the screen when dragging that displays how many days from today the user is currently scrolled at(timepage for reference)
+        // TODO: Also add a button to scroll back to today
         VStack(spacing: 0) {
             leftAlignedHeader
             timelineView
@@ -139,9 +141,9 @@ private extension Array where Element == DateComponents {
 struct VisitsPreviewList_Previews: PreviewProvider {
 
     static var previews: some View {
-        VisitsPreviewList(visits: Visit.mocks)
-            .colorScheme(.dark)
-            .background(Color.black.edgesIgnoringSafeArea(.all))
+        DarkThemePreview {
+            VisitsPreviewList(visits: Visit.mocks(start: Date(), end: .daysFromToday(365)))
+        }
     }
 
 }

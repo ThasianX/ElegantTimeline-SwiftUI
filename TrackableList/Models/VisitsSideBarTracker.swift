@@ -87,7 +87,8 @@ extension VisitsSideBarTracker: UITableViewDelegate {
 
         let maxY = maxYForDayComponents[scrolledMonthYearComponent]!
         let gapBetweenMaxYandCurrentScrollOffset = maxY - scrollOffset
-        
+
+        // TODO: Initial offset is wrong for larger views
         if listHeight > gapBetweenMaxYandCurrentScrollOffset {
             let isWithinShiftRangeToNextMonthAndYear = gapBetweenMaxYandCurrentScrollOffset <= VisitPreviewConstants.endShiftRangeHeight
             if isWithinShiftRangeToNextMonthAndYear {
