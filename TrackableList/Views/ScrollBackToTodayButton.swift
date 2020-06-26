@@ -13,7 +13,7 @@ struct ScaleButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .scaleEffect(configuration.isPressed ? 1.5 : 1)
+            .scaleEffect(configuration.isPressed ? 2 : 1)
     }
 
 }
@@ -28,8 +28,9 @@ struct ScrollBackToTodayButton<Provider>: View where Provider: ScrollToTodayProv
 
     var body: some View {
         scrollToTodayButton
-            .animation(.spring())
             .scaleEffect(isCurrentDayWithinToday ? 0 : 1)
+            .opacity(isCurrentDayWithinToday ? 0 : 1)
+            .animation(.spring(response: 0.55, dampingFraction: 0.4))
     }
 
     private var scrollToTodayButton: some View {

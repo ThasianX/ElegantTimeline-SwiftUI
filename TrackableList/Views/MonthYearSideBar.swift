@@ -13,10 +13,11 @@ fileprivate let angle: Angle = .degrees(-90)
 
 struct MonthYearSideBar<Provider>: View where Provider: MonthYearSideBarProvider {
 
+    @Environment(\.appTheme) private var appTheme: AppTheme
+
     @State private var size: CGSize = .zero
 
     @ObservedObject var provider: Provider
-    let color: Color
 
     var body: some View {
         monthYearText
@@ -37,7 +38,7 @@ private extension MonthYearSideBar {
     var monthYearText: some View {
         Text(currentFullMonthWithYear.uppercased())
             .tracking(10)
-            .foregroundColor(isSameMonthAndYearAsToday ? color : nil)
+            .foregroundColor(isSameMonthAndYearAsToday ? appTheme.primary : nil)
             .font(.caption)
             .fontWeight(.semibold)
             .lineLimit(1)

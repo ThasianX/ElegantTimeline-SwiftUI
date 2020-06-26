@@ -180,14 +180,10 @@ extension VisitsSideBarTracker: UITableViewDelegate {
         }
 
         if currentMonthYearComponent != scrolledMonthYearComponent {
-            withAnimation {
-                currentMonthYearComponent = scrolledMonthYearComponent
-            }
+            currentMonthYearComponent = scrolledMonthYearComponent
         }
 
-        withAnimation {
-            currentDayComponent = scrolledDayComponent
-        }
+        currentDayComponent = scrolledDayComponent
     }
 
 }
@@ -220,6 +216,7 @@ private extension UITableView {
 
         let footerHeightWhereOnlyLastCellIsVisible = listHeight - VisitPreviewConstants.blockHeight
 
+        // TODO: should include like quote
         tableHeaderView = UIView(frame: CGRect(x: 0, y: 0,
                                                width: screen.width,
                                                height: statusBarHeight))
@@ -227,7 +224,6 @@ private extension UITableView {
                                                width: screen.width,
                                                height: footerHeightWhereOnlyLastCellIsVisible))
 
-        // TODO: Add a table header that has a quote
         // TODO: remove the scroll indicator and add custom scroll indicator using the month year side bar as a scroll mechanism
         return self
     }
