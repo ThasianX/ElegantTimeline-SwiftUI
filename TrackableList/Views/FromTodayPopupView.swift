@@ -29,16 +29,9 @@ struct FromTodayPopupView<Provider>: View where Provider: FromTodayPopupProvider
             unitsFromToday = "\(abs(weeksToToday)/4) MONTHS"
         }
 
-        let unitsDescription: String
-        if weeksToToday > 0 {
-            unitsDescription = "FROM TODAY"
-        } else {
-            unitsDescription = "AGO"
-        }
-
         return VStack {
             unitsFromTodayText(unitsFromToday)
-            unitsDescriptionText(unitsDescription)
+            unitsDescriptionText
         }
         .transition(.identity)
         .id("FromTodayPopup\(weeksToToday)")
@@ -51,8 +44,8 @@ struct FromTodayPopupView<Provider>: View where Provider: FromTodayPopupProvider
             .tracking(2.5)
     }
 
-    private func unitsDescriptionText(_ text: String) -> some View {
-        Text(text)
+    private var unitsDescriptionText: some View {
+        Text("AGO")
             .font(.system(size: 10))
     }
 

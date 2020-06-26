@@ -71,7 +71,7 @@ extension VisitsSideBarTracker: MonthYearSideBarProvider {}
 extension VisitsSideBarTracker: ScrollToTodayProvider {
 
     func scrollToToday() {
-        scroll(to: Date())
+        tableView.setContentOffset(.zero, animated: true)
     }
 
 }
@@ -97,6 +97,18 @@ extension VisitsSideBarTracker: UITableViewDelegate {
                 }
             }
         }
+    }
+
+    // Kudos: https://stackoverflow.com/a/20943198/6074750
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let targetOffset = targetContentOffset.pointee.y
+        var index = floor(targetOffset / VisitPreviewConstants.blockHeight)
+
+        if (targetOffset - (floor(targetOffset / VisitPreviewConstants.blockHeight) * VisitPreviewConstants.blockHeight)) > VisitPreviewConstants.blockHeight {
+            index += 1
+        }
+
+        targetContentOffset.pointee.y = index * VisitPreviewConstants.blockHeight
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -208,6 +220,9 @@ private extension UITableView {
 
         let footerHeightWhereOnlyLastCellIsVisible = listHeight - VisitPreviewConstants.blockHeight
 
+        tableHeaderView = UIView(frame: CGRect(x: 0, y: 0,
+                                               width: screen.width,
+                                               height: statusBarHeight))
         tableFooterView = UIView(frame: CGRect(x: 0, y: 0,
                                                width: screen.width,
                                                height: footerHeightWhereOnlyLastCellIsVisible))
