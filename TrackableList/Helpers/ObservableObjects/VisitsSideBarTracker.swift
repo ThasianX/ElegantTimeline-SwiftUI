@@ -2,6 +2,13 @@
 
 import SwiftUI
 
+private enum ScrollDirection {
+
+    case up
+    case down
+
+}
+
 class VisitsSideBarTracker: NSObject, ObservableObject {
 
     @Published var currentDayComponent: DateComponents = .init()
@@ -21,11 +28,21 @@ class VisitsSideBarTracker: NSObject, ObservableObject {
 
     private var previousMaxY: CGFloat = -VisitPreviewConstants.startShiftRangeHeight-1
 
+    private var isFastDraggingTimer: Timer? = nil
+    private var isFastDragging: Bool = false
+
     init(descendingDayComponents: [DateComponents]) {
         self.descendingDayComponents = descendingDayComponents
         indexForDayComponents = descendingDayComponents.pairKeysWithIndex
         maxYForDayComponents = descendingDayComponents.pairWithMaxY
     }
+
+}
+
+fileprivate let monthScrollDistance = VisitPreviewConstants.blockHeight * 30
+fileprivate let tableViewContentOffsetDamping: CGFloat = 6
+
+extension VisitsSideBarTracker {
 
     func attach(to tableView: UITableView) {
         if self.tableView == nil {
@@ -49,12 +66,52 @@ class VisitsSideBarTracker: NSObject, ObservableObject {
         self.tableView.scrollToRow(at: IndexPath(row: index, section: 0), at: .top, animated: true)
     }
 
-}
+    func fastScroll(translation: CGFloat) {
+        isFastDragging = true
+        scrollViewWillBeginDragging(tableView)
 
-private extension VisitsSideBarTracker {
+        isFastDraggingTimer?.invalidate()
+        isFastDraggingTimer = .scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
+            self.animateTableViewContentOffset(by: translation, duration: 0.01)
+        }
+    }
 
-    var listCenter: CGFloat {
-        listHeight / 2
+    func fastDragDidEnd(translation: CGFloat) {
+        guard isFastDragging else { return }
+
+        isFastDraggingTimer?.invalidate()
+        isFastDraggingTimer = nil
+
+        isFastDragging = false
+        scrollViewDidEndDecelerating(tableView)
+
+        animateTableViewContentOffset(by: translation, duration: 0.1)
+    }
+
+    private func animateTableViewContentOffset(by offset: CGFloat, duration: Double) {
+        var newOffset = tableView.contentOffset.y + (offset / tableViewContentOffsetDamping)
+        let upperEnd = (CGFloat(descendingDayComponents.count - 1)*VisitPreviewConstants.blockHeight)
+
+        if newOffset < -VisitPreviewConstants.listTopPadding {
+            newOffset = .zero
+        } else if newOffset > upperEnd {
+            newOffset = upperEnd
+        }
+
+        animateTableView(to: newOffset, duration: duration)
+    }
+
+    private func animateTableView(to offset: CGFloat, duration: Double) {
+        DispatchQueue.main.async {
+            UIView.animate(
+                withDuration: duration,
+                delay: 0,
+                options: .curveEaseInOut,
+                animations: {
+                    self.tableView.contentOffset.y = offset
+                },
+                completion: nil)
+        }
     }
 
 }
@@ -176,8 +233,8 @@ extension VisitsSideBarTracker: UITableViewDelegate {
                 // We want the sideBar to be centered to the list if the current
                 // monthAndYear's part inside the list is bigger than the visible
                 // portion of the list on the screen
-                if offset != listHeight / 2 {
-                    offset = listHeight / 2
+                if offset != listCenter {
+                    offset = listCenter
                 }
             }
         }
@@ -187,6 +244,10 @@ extension VisitsSideBarTracker: UITableViewDelegate {
         }
 
         currentDayComponent = scrolledDayComponent
+    }
+
+    private var listCenter: CGFloat {
+        listHeight / 2
     }
 
 }
@@ -208,6 +269,7 @@ private extension Array where Element == DateComponents {
 private extension UITableView {
 
     func withNearlyFullPageFooter(listHeight: CGFloat) -> UITableView {
+        showsVerticalScrollIndicator = false
         allowsSelection = false
         backgroundColor = .clear
         separatorStyle = .none
@@ -220,16 +282,15 @@ private extension UITableView {
 
         let footerHeightWhereOnlyLastCellIsVisible = listHeight - VisitPreviewConstants.blockHeight
 
-        // TODO: should include like quote
+        // TODO: should include like quote. and shouldn't be tableview header. should just be a view
         // The 10 probably is an arbitrary value depending on phone. I'm using an iPhone 11 to test
         tableHeaderView = UIView(frame: CGRect(x: 0, y: 0,
                                                width: screen.width,
-                                               height: statusBarHeight-10))
+                                               height: VisitPreviewConstants.listTopPadding))
         tableFooterView = UIView(frame: CGRect(x: 0, y: 0,
                                                width: screen.width,
                                                height: footerHeightWhereOnlyLastCellIsVisible))
 
-        // TODO: remove the scroll indicator and add custom scroll indicator using the month year side bar as a scroll mechanism
         return self
     }
 
