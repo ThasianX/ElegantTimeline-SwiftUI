@@ -10,7 +10,7 @@ protocol MonthYearSideBarProvider: ObservableObject {
 }
 
 fileprivate let angle: Angle = .degrees(-90)
-fileprivate let offsetLowerBound: CGFloat = statusBarHeight - 10
+fileprivate let offsetLowerBound: CGFloat = VisitPreviewConstants.listTopPadding
 
 struct MonthYearSideBar<Provider>: View where Provider: MonthYearSideBarProvider {
 

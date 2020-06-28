@@ -17,6 +17,7 @@ struct VisitsTimelineView: View {
                 self.configureSideBarTracker(withListHeight: geometry.size.height)
             }
         }
+        .gesture(timelineScrollGesture)
     }
 
 }
@@ -49,6 +50,22 @@ private extension VisitsTimelineView {
     func configureSideBarTracker(withListHeight listHeight: CGFloat) {
         sideBarTracker.listHeight = listHeight
         sideBarTracker.setInitialScrollOffset()
+    }
+
+}
+
+private extension VisitsTimelineView {
+
+    var timelineScrollGesture: some Gesture {
+        DragGesture()
+            .onChanged { value in
+                if value.startLocation.x < 50 {
+                    sideBarTracker.fastScroll(translation: -value.translation.height)
+                }
+            }
+            .onEnded { value in
+                sideBarTracker.fastDragDidEnd(translation: -value.translation.height)
+            }
     }
 
 }
