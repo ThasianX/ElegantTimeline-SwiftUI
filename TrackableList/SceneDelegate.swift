@@ -13,8 +13,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.rootViewController = UIHostingController(
                 rootView: VisitsPreviewView(
                     visits: Visit.mocks(
-                        start: .daysFromToday(-365*2),
-                        end: Date()))
+                        start: .daysFromToday(-185),
+                        end: .daysFromToday(-25)))
             )
             self.window = window
             window.overrideUserInterfaceStyle = .dark
