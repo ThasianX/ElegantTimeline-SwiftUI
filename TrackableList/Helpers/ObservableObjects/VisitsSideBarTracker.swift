@@ -14,8 +14,10 @@ class VisitsSideBarTracker: NSObject, ObservableObject {
     @Published var currentDayComponent: DateComponents = .init()
     @Published var isDragging: Bool = false
 
-    @Published var currentMonthYearComponent: DateComponents = .init()
-    @Published var offset: CGFloat = .zero
+    @Published var monthYear1Component: DateComponents = .init()
+    @Published var monthYear1Offset: CGFloat = .zero
+    @Published var monthYear2Component: DateComponents = .init()
+    @Published var monthYear2Offset: CGFloat = .zero
 
     private let indexForDayComponents: [DateComponents: Int]
 
@@ -46,7 +48,7 @@ extension VisitsSideBarTracker {
 
     func attach(to tableView: UITableView) {
         if self.tableView == nil {
-            self.tableView = tableView.withNearlyFullPageFooter(listHeight: listHeight)
+            self.tableView = tableView.withNearlyFullPageFooter
 
             oldDelegate = tableView.delegate
             tableView.delegate = self
@@ -90,7 +92,7 @@ extension VisitsSideBarTracker {
 
     private func animateTableViewContentOffset(by offset: CGFloat, duration: Double) {
         var newOffset = tableView.contentOffset.y + (offset / tableViewContentOffsetDamping)
-        let upperEnd = (CGFloat(descendingDayComponents.count - 1)*VisitPreviewConstants.blockHeight)
+        let upperEnd = (CGFloat(descendingDayComponents.count - 6)*VisitPreviewConstants.blockHeight) // only for bigger phones
 
         if newOffset < -VisitPreviewConstants.listTopPadding {
             newOffset = .zero
@@ -183,6 +185,10 @@ extension VisitsSideBarTracker: UITableViewDelegate {
         setSideBarOffsetAndCorrespondingMonthYearComponent(scrollOffset: scrollView.contentOffset.y)
     }
 
+    private var isMonthYear1Active: Bool {
+        monthYear1Offset < monthYear2Offset
+    }
+
     private func setSideBarOffsetAndCorrespondingMonthYearComponent(scrollOffset: CGFloat) {
         // To get the current index, we divide the current scroll offset by the height of the
         // day block, which is constant. By casting the result to an Int, we essentially perform
@@ -200,50 +206,107 @@ extension VisitsSideBarTracker: UITableViewDelegate {
         let gapBetweenMaxYandCurrentScrollOffset = maxY - scrollOffset
 
         if listHeight > gapBetweenMaxYandCurrentScrollOffset {
-            let isWithinShiftRangeToNextMonthAndYear = gapBetweenMaxYandCurrentScrollOffset <= VisitPreviewConstants.endShiftRangeHeight
-            if isWithinShiftRangeToNextMonthAndYear {
-                let isNotLastCell = currentIndex < descendingDayComponents.endIndex-1
-                if isNotLastCell {
-                    // make it start offsetting to middle of screen if it's not last cell
-                    // this is only the first half of the animation
-                    let delta = VisitPreviewConstants.blocksInEndShiftRange * (listCenter / VisitPreviewConstants.blocksInShiftRange) / VisitPreviewConstants.endShiftRangeHeight
-                    let factor = VisitPreviewConstants.endShiftRangeHeight - gapBetweenMaxYandCurrentScrollOffset
-                    offset = delta * factor
-                    previousMaxY = maxY
-                }
+            let isCurrentMonthYearTheFirstMonthYearOfList = scrolledMonthYearComponent.isInSameMonthAndYear(as: descendingDayComponents.first!)
+            let isCurrentMonthYearTheLastMonthYearOfList = scrolledMonthYearComponent.subtractingMonth.isInSameMonthAndYear(as: descendingDayComponents.last!)
+
+            if isCurrentMonthYearTheFirstMonthYearOfList || isCurrentMonthYearTheLastMonthYearOfList {
+                configureSideBarForEdges(
+                    isFirst: isCurrentMonthYearTheFirstMonthYearOfList,
+                    monthYearComponent: scrolledMonthYearComponent,
+                    scrollOffset: scrollOffset,
+                    maxY: maxY)
             } else {
-                // Not within shift range but near. Keep aligning the sideBar to the
-                // center of the visible portion of the current monthAndYear's part
-                // inside the list.
-                offset = gapBetweenMaxYandCurrentScrollOffset / 2
+                configureSideBarForTransition(
+                    monthYearComponent: scrolledMonthYearComponent,
+                    gapBetweenMaxYandCurrentScrollOffset: gapBetweenMaxYandCurrentScrollOffset)
             }
         } else {
-            let gapBetweenCurrentScrollOffsetAndPreviousMaxY = scrollOffset - previousMaxY
-            let isWithinShiftRangeFromLastMonthAndYear = abs(gapBetweenCurrentScrollOffsetAndPreviousMaxY) <= VisitPreviewConstants.startShiftRangeHeight
-
-            if isWithinShiftRangeFromLastMonthAndYear {
-                let isNotLastCell = currentIndex < descendingDayComponents.endIndex-1
-                if isNotLastCell {
-                    // second half of the animation to offset to the middle of the list
-                    let delta = VisitPreviewConstants.blocksInStartShiftRange * (listCenter / VisitPreviewConstants.blocksInShiftRange) / VisitPreviewConstants.startShiftRangeHeight
-                    let factor = VisitPreviewConstants.startShiftRangeHeight - (VisitPreviewConstants.startShiftRangeHeight - gapBetweenCurrentScrollOffsetAndPreviousMaxY)
-                    offset = VisitPreviewConstants.endShiftRangeHeight + (delta * factor)
-                }
-            } else {
-                // We want the sideBar to be centered to the list if the current
-                // monthAndYear's part inside the list is bigger than the visible
-                // portion of the list on the screen
-                if offset != listCenter {
-                    offset = listCenter
-                }
-            }
-        }
-
-        if currentMonthYearComponent != scrolledMonthYearComponent {
-            currentMonthYearComponent = scrolledMonthYearComponent
+            configureSideBarForScrolling(
+                monthYearComponent: scrolledMonthYearComponent,
+                gapBetweenMaxYandCurrentScrollOffset: gapBetweenMaxYandCurrentScrollOffset)
         }
 
         currentDayComponent = scrolledDayComponent
+    }
+
+    private func configureSideBarForEdges(
+        isFirst: Bool,
+        monthYearComponent: DateComponents,
+        scrollOffset: CGFloat,
+        maxY: CGFloat) {
+        let gapBetweenMaxYandCurrentScrollOffset = maxY - scrollOffset
+
+        if isFirst {
+            let scrollDifference = maxY - gapBetweenMaxYandCurrentScrollOffset
+            let centerOfFirstMonth = maxY / 2
+            let leadingOffset = centerOfFirstMonth - scrollDifference
+
+            let trailingOffset = gapBetweenMaxYandCurrentScrollOffset + listCenter
+
+            monthYear1Component = monthYearComponent
+            monthYear1Offset = leadingOffset
+
+            monthYear2Component = monthYearComponent.subtractingMonth
+            monthYear2Offset = trailingOffset
+        } else {
+            let scrollDifference = listHeight - gapBetweenMaxYandCurrentScrollOffset
+            let leadingOffset = listCenter - scrollDifference
+
+            let gapBetweenEndOfListAndMaxY = tableView.contentSize.height - maxY
+            let trailingOffset = gapBetweenMaxYandCurrentScrollOffset + gapBetweenEndOfListAndMaxY/2
+
+            if isMonthYear1Active {
+                monthYear1Component = monthYearComponent
+                monthYear1Offset = leadingOffset
+
+                monthYear2Component = monthYearComponent.subtractingMonth
+                monthYear2Offset = trailingOffset
+            } else {
+                monthYear2Component = monthYearComponent
+                monthYear2Offset = leadingOffset
+
+                monthYear1Component = monthYearComponent.subtractingMonth
+                monthYear1Offset = trailingOffset
+            }
+        }
+    }
+
+    private func configureSideBarForTransition(
+        monthYearComponent: DateComponents,
+        gapBetweenMaxYandCurrentScrollOffset: CGFloat) {
+        let scrollDifference = listHeight - gapBetweenMaxYandCurrentScrollOffset
+
+        if isMonthYear1Active {
+            monthYear1Component = monthYearComponent
+            monthYear1Offset = listCenter - scrollDifference
+
+            monthYear2Component = monthYearComponent.subtractingMonth
+            monthYear2Offset = gapBetweenMaxYandCurrentScrollOffset + listCenter
+        } else {
+            monthYear2Component = monthYearComponent
+            monthYear2Offset = listCenter - scrollDifference
+
+            monthYear1Component = monthYearComponent.subtractingMonth
+            monthYear1Offset = gapBetweenMaxYandCurrentScrollOffset + listCenter
+        }
+    }
+
+    private func configureSideBarForScrolling(
+        monthYearComponent: DateComponents,
+        gapBetweenMaxYandCurrentScrollOffset: CGFloat) {
+        if isMonthYear1Active {
+            monthYear1Component = monthYearComponent
+            monthYear1Offset = listCenter
+
+            monthYear2Component = monthYearComponent.subtractingMonth
+            monthYear2Offset = gapBetweenMaxYandCurrentScrollOffset + listCenter
+        } else {
+            monthYear2Component = monthYearComponent
+            monthYear2Offset = listCenter
+
+            monthYear1Component = monthYearComponent.subtractingMonth
+            monthYear1Offset = gapBetweenMaxYandCurrentScrollOffset + listCenter
+        }
     }
 
     private var listCenter: CGFloat {
@@ -268,7 +331,7 @@ private extension Array where Element == DateComponents {
 
 private extension UITableView {
 
-    func withNearlyFullPageFooter(listHeight: CGFloat) -> UITableView {
+    var withNearlyFullPageFooter: UITableView {
         showsVerticalScrollIndicator = false
         allowsSelection = false
         backgroundColor = .clear
@@ -280,16 +343,12 @@ private extension UITableView {
                                     bottom: -adjustedContentInset.bottom,
                                     right: -adjustedContentInset.right)
 
-        let footerHeightWhereOnlyLastCellIsVisible = listHeight - VisitPreviewConstants.blockHeight
 
         // TODO: should include like quote. and shouldn't be tableview header. should just be a view
         // The 10 probably is an arbitrary value depending on phone. I'm using an iPhone 11 to test
         tableHeaderView = UIView(frame: CGRect(x: 0, y: 0,
                                                width: screen.width,
                                                height: VisitPreviewConstants.listTopPadding))
-        tableFooterView = UIView(frame: CGRect(x: 0, y: 0,
-                                               width: screen.width,
-                                               height: footerHeightWhereOnlyLastCellIsVisible))
 
         return self
     }
@@ -303,6 +362,22 @@ private extension Array where Element == DateComponents {
             // dict[dayComponent] = indexOfDayComponent
             $0[$1.1] = $1.0
         }
+    }
+
+}
+
+extension DateComponents {
+
+    var addingMonth: DateComponents {
+        Calendar.current.date(byAdding: .month, value: 1, to: date)?.dateComponents ?? self
+    }
+
+    var subtractingMonth: DateComponents {
+        Calendar.current.date(byAdding: .month, value: -1, to: date)?.dateComponents ?? self
+    }
+
+    func isInSameMonthAndYear(as components: DateComponents) -> Bool {
+        monthAndYear == components.monthAndYear
     }
 
 }
