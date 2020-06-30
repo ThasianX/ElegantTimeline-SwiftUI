@@ -12,6 +12,7 @@ struct VisitPreviewConstants {
     static let previewTime: TimeInterval = 5
 
     static let sideBarWidth: CGFloat = 35
+    static let sideBarPadding: CGFloat = 4
 
     static let blockHeight: CGFloat = (cellHeight + 2*cellPadding) * CGFloat(numberOfCellsInBlock)
 

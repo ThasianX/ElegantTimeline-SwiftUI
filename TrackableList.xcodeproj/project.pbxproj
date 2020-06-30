@@ -37,6 +37,7 @@
 		1EAAC5352485DBED006DBB8E /* DateComponents+Subcomponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAAC5342485DBED006DBB8E /* DateComponents+Subcomponents.swift */; };
 		1EAAC539248613EC006DBB8E /* VisitsSideBarTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAAC538248613EC006DBB8E /* VisitsSideBarTracker.swift */; };
 		1EAAC53B24875D14006DBB8E /* DateComponents+Strideable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAAC53A24875D14006DBB8E /* DateComponents+Strideable.swift */; };
+		1EBDB47924AAA71D00F0C3E5 /* QuoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBDB47824AAA71D00F0C3E5 /* QuoteView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,7 @@
 		1EAAC5342485DBED006DBB8E /* DateComponents+Subcomponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateComponents+Subcomponents.swift"; sourceTree = "<group>"; };
 		1EAAC538248613EC006DBB8E /* VisitsSideBarTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitsSideBarTracker.swift; sourceTree = "<group>"; };
 		1EAAC53A24875D14006DBB8E /* DateComponents+Strideable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateComponents+Strideable.swift"; sourceTree = "<group>"; };
+		1EBDB47824AAA71D00F0C3E5 /* QuoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +142,7 @@
 			children = (
 				1E8A3DFB24855F0600CBA65E /* VisitsPreviewView.swift */,
 				1ECD78AA24A6B0C3007F1EBD /* VisitsTimeLineView */,
+				1EBDB47824AAA71D00F0C3E5 /* QuoteView.swift */,
 				1E995AFA24A5845900F436BE /* FromTodayPopupView.swift */,
 				1E995AFC24A5BF3200F436BE /* ScrollBackToTodayButton.swift */,
 			);
@@ -325,6 +328,7 @@
 				1E5017FB2488B4C1002496DE /* View+CaptureSize.swift in Sources */,
 				1E8A3DE6248557C200CBA65E /* SceneDelegate.swift in Sources */,
 				1E8A3E0124858A9B00CBA65E /* DateComponents+Comparable.swift in Sources */,
+				1EBDB47924AAA71D00F0C3E5 /* QuoteView.swift in Sources */,
 				1E8A3E112485AEAD00CBA65E /* EnvironmentKey+AppTheme.swift in Sources */,
 				1E8A3E0F2485AAE000CBA65E /* DayPreviewBlock.swift in Sources */,
 				1E8A3E0B24859F2200CBA65E /* View+Rotated.swift in Sources */,

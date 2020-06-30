@@ -13,6 +13,7 @@ struct DaySideBar: View {
             dayOfMonth
         }
         .frame(width: VisitPreviewConstants.sideBarWidth)
+        .padding(.trailing, VisitPreviewConstants.sideBarPadding)
     }
 
 }

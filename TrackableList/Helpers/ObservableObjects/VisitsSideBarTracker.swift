@@ -33,6 +33,10 @@ class VisitsSideBarTracker: NSObject, ObservableObject {
     private var isFastDraggingTimer: Timer? = nil
     private var isFastDragging: Bool = false
 
+    @Published var shouldShowHeader: Bool = false
+    @Published var shouldShowFooter: Bool = false
+    @Published var headerFooterOffset: CGFloat = .zero
+
     init(descendingDayComponents: [DateComponents]) {
         self.descendingDayComponents = descendingDayComponents
         indexForDayComponents = descendingDayComponents.pairKeysWithIndex
@@ -138,6 +142,8 @@ extension VisitsSideBarTracker: ScrollToTodayProvider {
 
 }
 
+fileprivate let minDragDistanceToShowHeaderOrFooter: CGFloat = 80
+
 extension VisitsSideBarTracker: UITableViewDelegate {
 
     override func responds(to aSelector: Selector!) -> Bool {
@@ -182,7 +188,54 @@ extension VisitsSideBarTracker: UITableViewDelegate {
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        setSideBarOffsetAndCorrespondingMonthYearComponent(scrollOffset: scrollView.contentOffset.y)
+        let scrollOffset = scrollView.contentOffset.y
+        determineHeaderAndFooterVisibilityAndOffset(scrollOffset: scrollOffset)
+        setSideBarOffsetAndCorrespondingMonthYearComponent(scrollOffset: scrollOffset)
+    }
+
+    private func determineHeaderAndFooterVisibilityAndOffset(scrollOffset: CGFloat) {
+        determineHeaderVisibilityAndOffset(for: scrollOffset)
+        determineFooterVisibilityAndOffset(for: scrollOffset)
+    }
+
+    private func determineHeaderVisibilityAndOffset(for offset: CGFloat) {
+        guard tableView.isTracking else {
+            withAnimation(.easeOut) {
+                shouldShowHeader = false
+                headerFooterOffset = .zero
+            }
+            return
+        }
+
+        withAnimation(.easeOut) {
+            shouldShowHeader = offset < -minDragDistanceToShowHeaderOrFooter
+        }
+
+        if offset < 0 {
+            headerFooterOffset = -offset / 1.5
+        }
+    }
+
+    private func determineFooterVisibilityAndOffset(for offset: CGFloat) {
+        guard tableView.isTracking else {
+            withAnimation(.easeOut) {
+                shouldShowFooter = false
+                headerFooterOffset = .zero
+            }
+            return
+        }
+
+        let height = tableView.frame.size.height
+        let gapBetweenOffsetAndListEnd = tableView.contentSize.height - offset
+        let differenceBetweenListHeightAndGapToEnd = height - gapBetweenOffsetAndListEnd
+
+        withAnimation(.easeOut) {
+            shouldShowFooter = differenceBetweenListHeightAndGapToEnd > minDragDistanceToShowHeaderOrFooter
+        }
+
+        if differenceBetweenListHeightAndGapToEnd > 0 {
+            headerFooterOffset = -differenceBetweenListHeightAndGapToEnd / 2
+        }
     }
 
     private var isMonthYear1Active: Bool {
@@ -344,8 +397,6 @@ private extension UITableView {
                                     right: -adjustedContentInset.right)
 
 
-        // TODO: should include like quote. and shouldn't be tableview header. should just be a view
-        // The 10 probably is an arbitrary value depending on phone. I'm using an iPhone 11 to test
         tableHeaderView = UIView(frame: CGRect(x: 0, y: 0,
                                                width: screen.width,
                                                height: VisitPreviewConstants.listTopPadding))

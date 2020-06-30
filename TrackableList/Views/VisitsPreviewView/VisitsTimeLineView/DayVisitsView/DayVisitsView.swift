@@ -18,7 +18,6 @@ struct DayVisitsView: View {
         HStack(spacing: 0) {
             DaySideBar(date: date,
                        color: isDateInToday ? appTheme.primary : nil)
-                .padding(.trailing, 4)
 
             if isDateInToday {
                 todayIndicator
