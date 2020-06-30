@@ -9,8 +9,8 @@ struct VisitsTimelineView: View {
 
     var body: some View {
         GeometryReader { geometry in
-            HStack(alignment: .top) {
-                self.monthYearSideBarView // TODO: make the side bar smaller, like timepage
+            HStack(alignment: .top, spacing: 0) {
+                self.monthYearSideBarView
                 ZStack {
                     self.quoteBackgroundView
                     self.visitsPreviewList
