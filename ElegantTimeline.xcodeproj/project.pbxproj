@@ -44,7 +44,7 @@
 /* Begin PBXFileReference section */
 		1E5017FA2488B4C1002496DE /* View+CaptureSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+CaptureSize.swift"; sourceTree = "<group>"; };
 		1E66EC3724AC19CD0070F16E /* EnvironmentKey+Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentKey+Timer.swift"; sourceTree = "<group>"; };
-		1E8A3DE0248557C200CBA65E /* TrackableList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrackableList.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E8A3DE0248557C200CBA65E /* ElegantTimeline.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ElegantTimeline.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E8A3DE3248557C200CBA65E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1E8A3DE5248557C200CBA65E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		1E8A3DE9248557C300CBA65E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -92,7 +92,7 @@
 		1E8A3DD7248557C200CBA65E = {
 			isa = PBXGroup;
 			children = (
-				1E8A3DE2248557C200CBA65E /* TrackableList */,
+				1E8A3DE2248557C200CBA65E /* ElegantTimeline */,
 				1E8A3DE1248557C200CBA65E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -100,12 +100,12 @@
 		1E8A3DE1248557C200CBA65E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1E8A3DE0248557C200CBA65E /* TrackableList.app */,
+				1E8A3DE0248557C200CBA65E /* ElegantTimeline.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1E8A3DE2248557C200CBA65E /* TrackableList */ = {
+		1E8A3DE2248557C200CBA65E /* ElegantTimeline */ = {
 			isa = PBXGroup;
 			children = (
 				1E8A3DE3248557C200CBA65E /* AppDelegate.swift */,
@@ -117,7 +117,7 @@
 				1E8A3DF1248557C300CBA65E /* Info.plist */,
 				1E8A3DEB248557C300CBA65E /* Preview Content */,
 			);
-			path = TrackableList;
+			path = ElegantTimeline;
 			sourceTree = "<group>";
 		};
 		1E8A3DEB248557C300CBA65E /* Preview Content */ = {
@@ -234,9 +234,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1E8A3DDF248557C200CBA65E /* TrackableList */ = {
+		1E8A3DDF248557C200CBA65E /* ElegantTimeline */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1E8A3DF4248557C300CBA65E /* Build configuration list for PBXNativeTarget "TrackableList" */;
+			buildConfigurationList = 1E8A3DF4248557C300CBA65E /* Build configuration list for PBXNativeTarget "ElegantTimeline" */;
 			buildPhases = (
 				1E8A3DDC248557C200CBA65E /* Sources */,
 				1E8A3DDD248557C200CBA65E /* Frameworks */,
@@ -246,13 +246,13 @@
 			);
 			dependencies = (
 			);
-			name = TrackableList;
+			name = ElegantTimeline;
 			packageProductDependencies = (
 				1E8A3DFE24858A6200CBA65E /* Introspect */,
 				1E0D92DF24A52355007F41DE /* ElegantCalendar */,
 			);
 			productName = TrackableList;
-			productReference = 1E8A3DE0248557C200CBA65E /* TrackableList.app */;
+			productReference = 1E8A3DE0248557C200CBA65E /* ElegantTimeline.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -270,7 +270,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 1E8A3DDB248557C200CBA65E /* Build configuration list for PBXProject "TrackableList" */;
+			buildConfigurationList = 1E8A3DDB248557C200CBA65E /* Build configuration list for PBXProject "ElegantTimeline" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -287,7 +287,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1E8A3DDF248557C200CBA65E /* TrackableList */,
+				1E8A3DDF248557C200CBA65E /* ElegantTimeline */,
 			);
 		};
 /* End PBXProject section */
@@ -473,15 +473,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"TrackableList/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"ElegantTimeline/Preview Content\"";
 				DEVELOPMENT_TEAM = 75H2NCGMKS;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = TrackableList/Info.plist;
+				INFOPLIST_FILE = ElegantTimeline/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kevinli.TrackableList;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kevinli.ElegantTimeline;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -493,15 +493,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"TrackableList/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"ElegantTimeline/Preview Content\"";
 				DEVELOPMENT_TEAM = 75H2NCGMKS;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = TrackableList/Info.plist;
+				INFOPLIST_FILE = ElegantTimeline/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.kevinli.TrackableList;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kevinli.ElegantTimeline;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -511,7 +511,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1E8A3DDB248557C200CBA65E /* Build configuration list for PBXProject "TrackableList" */ = {
+		1E8A3DDB248557C200CBA65E /* Build configuration list for PBXProject "ElegantTimeline" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1E8A3DF2248557C300CBA65E /* Debug */,
@@ -520,7 +520,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1E8A3DF4248557C300CBA65E /* Build configuration list for PBXNativeTarget "TrackableList" */ = {
+		1E8A3DF4248557C300CBA65E /* Build configuration list for PBXNativeTarget "ElegantTimeline" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1E8A3DF5248557C300CBA65E /* Debug */,
