@@ -26,7 +26,6 @@ struct ScrollBackToTodayButton<Provider>: View where Provider: ScrollToTodayProv
         Calendar.current.isDateInToday(provider.currentDayComponent.date)
     }
 
-    // TODO: fix this button which works sometimes and doesn't disappear though
     var body: some View {
         scrollToTodayButton
             .scaleEffect(isCurrentDayWithinToday ? 0 : 1)
