@@ -9,7 +9,7 @@ struct VisitPreviewConstants {
     static let cellPadding: CGFloat = 9
     static let numberOfCellsInBlock: Int = 3
 
-    static let previewTime: TimeInterval = 5
+    static let previewTime: TimeInterval = 4
 
     static let sideBarWidth: CGFloat = 35
     static let sideBarPadding: CGFloat = 4

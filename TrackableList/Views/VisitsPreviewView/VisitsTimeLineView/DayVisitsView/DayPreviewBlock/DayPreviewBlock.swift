@@ -5,10 +5,9 @@ import SwiftUI
 struct DayPreviewBlock: View {
 
     @Environment(\.appTheme) private var appTheme: AppTheme
+    @Environment(\.autoTimer) private var autoTimer: AutoTimer
 
-    private let timer = Timer.publish(every: VisitPreviewConstants.previewTime,
-                                      on: .main, in: .common).autoconnect()
-    @State var visitIndex = 0
+    @State private var visitIndex = 0
 
     let visits: [Visit]
     let isFilled: Bool
@@ -22,7 +21,6 @@ struct DayPreviewBlock: View {
         return visitIndex..<exclusiveEndIndex
     }
 
-    // TODO: Sometimes, the cells becomes uneven. weird.
     var body: some View {
         ZStack {
             backgroundColor
@@ -32,18 +30,8 @@ struct DayPreviewBlock: View {
             }
         }
         .frame(height: VisitPreviewConstants.blockHeight)
-        .onAppear(perform: setUpVisitsSlideShow) // TODO: sometimes, the timer doesn't work after dequeueing
-        .onReceive(timer) { _ in
+        .onReceive(autoTimer) { _ in
             self.shiftActivePreviewVisitIndex()
-        }
-    }
-
-    private func setUpVisitsSlideShow() {
-        if visits.count <= VisitPreviewConstants.numberOfCellsInBlock {
-            // To reduce memory usage, we don't want the timer to fire when
-            // visits count is less than or equal to the number
-            // of visits allowed in a single slide
-            timer.upstream.connect().cancel()
         }
     }
 
@@ -63,10 +51,22 @@ private extension DayPreviewBlock {
 
     var visitsPreviewList: some View {
         VStack(spacing: 0) {
+            Spacer()
             ForEach(visits[range]) { visit in
                 VisitPreviewCell(visit: visit)
+                    .transition(.slideFadeLeading)
             }
+            Spacer()
         }
+    }
+
+}
+
+private extension AnyTransition {
+
+    static var slideFadeLeading: AnyTransition {
+        AnyTransition.asymmetric(insertion: AnyTransition.opacity.combined(with: .offset(x: 10)),
+                                 removal: AnyTransition.opacity.combined(with: .offset(x: -10)))
     }
 
 }

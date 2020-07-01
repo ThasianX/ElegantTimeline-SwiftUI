@@ -5,6 +5,7 @@ import SwiftUI
 struct DayVisitsView: View {
 
     @Environment(\.appTheme) private var appTheme: AppTheme
+    @Environment(\.autoTimer) private var autoTimer: AutoTimer
 
     let date: Date
     let visits: [Visit]

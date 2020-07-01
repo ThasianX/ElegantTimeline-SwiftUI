@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1E0D92E024A52355007F41DE /* ElegantCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 1E0D92DF24A52355007F41DE /* ElegantCalendar */; };
 		1E5017FB2488B4C1002496DE /* View+CaptureSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5017FA2488B4C1002496DE /* View+CaptureSize.swift */; };
+		1E66EC3824AC19CD0070F16E /* EnvironmentKey+Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E66EC3724AC19CD0070F16E /* EnvironmentKey+Timer.swift */; };
 		1E8A3DE4248557C200CBA65E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A3DE3248557C200CBA65E /* AppDelegate.swift */; };
 		1E8A3DE6248557C200CBA65E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A3DE5248557C200CBA65E /* SceneDelegate.swift */; };
 		1E8A3DEA248557C300CBA65E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E8A3DE9248557C300CBA65E /* Assets.xcassets */; };
@@ -42,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		1E5017FA2488B4C1002496DE /* View+CaptureSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+CaptureSize.swift"; sourceTree = "<group>"; };
+		1E66EC3724AC19CD0070F16E /* EnvironmentKey+Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentKey+Timer.swift"; sourceTree = "<group>"; };
 		1E8A3DE0248557C200CBA65E /* TrackableList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrackableList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E8A3DE3248557C200CBA65E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1E8A3DE5248557C200CBA65E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				1EAAC5342485DBED006DBB8E /* DateComponents+Subcomponents.swift */,
 				1E8A3E0224858AF900CBA65E /* Dictionary+SortedKeys.swift */,
 				1E8A3E102485AEAD00CBA65E /* EnvironmentKey+AppTheme.swift */,
+				1E66EC3724AC19CD0070F16E /* EnvironmentKey+Timer.swift */,
 				1E8A3E0A24859F2200CBA65E /* View+Rotated.swift */,
 				1E5017FA2488B4C1002496DE /* View+CaptureSize.swift */,
 			);
@@ -313,6 +316,7 @@
 				1E8A3E0524859ECB00CBA65E /* DaySideBar.swift in Sources */,
 				1E8A3DE4248557C200CBA65E /* AppDelegate.swift in Sources */,
 				1E995AFB24A5845900F436BE /* FromTodayPopupView.swift in Sources */,
+				1E66EC3824AC19CD0070F16E /* EnvironmentKey+Timer.swift in Sources */,
 				1E8A3DFC24855F0600CBA65E /* VisitsPreviewView.swift in Sources */,
 				1E995B0424A69C7300F436BE /* VisitsTimelineView.swift in Sources */,
 				1E8A3E0924859EF400CBA65E /* MonthYearSideBar.swift in Sources */,

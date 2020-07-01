@@ -20,7 +20,7 @@ struct Visit {
 extension Visit: Identifiable {
 
     var id: Int {
-        locationName.hashValue
+        UUID().hashValue
     }
 
 }
@@ -43,7 +43,7 @@ extension Visit {
 
 }
 
-fileprivate let visitCountRange = 0...3
+fileprivate let visitCountRange = 4...7
 
 private extension Calendar {
 

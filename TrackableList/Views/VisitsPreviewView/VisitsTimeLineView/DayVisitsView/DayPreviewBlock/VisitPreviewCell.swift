@@ -28,8 +28,7 @@ private extension VisitPreviewCell {
     var tagView: some View {
         RoundedRectangle(cornerRadius: 8)
             .fill(visit.tagColor)
-            .frame(width: 30, height: 5)
-            .rotated(.degrees(90))
+            .frame(width: 5, height: 30)
     }
 
     var locationName: some View {

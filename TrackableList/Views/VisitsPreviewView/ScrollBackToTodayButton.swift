@@ -13,7 +13,7 @@ struct ScaleButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .scaleEffect(configuration.isPressed ? 2 : 1)
+            .scaleEffect(configuration.isPressed ? 1.25 : 1)
     }
 
 }
@@ -26,6 +26,7 @@ struct ScrollBackToTodayButton<Provider>: View where Provider: ScrollToTodayProv
         Calendar.current.isDateInToday(provider.currentDayComponent.date)
     }
 
+    // TODO: fix this button which works sometimes and doesn't disappear though
     var body: some View {
         scrollToTodayButton
             .scaleEffect(isCurrentDayWithinToday ? 0 : 1)
