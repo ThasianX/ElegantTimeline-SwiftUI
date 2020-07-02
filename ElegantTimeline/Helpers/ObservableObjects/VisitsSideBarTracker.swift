@@ -246,11 +246,7 @@ extension VisitsSideBarTracker: UITableViewDelegate {
         // To get the current index, we divide the current scroll offset by the height of the
         // day block, which is constant. By casting the result to an Int, we essentially perform
         // a floor operation, giving us the current day component's index
-        let currentIndex = Int(scrollOffset / VisitPreviewConstants.blockHeight)
-        // User may scroll beyond the top or bottom of the list, in which we don't want to offset the side bar
-        print("scrollviewdidscroll(scrollOffset): \(scrollOffset)")
-        print("scrollviewdidscroll(index): \(currentIndex)")
-        guard scrollOffset >= 0 && currentIndex < descendingDayComponents.endIndex else { return }
+        let currentIndex = min(max(Int(scrollOffset / VisitPreviewConstants.blockHeight), 0), descendingDayComponents.count-1)
 
         let scrolledDayComponent = descendingDayComponents[currentIndex]
         let scrolledMonthYearComponent = scrolledDayComponent.monthAndYear

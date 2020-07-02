@@ -24,11 +24,11 @@ struct MonthYearSideBar<Provider>: View where Provider: MonthYearSideBarProvider
     @ObservedObject var provider: Provider
 
     private var offset1: CGFloat {
-        return provider.monthYear1Offset - (size1.height / 2)
+        return provider.monthYear1Offset - (size1.height / 2) + VisitPreviewConstants.listTopPadding
     }
 
     private var offset2: CGFloat {
-        return provider.monthYear2Offset - (size2.height / 2)
+        return provider.monthYear2Offset - (size2.height / 2) + VisitPreviewConstants.listTopPadding
     }
 
     var body: some View {
