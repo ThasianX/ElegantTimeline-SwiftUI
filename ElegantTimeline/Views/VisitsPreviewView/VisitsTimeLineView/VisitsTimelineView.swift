@@ -55,8 +55,7 @@ private extension VisitsTimelineView {
     }
 
     func configureSideBarTracker(withListHeight listHeight: CGFloat) {
-        sideBarTracker.listHeight = listHeight
-        sideBarTracker.setInitialScrollOffset()
+        sideBarTracker.setInitialScrollOffset(listHeight: listHeight)
     }
 
 }

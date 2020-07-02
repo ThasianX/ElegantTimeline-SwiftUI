@@ -59,7 +59,8 @@ extension VisitsSideBarTracker {
         }
     }
 
-    func setInitialScrollOffset() {
+    func setInitialScrollOffset(listHeight: CGFloat) {
+        self.listHeight = listHeight
         setSideBarOffsetAndCorrespondingMonthYearComponent(scrollOffset: 0)
     }
 
@@ -225,9 +226,8 @@ extension VisitsSideBarTracker: UITableViewDelegate {
             return
         }
 
-        let height = tableView.frame.size.height
         let gapBetweenOffsetAndListEnd = tableView.contentSize.height - offset
-        let differenceBetweenListHeightAndGapToEnd = height - gapBetweenOffsetAndListEnd
+        let differenceBetweenListHeightAndGapToEnd = listHeight - gapBetweenOffsetAndListEnd
 
         withAnimation(.easeOut) {
             shouldShowFooter = differenceBetweenListHeightAndGapToEnd > minDragDistanceToShowHeaderOrFooter
