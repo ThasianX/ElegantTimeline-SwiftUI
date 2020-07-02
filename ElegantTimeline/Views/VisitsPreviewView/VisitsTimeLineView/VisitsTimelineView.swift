@@ -66,11 +66,11 @@ private extension VisitsTimelineView {
         DragGesture()
             .onChanged { value in
                 if value.startLocation.x < 50 {
-                    sideBarTracker.fastScroll(translation: -value.translation.height)
+                    self.sideBarTracker.fastScroll(translation: -value.translation.height)
                 }
             }
             .onEnded { value in
-                sideBarTracker.fastDragDidEnd(translation: -value.translation.height)
+                self.sideBarTracker.fastDragDidEnd(translation: -value.translation.height)
             }
     }
 
