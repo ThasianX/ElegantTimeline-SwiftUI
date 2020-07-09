@@ -35,7 +35,7 @@ struct ScrollBackToTodayButton<Provider>: View where Provider: ScrollToTodayProv
 
     private var scrollToTodayButton: some View {
         Button(action: provider.scrollToToday) {
-            Image(systemName: "chevron.up.circle.fill")
+            Image(systemName: "chevron.up.circle.fill") // TODO: choose timepage image
                 .resizable()
                 .frame(width: 50, height: 50)
         }

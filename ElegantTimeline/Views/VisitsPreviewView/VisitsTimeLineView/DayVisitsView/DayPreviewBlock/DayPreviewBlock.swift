@@ -26,6 +26,7 @@ struct DayPreviewBlock: View {
             backgroundColor
             if !visits.isEmpty {
                 visitsPreviewList
+                    .padding(.horizontal, VisitPreviewConstants.blockHorizontalPadding)
                     .animation(.easeInOut)
             }
         }
@@ -52,12 +53,15 @@ private extension DayPreviewBlock {
     var visitsPreviewList: some View {
         VStack(spacing: 0) {
             Spacer()
-            ForEach(visits[range]) { visit in
-                VisitPreviewCell(visit: visit)
-                    .transition(.slideFadeLeading)
+            VStack(spacing: VisitPreviewConstants.cellSpacing) {
+                ForEach(visits[range]) { visit in
+                    VisitPreviewCell(visit: visit)
+                        .transition(.slideFadeLeading)
+                }
             }
             Spacer()
         }
+        .frame(height: VisitPreviewConstants.blockHeight)
     }
 
 }
@@ -74,7 +78,7 @@ private extension AnyTransition {
 struct DayPreviewBlock_Previews: PreviewProvider {
     static var previews: some View {
         DarkThemePreview {
-            DayPreviewBlock(visits: Visit.mocks(start: Date(), end: .daysFromToday(1)), isFilled: true)
+            DayPreviewBlock(visits: Visit.mocks(start: .daysFromToday(-1)), isFilled: true)
         }
     }
 }

@@ -4,17 +4,21 @@ import Foundation
 import UIKit
 
 struct VisitPreviewConstants {
-    
-    static let cellHeight: CGFloat = 30
-    static let cellPadding: CGFloat = 9
+
+    static let numberOfBlocksOnScreen: Int = 6
+    static let blockHeight: CGFloat = {
+        let visibleListHeight = screen.height - Self.listTopPadding
+        return visibleListHeight / CGFloat(Self.numberOfBlocksOnScreen)
+    }()
+    static let blockHorizontalPadding: CGFloat = 12
+
+    static let cellSpacing: CGFloat = 6
     static let numberOfCellsInBlock: Int = 3
 
     static let previewTime: TimeInterval = 4
 
     static let sideBarWidth: CGFloat = 35
     static let sideBarPadding: CGFloat = 4
-
-    static let blockHeight: CGFloat = (cellHeight + 2*cellPadding) * CGFloat(numberOfCellsInBlock)
 
     static func height(forBlockCount count: Int) -> CGFloat {
         return blockHeight * CGFloat(count)
@@ -28,6 +32,6 @@ struct VisitPreviewConstants {
 
     static let blocksInShiftRange: CGFloat = Self.blocksInStartShiftRange + Self.blocksInEndShiftRange
 
-    static let listTopPadding: CGFloat = statusBarHeight - 10
+    static let listTopPadding: CGFloat = statusBarHeight - 12 // iphone 11
 
 }

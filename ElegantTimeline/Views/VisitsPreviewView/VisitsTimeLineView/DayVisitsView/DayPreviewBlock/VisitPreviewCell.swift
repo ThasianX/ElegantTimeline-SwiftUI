@@ -7,7 +7,7 @@ struct VisitPreviewCell: View {
     let visit: Visit
 
     var body: some View {
-        HStack {
+        HStack(spacing: 10) {
             tagView
 
             VStack(alignment: .leading, spacing: 3) {
@@ -17,8 +17,6 @@ struct VisitPreviewCell: View {
 
             Spacer()
         }
-        .frame(height: VisitPreviewConstants.cellHeight)
-        .padding(VisitPreviewConstants.cellPadding)
     }
 
 }
@@ -26,9 +24,9 @@ struct VisitPreviewCell: View {
 private extension VisitPreviewCell {
 
     var tagView: some View {
-        RoundedRectangle(cornerRadius: 8)
+        RoundedRectangle(cornerRadius: 16)
             .fill(visit.tagColor)
-            .frame(width: 5, height: 30)
+            .frame(width: 5, height: 28)
     }
 
     var locationName: some View {
@@ -39,8 +37,8 @@ private extension VisitPreviewCell {
     }
 
     var visitDurationAndAddress: some View {
-        Text("\(visit.duration)    \(visit.locationAddress)")
-            .font(.system(size: 9))
+        Text("\(visit.duration)    \(visit.locationCity)")
+            .font(.system(size: 8))
             .lineLimit(1)
     }
 

@@ -21,25 +21,20 @@ struct VisitsPreviewView: View {
 
     @Environment(\.appTheme) private var appTheme: AppTheme
 
-    @State private var selectedDayComponent: DateComponents = DateComponents()
-
-    private let visitsProvider: VisitsProvider
-    private let sideBarTracker: VisitsSideBarTracker
-
-    init(visits: [Visit]) {
-        visitsProvider = VisitsProvider(visits: visits)
-        sideBarTracker = VisitsSideBarTracker(descendingDayComponents: visitsProvider.descendingDayComponents)
-    }
+    let visitsProvider: VisitsProvider
+    let sideBarTracker: VisitsSideBarTracker
 
     var body: some View {
         ZStack {
             timelineView
                 .edgesIgnoringSafeArea(.all)
+
             fromTodayPopupView
+
             VStack {
                 Spacer()
                 scrollToTodayButton
-                    .padding()
+                    .padding(.bottom, 75)
             }
         }
     }
@@ -85,16 +80,6 @@ private extension Dictionary where Key == DateComponents {
         Array(stride(from: keys.max()!,
                      through: keys.min()!,
                      by: -1)) // most recent to oldest
-    }
-
-}
-
-struct VisitsPreviewList_Previews: PreviewProvider {
-
-    static var previews: some View {
-        DarkThemePreview {
-            VisitsPreviewView(visits: Visit.mocks(start: Date(), end: .daysFromToday(365)))
-        }
     }
 
 }

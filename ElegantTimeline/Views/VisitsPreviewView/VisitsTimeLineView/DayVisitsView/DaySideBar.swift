@@ -22,13 +22,14 @@ private extension DaySideBar {
 
     var abbreviatedDayOfWeek: some View {
         Text(date.abbreviatedDayOfWeek.uppercased())
-            .font(.caption)
-            .foregroundColor(color ?? .gray)
+            .font(.system(size: 9, weight: .regular))
+            .foregroundColor(color ?? .white)
+            .opacity(0.8)
     }
 
     var dayOfMonth: some View {
         Text(date.dayOfMonth)
-            .fontWeight(.bold)
+            .font(.system(size: 17, weight: .semibold))
             .foregroundColor(color ?? .white)
     }
     
