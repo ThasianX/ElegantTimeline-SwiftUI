@@ -20,12 +20,13 @@ struct DayVisitsView: View {
             DaySideBar(date: date,
                        color: isDateInToday ? appTheme.primary : nil)
 
-            if isDateInToday {
-                todayIndicator
+            ZStack(alignment: .leading) {
+                DayPreviewBlock(visits: visits,
+                                isFilled: isFilled)
+                if isDateInToday {
+                    todayIndicator
+                }
             }
-
-            DayPreviewBlock(visits: visits,
-                            isFilled: isFilled)
         }
         .frame(height: VisitPreviewConstants.blockHeight)
     }
@@ -40,7 +41,7 @@ struct DayVisitsView: View {
 struct DayVisitsView_Previews: PreviewProvider {
     static var previews: some View {
         DarkThemePreview {
-            DayVisitsView(date: Date(), visits: Visit.mocks(start: Date(), end: .daysFromToday(1)), isFilled: true)
+            DayVisitsView(date: Date(), visits: Visit.mocks(start: .daysFromToday(-1)), isFilled: true)
         }
     }
 }

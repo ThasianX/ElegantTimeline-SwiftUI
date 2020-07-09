@@ -9,7 +9,15 @@ private enum ScrollDirection {
 
 }
 
-class VisitsSideBarTracker: NSObject, ObservableObject {
+protocol VisitsListDelegate {
+
+    func willDisplay(dayComponent: DateComponents)
+
+}
+
+fileprivate let hiddenOffset: CGFloat = screen.height + 100
+
+class VisitsSideBarTracker: NSObject, ObservableObject, UITableViewDirectAccess {
 
     @Published var currentDayComponent: DateComponents = .init()
     @Published var isDragging: Bool = false
@@ -17,18 +25,17 @@ class VisitsSideBarTracker: NSObject, ObservableObject {
     @Published var monthYear1Component: DateComponents = .init()
     @Published var monthYear1Offset: CGFloat = .zero
     @Published var monthYear2Component: DateComponents = .init()
-    @Published var monthYear2Offset: CGFloat = .zero
+    @Published var monthYear2Offset: CGFloat = hiddenOffset
 
     private let indexForDayComponents: [DateComponents: Int]
 
-    var listHeight: CGFloat!
-    private let descendingDayComponents: [DateComponents]
-    private let maxYForDayComponents: [DateComponents: CGFloat]
+    let listHeight: CGFloat = screen.height
+    let descendingDayComponents: [DateComponents]
+    private lazy var maxYForMonthYearComponents: [DateComponents: CGFloat] = {
+        descendingDayComponents.pairWithMaxY
+    }()
 
-    private var tableView: UITableView!
-    private var oldDelegate: UITableViewDelegate?
-
-    private var previousMaxY: CGFloat = -VisitPreviewConstants.startShiftRangeHeight-1
+    var tableView: UITableView!
 
     private var isFastDraggingTimer: Timer? = nil
     private var isFastDragging: Bool = false
@@ -37,10 +44,17 @@ class VisitsSideBarTracker: NSObject, ObservableObject {
     @Published var shouldShowFooter: Bool = false
     @Published var headerFooterOffset: CGFloat = .zero
 
+    var delegate: VisitsListDelegate?
+
+    private var shouldNotifyDelegate: Bool = true
+
+    lazy var startingOffset: CGFloat = {
+        -(VisitPreviewConstants.listTopPadding)
+    }()
+
     init(descendingDayComponents: [DateComponents]) {
         self.descendingDayComponents = descendingDayComponents
         indexForDayComponents = descendingDayComponents.pairKeysWithIndex
-        maxYForDayComponents = descendingDayComponents.pairWithMaxY
     }
 
 }
@@ -52,26 +66,33 @@ extension VisitsSideBarTracker {
 
     func attach(to tableView: UITableView) {
         if self.tableView == nil {
-            self.tableView = tableView.withNearlyFullPageFooter
-
-            oldDelegate = tableView.delegate
             tableView.delegate = self
+            self.tableView = tableView
+
+            setSideBarOffsetAndCorrespondingMonthYearComponent(scrollOffset: 0)
         }
     }
 
-    func setInitialScrollOffset(listHeight: CGFloat) {
-        self.listHeight = listHeight
-        setSideBarOffsetAndCorrespondingMonthYearComponent(scrollOffset: 0)
-    }
-
     func scroll(to date: Date) {
-        let startOfTodayForDate = Calendar.current.startOfDay(for: date)
+        shouldNotifyDelegate = false
+        let startOfTodayForDate = appCalendar.startOfDay(for: date)
         let startOfTodayForFirstDay = descendingDayComponents.first!.date
 
         // because the list is descending, we reverse the from and to date
         let index = Calendar.current.dateComponents([.day], from: startOfTodayForDate, to: startOfTodayForFirstDay).day!
-        self.tableView.scrollToRow(at: IndexPath(row: index, section: 0), at: .top, animated: true)
+        let boundedIndex = max(0, index)
+
+        scrollTableView(to: cellOffset(for: boundedIndex), animated: false)
     }
+
+    private func cellOffset(for index: Int) -> CGFloat {
+        startingOffset + (CGFloat(index) * VisitPreviewConstants.blockHeight)
+    }
+
+}
+
+// MARK: Fast Scrolling
+extension VisitsSideBarTracker {
 
     func fastScroll(translation: CGFloat) {
         isFastDragging = true
@@ -96,28 +117,39 @@ extension VisitsSideBarTracker {
     }
 
     private func animateTableViewContentOffset(by offset: CGFloat, duration: Double) {
-        var newOffset = tableView.contentOffset.y + (offset / tableViewContentOffsetDamping)
-        let upperEnd = (CGFloat(descendingDayComponents.count - 6)*VisitPreviewConstants.blockHeight) // only for bigger phones
+        let newOffset = tableView.contentOffset.y + (offset / tableViewContentOffsetDamping)
 
-        if newOffset < -VisitPreviewConstants.listTopPadding {
-            newOffset = .zero
-        } else if newOffset > upperEnd {
-            newOffset = upperEnd
-        }
-
-        animateTableView(to: newOffset, duration: duration)
+        scrollTableView(to: newOffset, duration: duration)
     }
 
-    private func animateTableView(to offset: CGFloat, duration: Double) {
+    // TODO: duplicate logic as one of the functions below. need to refactor this entire class in the future
+    private func scrollTableView(to offset: CGFloat, duration: Double? = nil, animated: Bool = true) {
+        let gapBetweenOffsetAndListEnd = listContentHeight - offset
+        let differenceBetweenListHeightAndGapToEnd = listHeight - gapBetweenOffsetAndListEnd
+
+        var newOffset: CGFloat = offset
+
+        if newOffset < startingOffset {
+            newOffset = startingOffset
+        } else if differenceBetweenListHeightAndGapToEnd > startingOffset {
+            newOffset = (listContentHeight - listHeight) - adjustedVerticalContentInset
+        }
+
         DispatchQueue.main.async {
-            UIView.animate(
-                withDuration: duration,
-                delay: 0,
-                options: .curveEaseInOut,
-                animations: {
-                    self.tableView.contentOffset.y = offset
-                },
-                completion: nil)
+            if animated {
+                UIView.animate(
+                    withDuration: duration!,
+                    delay: 0,
+                    options: .curveEaseInOut,
+                    animations: {
+                        self.tableView.contentOffset.y = newOffset
+                    },
+                    completion: nil)
+            } else {
+                UIView.performWithoutAnimation {
+                    self.tableView.contentOffset.y = newOffset
+                }
+            }
         }
     }
 
@@ -138,7 +170,7 @@ extension VisitsSideBarTracker: MonthYearSideBarProvider {}
 extension VisitsSideBarTracker: ScrollToTodayProvider {
 
     func scrollToToday() {
-        tableView.setContentOffset(.zero, animated: true)
+        tableView.setContentOffset(.init(x: 0, y: cellOffset(for: 0)), animated: true)
     }
 
 }
@@ -146,17 +178,6 @@ extension VisitsSideBarTracker: ScrollToTodayProvider {
 fileprivate let minDragDistanceToShowHeaderOrFooter: CGFloat = 80
 
 extension VisitsSideBarTracker: UITableViewDelegate {
-
-    override func responds(to aSelector: Selector!) -> Bool {
-        super.responds(to: aSelector) || oldDelegate?.responds(to: aSelector) ?? false
-    }
-
-    override func forwardingTarget(for aSelector: Selector!) -> Any? {
-        if aSelector != #selector(UITableViewDelegate.scrollViewDidScroll) {
-            return oldDelegate
-        }
-        return nil
-    }
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         if abs(weeksFromCurrentMonthToToday) > 3 {
@@ -171,13 +192,9 @@ extension VisitsSideBarTracker: UITableViewDelegate {
     // Kudos: https://stackoverflow.com/a/20943198/6074750
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let targetOffset = targetContentOffset.pointee.y
-        var index = floor(targetOffset / VisitPreviewConstants.blockHeight)
+        let index = round(targetOffset / VisitPreviewConstants.blockHeight)
 
-        if (targetOffset - (floor(targetOffset / VisitPreviewConstants.blockHeight) * VisitPreviewConstants.blockHeight)) > VisitPreviewConstants.blockHeight {
-            index += 1
-        }
-
-        targetContentOffset.pointee.y = index * VisitPreviewConstants.blockHeight
+        targetContentOffset.pointee.y = cellOffset(for: Int(index))
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -188,8 +205,14 @@ extension VisitsSideBarTracker: UITableViewDelegate {
         }
     }
 
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        shouldNotifyDelegate = true
+    }
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let scrollOffset = scrollView.contentOffset.y
+        print(scrollView.contentOffset.y)
+        let scrollOffset = scrollView.contentOffset.y + VisitPreviewConstants.listTopPadding
+        print(scrollOffset)
         determineHeaderAndFooterVisibilityAndOffset(scrollOffset: scrollOffset)
         setSideBarOffsetAndCorrespondingMonthYearComponent(scrollOffset: scrollOffset)
     }
@@ -200,41 +223,32 @@ extension VisitsSideBarTracker: UITableViewDelegate {
     }
 
     private func determineHeaderVisibilityAndOffset(for offset: CGFloat) {
-        guard tableView.isTracking else {
-            withAnimation(.easeOut) {
-                shouldShowHeader = false
-                headerFooterOffset = .zero
-            }
-            return
-        }
-
-        withAnimation(.easeOut) {
+        withAnimation(.easeInOut(duration: 0.05)) {
             shouldShowHeader = offset < -minDragDistanceToShowHeaderOrFooter
-        }
-
-        if offset < 0 {
-            headerFooterOffset = -offset / 1.5
+            if shouldShowHeader {
+                headerFooterOffset = -offset / 1.3
+            } else {
+                if !shouldShowFooter {
+                    headerFooterOffset = 0
+                }
+            }
         }
     }
 
     private func determineFooterVisibilityAndOffset(for offset: CGFloat) {
-        guard tableView.isTracking else {
-            withAnimation(.easeOut) {
-                shouldShowFooter = false
-                headerFooterOffset = .zero
+        let maxVisibleHeight = (listContentHeight < listHeight) ? listContentHeight : listHeight
+        let gapBetweenOffsetAndListEnd = listContentHeight - offset
+        let differenceBetweenVisibleHeightAndGapToEnd = maxVisibleHeight - gapBetweenOffsetAndListEnd
+
+        withAnimation(.easeInOut(duration: 0.05)) {
+            shouldShowFooter = differenceBetweenVisibleHeightAndGapToEnd > minDragDistanceToShowHeaderOrFooter
+            if shouldShowFooter {
+                headerFooterOffset = -differenceBetweenVisibleHeightAndGapToEnd / 1.3
+            } else {
+                if !shouldShowHeader {
+                    headerFooterOffset = 0
+                }
             }
-            return
-        }
-
-        let gapBetweenOffsetAndListEnd = tableView.contentSize.height - offset
-        let differenceBetweenListHeightAndGapToEnd = listHeight - gapBetweenOffsetAndListEnd
-
-        withAnimation(.easeOut) {
-            shouldShowFooter = differenceBetweenListHeightAndGapToEnd > minDragDistanceToShowHeaderOrFooter
-        }
-
-        if differenceBetweenListHeightAndGapToEnd > 0 {
-            headerFooterOffset = -differenceBetweenListHeightAndGapToEnd / 2
         }
     }
 
@@ -251,115 +265,172 @@ extension VisitsSideBarTracker: UITableViewDelegate {
         let scrolledDayComponent = descendingDayComponents[currentIndex]
         let scrolledMonthYearComponent = scrolledDayComponent.monthAndYear
 
-        let maxY = maxYForDayComponents[scrolledMonthYearComponent]!
-        let gapBetweenMaxYandCurrentScrollOffset = maxY - scrollOffset
-
-        if listHeight > gapBetweenMaxYandCurrentScrollOffset {
-            let isCurrentMonthYearTheFirstMonthYearOfList = scrolledMonthYearComponent.isInSameMonthAndYear(as: descendingDayComponents.first!)
-            let isCurrentMonthYearTheLastMonthYearOfList = scrolledMonthYearComponent.subtractingMonth.isInSameMonthAndYear(as: descendingDayComponents.last!)
-
-            if isCurrentMonthYearTheFirstMonthYearOfList || isCurrentMonthYearTheLastMonthYearOfList {
-                configureSideBarForEdges(
-                    isFirst: isCurrentMonthYearTheFirstMonthYearOfList,
-                    monthYearComponent: scrolledMonthYearComponent,
-                    scrollOffset: scrollOffset,
-                    maxY: maxY)
-            } else {
-                configureSideBarForTransition(
-                    monthYearComponent: scrolledMonthYearComponent,
-                    gapBetweenMaxYandCurrentScrollOffset: gapBetweenMaxYandCurrentScrollOffset)
+        defer {
+            currentDayComponent = scrolledDayComponent
+            if shouldNotifyDelegate {
+                delegate?.willDisplay(dayComponent: currentDayComponent)
             }
-        } else {
-            configureSideBarForScrolling(
-                monthYearComponent: scrolledMonthYearComponent,
-                gapBetweenMaxYandCurrentScrollOffset: gapBetweenMaxYandCurrentScrollOffset)
         }
 
-        currentDayComponent = scrolledDayComponent
+        let maxY = maxYForMonthYearComponents[scrolledMonthYearComponent]!
+
+        let isCurrentMonthYearTheFirstMonthYearOfList = scrolledMonthYearComponent.isInSameMonthAndYear(as: descendingDayComponents.first!)
+        let isCurrentMonthYearTheLastMonthYearOfList = scrolledMonthYearComponent.isInSameMonthAndYear(as: descendingDayComponents.last!)
+        let isNextMonthYearTheLastMonthYearOfList = scrolledMonthYearComponent.subtractingMonth.isInSameMonthAndYear(as: descendingDayComponents.last!)
+
+        if isCurrentMonthYearTheFirstMonthYearOfList {
+            configureSideBarForFirstMonth(
+                monthYearComponent: scrolledMonthYearComponent,
+                scrollOffset: scrollOffset,
+                maxY: maxY)
+            if isCurrentMonthYearTheLastMonthYearOfList {
+                monthYear2Offset = hiddenOffset
+                return
+            }
+        } else if isCurrentMonthYearTheLastMonthYearOfList {
+            configureSideBarForLastMonth(
+                isTrailingMonth: false,
+                monthYearComponent: scrolledMonthYearComponent,
+                scrollOffset: scrollOffset,
+                maxY: maxY)
+            return
+        } else {
+            configureSideBarForLeadingMonth(
+                monthYearComponent: scrolledMonthYearComponent,
+                scrollOffset: scrollOffset,
+                maxY: maxY)
+        }
+
+        if isNextMonthYearTheLastMonthYearOfList {
+            configureSideBarForLastMonth(
+                isTrailingMonth: true,
+                monthYearComponent: scrolledMonthYearComponent,
+                scrollOffset: scrollOffset,
+                maxY: maxY)
+        } else {
+            configureSideBarForTrailingMonth(
+                monthYearComponent: scrolledMonthYearComponent,
+                scrollOffset: scrollOffset,
+                maxY: maxY)
+        }
     }
 
-    private func configureSideBarForEdges(
-        isFirst: Bool,
+     // DONE: DO NOT TOUCH
+    private func configureSideBarForFirstMonth(
+        monthYearComponent: DateComponents,
+        scrollOffset: CGFloat,
+        maxY: CGFloat) {
+        let maxVisibleHeight = (maxY < listHeight) ? maxY : listHeight
+        let centerOffset = maxVisibleHeight / 2
+
+        let gapBetweenMaxYandCurrentScrollOffset = maxY - scrollOffset
+
+        let offset: CGFloat
+        if scrollOffset < 0 {
+            offset = centerOffset - scrollOffset
+        } else if maxVisibleHeight > gapBetweenMaxYandCurrentScrollOffset {
+            let scrollDifference = maxVisibleHeight - gapBetweenMaxYandCurrentScrollOffset
+            offset = centerOffset - scrollDifference
+        } else {
+            offset = centerOffset
+        }
+
+        monthYear1Component = monthYearComponent
+        monthYear1Offset = offset
+    }
+
+    // There must exist a previous month before this is called
+    private func configureSideBarForLastMonth(
+        isTrailingMonth: Bool,
+        monthYearComponent: DateComponents,
+        scrollOffset: CGFloat,
+        maxY: CGFloat) {
+        let contentHeight: CGFloat
+        if isTrailingMonth {
+            contentHeight = listContentHeight - maxY
+        } else {
+            let previousMonthYearComponent = monthYearComponent.addingMonth
+            let previousMaxY = maxYForMonthYearComponents[previousMonthYearComponent]!
+            contentHeight = listContentHeight - previousMaxY
+        }
+
+        let maxVisibleHeight = (contentHeight < listHeight) ? contentHeight : listHeight
+        let centerOffset = maxVisibleHeight / 2
+
+        let gapBetweenMaxYandCurrentScrollOffset = maxY - scrollOffset
+
+        let offset: CGFloat
+        if isTrailingMonth {
+            offset = centerOffset + gapBetweenMaxYandCurrentScrollOffset
+        } else if !isTrailingMonth && maxVisibleHeight > gapBetweenMaxYandCurrentScrollOffset {
+            let scrollDifference = maxVisibleHeight - gapBetweenMaxYandCurrentScrollOffset
+            offset = centerOffset - scrollDifference
+        } else {
+            offset = centerOffset
+        }
+        
+        if isMonthYear1Active {
+            monthYear2Component = isTrailingMonth ? monthYearComponent.subtractingMonth : monthYearComponent
+            monthYear2Offset = offset
+
+            if !isTrailingMonth {
+                monthYear1Offset = hiddenOffset
+            }
+        } else {
+            monthYear1Component = isTrailingMonth ? monthYearComponent.subtractingMonth : monthYearComponent
+            monthYear1Offset = offset
+
+            if !isTrailingMonth {
+                monthYear2Offset = hiddenOffset
+            }
+        }
+    }
+
+    // TODO: scroll to month after the tableview stops scrolling. prob need to add like a variable to the page view
+    private func configureSideBarForLeadingMonth(
         monthYearComponent: DateComponents,
         scrollOffset: CGFloat,
         maxY: CGFloat) {
         let gapBetweenMaxYandCurrentScrollOffset = maxY - scrollOffset
 
-        if isFirst {
-            let scrollDifference = maxY - gapBetweenMaxYandCurrentScrollOffset
-            let centerOfFirstMonth = maxY / 2
-            let leadingOffset = centerOfFirstMonth - scrollDifference
-
-            let trailingOffset = gapBetweenMaxYandCurrentScrollOffset + listCenter
-
-            monthYear1Component = monthYearComponent
-            monthYear1Offset = leadingOffset
-
-            monthYear2Component = monthYearComponent.subtractingMonth
-            monthYear2Offset = trailingOffset
-        } else {
+        let offset: CGFloat
+        if listHeight > gapBetweenMaxYandCurrentScrollOffset {
             let scrollDifference = listHeight - gapBetweenMaxYandCurrentScrollOffset
-            let leadingOffset = listCenter - scrollDifference
-
-            let gapBetweenEndOfListAndMaxY = tableView.contentSize.height - maxY
-            let trailingOffset = gapBetweenMaxYandCurrentScrollOffset + gapBetweenEndOfListAndMaxY/2
-
-            if isMonthYear1Active {
-                monthYear1Component = monthYearComponent
-                monthYear1Offset = leadingOffset
-
-                monthYear2Component = monthYearComponent.subtractingMonth
-                monthYear2Offset = trailingOffset
-            } else {
-                monthYear2Component = monthYearComponent
-                monthYear2Offset = leadingOffset
-
-                monthYear1Component = monthYearComponent.subtractingMonth
-                monthYear1Offset = trailingOffset
-            }
+            offset = listCenter - scrollDifference
+        } else {
+            offset = listCenter
         }
-    }
-
-    private func configureSideBarForTransition(
-        monthYearComponent: DateComponents,
-        gapBetweenMaxYandCurrentScrollOffset: CGFloat) {
-        let scrollDifference = listHeight - gapBetweenMaxYandCurrentScrollOffset
 
         if isMonthYear1Active {
             monthYear1Component = monthYearComponent
-            monthYear1Offset = listCenter - scrollDifference
-
-            monthYear2Component = monthYearComponent.subtractingMonth
-            monthYear2Offset = gapBetweenMaxYandCurrentScrollOffset + listCenter
+            monthYear1Offset = offset
         } else {
             monthYear2Component = monthYearComponent
-            monthYear2Offset = listCenter - scrollDifference
-
-            monthYear1Component = monthYearComponent.subtractingMonth
-            monthYear1Offset = gapBetweenMaxYandCurrentScrollOffset + listCenter
+            monthYear2Offset = offset
         }
     }
 
-    private func configureSideBarForScrolling(
+    private func configureSideBarForTrailingMonth(
         monthYearComponent: DateComponents,
-        gapBetweenMaxYandCurrentScrollOffset: CGFloat) {
+        scrollOffset: CGFloat,
+        maxY: CGFloat) {
+        let gapBetweenMaxYandCurrentScrollOffset = maxY - scrollOffset
+
         if isMonthYear1Active {
-            monthYear1Component = monthYearComponent
-            monthYear1Offset = listCenter
-
             monthYear2Component = monthYearComponent.subtractingMonth
-            monthYear2Offset = gapBetweenMaxYandCurrentScrollOffset + listCenter
+            monthYear2Offset = listCenter + gapBetweenMaxYandCurrentScrollOffset
         } else {
-            monthYear2Component = monthYearComponent
-            monthYear2Offset = listCenter
-
             monthYear1Component = monthYearComponent.subtractingMonth
-            monthYear1Offset = gapBetweenMaxYandCurrentScrollOffset + listCenter
+            monthYear1Offset = listCenter + gapBetweenMaxYandCurrentScrollOffset
         }
     }
 
     private var listCenter: CGFloat {
         listHeight / 2
+    }
+
+    private var listContentHeight: CGFloat {
+        tableView.contentSize.height
     }
 
 }
@@ -378,30 +449,6 @@ private extension Array where Element == DateComponents {
 
 }
 
-private extension UITableView {
-
-    var withNearlyFullPageFooter: UITableView {
-        showsVerticalScrollIndicator = false
-        allowsSelection = false
-        backgroundColor = .clear
-        separatorStyle = .none
-        scrollsToTop = false
-
-        contentInset = UIEdgeInsets(top: -adjustedContentInset.top,
-                                    left: -adjustedContentInset.left,
-                                    bottom: -adjustedContentInset.bottom,
-                                    right: -adjustedContentInset.right)
-
-
-        tableHeaderView = UIView(frame: CGRect(x: 0, y: 0,
-                                               width: screen.width,
-                                               height: VisitPreviewConstants.listTopPadding))
-
-        return self
-    }
-
-}
-
 private extension Array where Element == DateComponents {
 
     var pairKeysWithIndex: [Element: Int] {
@@ -416,11 +463,11 @@ private extension Array where Element == DateComponents {
 extension DateComponents {
 
     var addingMonth: DateComponents {
-        Calendar.current.date(byAdding: .month, value: 1, to: date)?.dateComponents ?? self
+        Calendar.current.date(byAdding: .month, value: 1, to: date)?.monthYearComponents ?? self
     }
 
     var subtractingMonth: DateComponents {
-        Calendar.current.date(byAdding: .month, value: -1, to: date)?.dateComponents ?? self
+        Calendar.current.date(byAdding: .month, value: -1, to: date)?.monthYearComponents ?? self
     }
 
     func isInSameMonthAndYear(as components: DateComponents) -> Bool {

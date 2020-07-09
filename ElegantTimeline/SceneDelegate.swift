@@ -11,10 +11,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = UIHostingController(
-                rootView: VisitsPreviewView(
-                    visits: Visit.mocks(
-                        start: .daysFromToday(-185),
-                        end: Date()))
+                rootView: HomeView(
+                    manager: HomeManager(
+                        visits: Visit.mocks(
+                            start: .daysFromToday(-5)))
+                )
             )
             self.window = window
             window.overrideUserInterfaceStyle = .dark

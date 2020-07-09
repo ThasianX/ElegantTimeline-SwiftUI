@@ -7,6 +7,8 @@ struct Visit {
 
     let locationName: String
     let locationAddress: String
+    let locationCity: String
+    let locationZip: String
     let tagColor: Color
     let arrivalDate: Date
     let departureDate: Date
@@ -29,21 +31,23 @@ extension Visit {
 
     static func mock(withDate date: Date) -> Visit {
         Visit(locationName: "Apple Inc",
-              locationAddress: "54 W Colorado Blvd, Pasadena, CA 91105",
+              locationAddress: "54 W Colorado Blvd",
+              locationCity: "Pasadena, CA",
+              locationZip: "91105",
               tagColor: .randomColor,
               arrivalDate: date,
               departureDate: date.addingTimeInterval(60*60))
     }
 
-    static func mocks(start: Date, end: Date) -> [Visit] {
+    static func mocks(start: Date) -> [Visit] {
         Calendar.current.generateVisits(
             start: start,
-            end: end)
+            end: Date())
     }
 
 }
 
-fileprivate let visitCountRange = 4...7
+fileprivate let visitCountRange = 0...7
 
 private extension Calendar {
 
@@ -55,14 +59,14 @@ private extension Calendar {
             matching: .everyDay,
             matchingPolicy: .nextTime) { date, _, stop in
             if let date = date {
-                if date < end {
-                    for _ in 0..<Int.random(in: visitCountRange) {
-                        visits.append(.mock(withDate: date))
-                    }
-                } else if date == end {
+                if Calendar.current.isDateInToday(date) {
                     // This is just to guarantee that the today visit block does have visits
                     visits.append(.mock(withDate: date))
                     visits.append(.mock(withDate: date))
+                } else if date < end {
+                    for _ in 0..<Int.random(in: visitCountRange) {
+                        visits.append(.mock(withDate: date))
+                    }
                 } else {
                     stop = true
                 }
@@ -74,6 +78,7 @@ private extension Calendar {
 
 }
 
+// TODO: better color assortment. use color picker on timepage's colors
 fileprivate let colorAssortment: [Color] = [.red, .green, .blue, .gray, .orange, .yellow]
 
 private extension Color {

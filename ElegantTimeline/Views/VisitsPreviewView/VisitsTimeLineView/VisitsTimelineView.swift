@@ -8,18 +8,14 @@ struct VisitsTimelineView: View {
     let visitsProvider: VisitsProvider
 
     var body: some View {
-        GeometryReader { geometry in
-            HStack(alignment: .top, spacing: 0) {
-                self.monthYearSideBarView
-                ZStack {
-                    self.quoteBackgroundView
-                    self.visitsPreviewList
-                }
-            }
-            .onAppear {
-                self.configureSideBarTracker(withListHeight: geometry.size.height)
+        HStack(alignment: .top, spacing: 0) {
+            self.monthYearSideBarView
+            ZStack {
+                self.quoteBackgroundView
+                self.visitsPreviewList
             }
         }
+        .contentShape(Rectangle())
         .gesture(timelineScrollGesture)
     }
 
@@ -36,26 +32,9 @@ private extension VisitsTimelineView {
     }
 
     var visitsPreviewList: some View {
-        List {
-            // Has to be in foreach for list row insets to work
-            ForEach(visitsProvider.descendingDayComponents.indices, id: \.self) { i in
-                self.dayVisitsView(
-                    dayComponent: self.visitsProvider.descendingDayComponents[i],
-                    isFilled: (i % 2) == 0)
-            }
-            .listRowInsets(EdgeInsets())
-        }
-        .introspectTableView(customize: sideBarTracker.attach)
-    }
-
-    func dayVisitsView(dayComponent: DateComponents, isFilled: Bool) -> some View {
-        DayVisitsView(date: dayComponent.date,
-                      visits: visitsProvider.visitsForDayComponents[dayComponent] ?? [],
-                      isFilled: isFilled)
-    }
-
-    func configureSideBarTracker(withListHeight listHeight: CGFloat) {
-        sideBarTracker.setInitialScrollOffset(listHeight: listHeight)
+        VisitsPreviewList(visitsProvider: visitsProvider,
+                          sideBarTracker: sideBarTracker)
+            .frame(height: screen.height)
     }
 
 }
@@ -65,7 +44,12 @@ private extension VisitsTimelineView {
     var timelineScrollGesture: some Gesture {
         DragGesture()
             .onChanged { value in
-                if value.startLocation.x < 50 {
+                guard abs(value.translation.width) < 20 else {
+                    self.sideBarTracker.fastDragDidEnd(translation: -value.translation.height)
+                    return
+                }
+
+                if value.startLocation.x < 50 && value.startLocation.y < screen.height-100 {
                     self.sideBarTracker.fastScroll(translation: -value.translation.height)
                 }
             }
