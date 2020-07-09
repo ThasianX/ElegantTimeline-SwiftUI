@@ -14,7 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 rootView: HomeView(
                     manager: HomeManager(
                         visits: Visit.mocks(
-                            start: .daysFromToday(-5)))
+                            start: .daysFromToday(-365)))
                 )
             )
             self.window = window

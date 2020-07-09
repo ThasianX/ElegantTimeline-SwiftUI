@@ -78,8 +78,7 @@ private extension Calendar {
 
 }
 
-// TODO: better color assortment. use color picker on timepage's colors
-fileprivate let colorAssortment: [Color] = [.red, .green, .blue, .gray, .orange, .yellow]
+fileprivate let colorAssortment: [Color] = [.turquoise, .forestGreen, .darkPink, .darkRed, .lightBlue, .salmon, .military]
 
 private extension Color {
 
