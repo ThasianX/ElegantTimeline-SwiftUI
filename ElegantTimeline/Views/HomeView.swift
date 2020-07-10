@@ -72,12 +72,13 @@ extension PagesStateDirectAccess {
 
 struct HomeView: View, PagesStateDirectAccess {
 
-    let manager: HomeManager
+    @ObservedObject var manager: HomeManager
 
     @State private var isTurningPage: Bool = false
-    @ObservedObject var pagesState = PagesState(startingPage: 2,
-                                                pageCount: 4,
-                                                deltaCutoff: 0.8)
+
+    var pagesState: PagesState {
+        manager.pagesState
+    }
 
     private var pageOffset: CGFloat {
         var offset = -CGFloat(activePage) * pageWidth
@@ -97,23 +98,30 @@ struct HomeView: View, PagesStateDirectAccess {
         return translation
     }
 
+    private var gesturesToMask: GestureMask {
+        if manager.canDrag {
+            return isTurningPage ? .gesture : .all
+        }
+        return .subviews
+    }
+
     var body: some View {
         horizontalPagingStack
             .frame(width: screen.width, alignment: .leading)
             .offset(x: pageOffset)
             .offset(x: boundedTranslation)
-            .simultaneousGesture(pagingGesture, including: isTurningPage ? .gesture : .all)
+            .simultaneousGesture(pagingGesture, including: gesturesToMask)
     }
 
 }
 
 private extension HomeView {
 
+    // TODO: Fix paging gesture. Sometimes, it stops when turning a page bc of taps or something
     var horizontalPagingStack: some View {
         HStack(spacing: 0) {
             calendarView
                 .frame(width: screen.width*2, alignment: .trailing)
-            // TODO: Make some kind of variable that allows the page view to know whether or not to allow paging. When the preview list is scrolling, paging shouldn't be allowed. After the scrolling ends, then scroll to the expected month and enable paging
             visitsPreviewView
                 .frame(width: screen.width)
             menuView

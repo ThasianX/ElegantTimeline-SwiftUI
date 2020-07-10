@@ -4,6 +4,7 @@ import SwiftUI
 
 fileprivate let menuOptions = ["What's New", "Search", "RSVP", "Smart Alerts", "Siri Shortcuts", "Preferences", "Themes", "User Guides", "Help & Support", "What's New", "About", "My Account"]
 
+// TODO: Add rotation
 struct MenuView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {

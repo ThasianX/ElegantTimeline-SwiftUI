@@ -17,6 +17,7 @@ struct VisitsProvider {
 
 }
 
+// TODO: Add fade animation
 struct VisitsPreviewView: View {
 
     @Environment(\.appTheme) private var appTheme: AppTheme
