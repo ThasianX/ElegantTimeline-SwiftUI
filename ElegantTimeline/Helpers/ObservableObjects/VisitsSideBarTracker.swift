@@ -293,7 +293,9 @@ extension VisitsSideBarTracker: UITableViewDelegate {
         let scrolledMonthYearComponent = scrolledDayComponent.monthAndYear
 
         defer {
-            currentDayComponent = scrolledDayComponent
+            withAnimation(.spring(response: 0.55, dampingFraction: 0.4)) {
+                currentDayComponent = scrolledDayComponent
+            }
         }
 
         let maxY = maxYForMonthYearComponents[scrolledMonthYearComponent]!
