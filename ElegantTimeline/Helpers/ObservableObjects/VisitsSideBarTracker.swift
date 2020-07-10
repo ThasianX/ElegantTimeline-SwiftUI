@@ -14,12 +14,16 @@ protocol VisitsListDelegate {
     func listDidBeginScrolling()
     func listDidEndScrolling(dayComponent: DateComponents)
 
+    func listDidScrollToToday()
+
 }
 
 extension VisitsListDelegate {
 
     func listDidBeginScrolling() { }
     func listDidEndScrolling(dayComponent: DateComponents) { }
+
+    func listDidScrollToToday() { }
 
 }
 
@@ -229,6 +233,12 @@ extension VisitsSideBarTracker: UITableViewDelegate {
     }
 
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        // Not ideal but since the only time this is called is when the list
+        // is scrolled back to today, this is fine
+        if scrollView.contentOffset.y == cellOffset(for: 0) {
+            delegate?.listDidScrollToToday()
+        }
+
         if notifyDelegate {
             delegate?.listDidEndScrolling(dayComponent: currentDayComponent)
         }

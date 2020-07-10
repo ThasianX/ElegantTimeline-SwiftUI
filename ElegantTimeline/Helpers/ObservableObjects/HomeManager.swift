@@ -80,4 +80,8 @@ extension HomeManager: VisitsListDelegate {
         canDrag = true
     }
 
+    func listDidScrollToToday() {
+        calendarManager.scrollToDay(Date(), animated: false)
+    }
+
 }
