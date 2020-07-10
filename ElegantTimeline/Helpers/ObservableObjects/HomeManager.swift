@@ -8,6 +8,11 @@ let appCalendar = Calendar.current
 
 class HomeManager: ObservableObject {
 
+    @Published var canDrag: Bool = true
+    @Published var pagesState = PagesState(startingPage: 2,
+                                           pageCount: 4,
+                                           deltaCutoff: 0.8)
+
     let calendarManager: ElegantCalendarManager
     let sideBarTracker: VisitsSideBarTracker
 
@@ -27,9 +32,15 @@ class HomeManager: ObservableObject {
 
         sideBarTracker.delegate = self
         calendarManager.delegate = self
+
+        pagesState.objectWillChange.sink { _ in
+            self.objectWillChange.send()
+        }.store(in: &anyCancellable)
     }
 
 }
+
+// TODO: add conformance to the calendar manager datasource
 
 extension HomeManager: ElegantCalendarDelegate {
 
@@ -47,9 +58,13 @@ extension HomeManager: ElegantCalendarDelegate {
 
 extension HomeManager: VisitsListDelegate {
 
-    // TODO: Need to fix this for calendar's scroll back to today. it seems like as it's scrolling back to today, it's like going through all the intermediate months
-    func willDisplay(dayComponent: DateComponents) {
+    func listDidBeginScrolling() {
+        canDrag = false
+    }
+
+    func listDidEndScrolling(dayComponent: DateComponents) {
         calendarManager.scrollToMonth(dayComponent.date, animated: false)
+        canDrag = true
     }
 
 }

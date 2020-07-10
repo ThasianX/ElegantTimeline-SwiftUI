@@ -4,7 +4,7 @@ import SwiftUI
 
 protocol FromTodayPopupProvider: ObservableObject {
 
-    var isDragging: Bool { get }
+    var showFromTodayPopup: Bool { get }
     var weeksFromCurrentMonthToToday: Int { get }
 
 }
@@ -15,18 +15,18 @@ struct FromTodayPopupView<Provider>: View where Provider: FromTodayPopupProvider
 
     var body: some View {
         fromTodayPopupView
-            .scaleEffect(provider.isDragging ? 1 : 0)
-            .opacity(provider.isDragging ? 1 : 0)
+            .scaleEffect(provider.showFromTodayPopup ? 1 : 0)
+            .opacity(provider.showFromTodayPopup ? 1 : 0)
     }
 
     private var fromTodayPopupView: some View {
         let weeksToToday = provider.weeksFromCurrentMonthToToday
 
         let unitsFromToday: String
-        if abs(weeksToToday) < 8 {
-            unitsFromToday = "\(abs(weeksToToday)) \(weeksToToday != 1 ? "WEEKS" : "WEEK")"
+        if weeksToToday < 8 {
+            unitsFromToday = "\(weeksToToday) \(weeksToToday != 1 ? "WEEKS" : "WEEK")"
         } else {
-            unitsFromToday = "\(abs(weeksToToday)/4) MONTHS"
+            unitsFromToday = "\(weeksToToday/4) MONTHS"
         }
 
         return VStack {

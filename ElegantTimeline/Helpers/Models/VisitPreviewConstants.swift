@@ -32,6 +32,6 @@ struct VisitPreviewConstants {
 
     static let blocksInShiftRange: CGFloat = Self.blocksInStartShiftRange + Self.blocksInEndShiftRange
 
-    static let listTopPadding: CGFloat = statusBarHeight - 12 // iphone 11
+    static let listTopPadding: CGFloat = statusBarHeight - 18 // iphone 11
 
 }
