@@ -34,10 +34,7 @@ struct HomeView: View, PagesStateDirectAccess {
     }
 
     private var gesturesToMask: GestureMask {
-        if manager.canDrag {
-            return isTurningPage ? .gesture : .all
-        }
-        return .subviews
+        manager.canDrag ? .all : .subviews
     }
 
     var body: some View {
@@ -45,6 +42,7 @@ struct HomeView: View, PagesStateDirectAccess {
             .frame(width: screen.width, alignment: .leading)
             .offset(x: pageOffset)
             .offset(x: boundedTranslation)
+            // TODO: Look at PageView SwiftUI on github for howto deal with bug where onended isnt called
             .simultaneousGesture(pagingGesture, including: gesturesToMask)
     }
 
