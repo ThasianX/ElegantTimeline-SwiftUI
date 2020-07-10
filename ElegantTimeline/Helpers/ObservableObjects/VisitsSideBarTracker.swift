@@ -54,6 +54,8 @@ class VisitsSideBarTracker: NSObject, ObservableObject, UITableViewDirectAccess 
 
     var delegate: VisitsListDelegate?
 
+    private var notifyDelegate: Bool = true
+
     lazy var startingOffset: CGFloat = {
         -VisitPreviewConstants.listTopPadding
     }()
@@ -84,6 +86,7 @@ extension VisitsSideBarTracker {
     }
 
     func scroll(to date: Date) {
+        notifyDelegate = false
         let startOfTodayForDate = appCalendar.startOfDay(for: date)
         let startOfTodayForFirstDay = descendingDayComponents.first!.date
 
@@ -91,8 +94,9 @@ extension VisitsSideBarTracker {
         let index = Calendar.current.dateComponents([.day], from: startOfTodayForDate, to: startOfTodayForFirstDay).day!
         let boundedIndex = max(0, index)
 
-        scrollTableView(to: cellOffset(for: boundedIndex), animated: false) {
+        scrollTableView(to: cellOffset(for: boundedIndex), animated: false) { [unowned self] in
             self.scrollViewDidEndDecelerating(self.tableView)
+            self.notifyDelegate = true
         }
     }
 
@@ -110,7 +114,7 @@ extension VisitsSideBarTracker {
         scrollViewWillBeginDragging(tableView)
 
         isFastDraggingTimer?.invalidate()
-        isFastDraggingTimer = .scheduledTimer(withTimeInterval: 0.01, repeats: true) { _ in
+        isFastDraggingTimer = .scheduledTimer(withTimeInterval: 0.01, repeats: true) { [unowned self] _ in
             self.animateTableViewContentOffset(by: translation, duration: 0.01)
         }
     }
@@ -123,7 +127,7 @@ extension VisitsSideBarTracker {
 
         isFastDragging = false
 
-        animateTableViewContentOffset(by: translation, duration: 0.1) {
+        animateTableViewContentOffset(by: translation, duration: 0.1) { [unowned self] in
             self.scrollViewDidEndDecelerating(self.tableView)
         }
     }
@@ -213,7 +217,10 @@ extension VisitsSideBarTracker: UITableViewDelegate {
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        delegate?.listDidEndScrolling(dayComponent: currentDayComponent)
+        if notifyDelegate {
+            delegate?.listDidEndScrolling(dayComponent: currentDayComponent)
+        }
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
             withAnimation(.easeInOut) {
                 self.showFromTodayPopup = false
@@ -222,11 +229,15 @@ extension VisitsSideBarTracker: UITableViewDelegate {
     }
 
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        delegate?.listDidEndScrolling(dayComponent: currentDayComponent)
+        if notifyDelegate {
+            delegate?.listDidEndScrolling(dayComponent: currentDayComponent)
+        }
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        delegate?.listDidBeginScrolling()
+        if notifyDelegate {
+            delegate?.listDidBeginScrolling()
+        }
         
         let scrollOffset = scrollView.contentOffset.y + VisitPreviewConstants.listTopPadding
         determineHeaderAndFooterVisibilityAndOffset(scrollOffset: scrollOffset)

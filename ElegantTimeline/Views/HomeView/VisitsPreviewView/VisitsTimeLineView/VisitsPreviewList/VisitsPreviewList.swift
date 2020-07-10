@@ -84,7 +84,7 @@ struct VisitsPreviewList: UIViewRepresentable {
                 dayComponent: visitsProvider.descendingDayComponents[index],
                 isFilled: (index % 2) == 0)
                 .environment(\.autoTimer, parent.autoTimer)
-                .id(index)
+                .id(index) // id is crucial as it resets state for a reused cell
                 .erased
 
             cell.configure(with: rootView)
@@ -115,6 +115,8 @@ private extension UITableView {
         tableView.separatorStyle = .none
         tableView.scrollsToTop = false
 
+        // Both are crucial towards making the scroll smoother and necessary for the tableview
+        // to scroll to a specific row properly
         tableView.rowHeight = VisitPreviewConstants.blockHeight
         tableView.estimatedRowHeight = VisitPreviewConstants.blockHeight
 

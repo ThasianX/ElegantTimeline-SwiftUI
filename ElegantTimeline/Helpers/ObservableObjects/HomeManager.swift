@@ -31,6 +31,8 @@ class HomeManager: ObservableObject {
                 themeColor: .blackPearl))
 
         sideBarTracker.delegate = self
+
+        calendarManager.datasource = self
         calendarManager.delegate = self
 
         pagesState.objectWillChange.sink { _ in
@@ -40,7 +42,18 @@ class HomeManager: ObservableObject {
 
 }
 
-// TODO: add conformance to the calendar manager datasource
+extension HomeManager: ElegantCalendarDataSource {
+
+    func calendar(backgroundColorOpacityForDate date: Date) -> Double {
+        Double((visitsProvider.visitsForDayComponents[date.dateComponents]?.count ?? 0) + 2) / 7.0
+    }
+
+    func calendar(viewForSelectedDate date: Date, dimensions size: CGSize) -> AnyView {
+        VisitsListView(visits: visitsProvider.visitsForDayComponents[date.dateComponents] ?? [],
+                              height: size.height).erased
+    }
+
+}
 
 extension HomeManager: ElegantCalendarDelegate {
 

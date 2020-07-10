@@ -5,6 +5,11 @@ import UIKit
 
 struct VisitPreviewConstants {
 
+    struct Calendar {
+        static let cellHeight: CGFloat = 30
+        static let cellVerticalPadding: CGFloat = 5
+    }
+
     static let numberOfBlocksOnScreen: Int = 6
     static let blockHeight: CGFloat = {
         let visibleListHeight = screen.height - Self.listTopPadding
