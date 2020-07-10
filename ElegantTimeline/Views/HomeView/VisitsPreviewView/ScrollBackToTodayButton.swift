@@ -30,7 +30,6 @@ struct ScrollBackToTodayButton<Provider>: View where Provider: ScrollToTodayProv
         scrollToTodayButton
             .scaleEffect(isCurrentDayWithinToday ? 0 : 1)
             .opacity(isCurrentDayWithinToday ? 0 : 1)
-            .animation(.spring(response: 0.55, dampingFraction: 0.4))
     }
 
     private var scrollToTodayButton: some View {
