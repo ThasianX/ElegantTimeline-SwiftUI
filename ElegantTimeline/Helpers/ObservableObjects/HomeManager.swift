@@ -9,9 +9,7 @@ let appCalendar = Calendar.current
 class HomeManager: ObservableObject {
 
     @Published var canDrag: Bool = true
-    @Published var pagesState = PagesState(startingPage: 2,
-                                           pageCount: 4,
-                                           deltaCutoff: 0.8)
+    @Published var scrollState: PageScrollState
 
     let calendarManager: ElegantCalendarManager
     let sideBarTracker: VisitsSideBarTracker
@@ -30,12 +28,14 @@ class HomeManager: ObservableObject {
                 endDate: visitsProvider.descendingDayComponents.first!.date,
                 themeColor: .blackPearl))
 
+        scrollState = PageScrollState(calendarManager: calendarManager)
+
         sideBarTracker.delegate = self
 
         calendarManager.datasource = self
         calendarManager.delegate = self
 
-        pagesState.objectWillChange.sink { _ in
+        scrollState.objectWillChange.sink { _ in
             self.objectWillChange.send()
         }.store(in: &anyCancellable)
     }
