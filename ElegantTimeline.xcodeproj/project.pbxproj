@@ -17,6 +17,7 @@
 		1E67992924AEB1C300C18735 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67992824AEB1C300C18735 /* MenuView.swift */; };
 		1E717C6E24B9970D0040877E /* VisitsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E717C6D24B9970D0040877E /* VisitsProvider.swift */; };
 		1E80E5BF24BD727B0030F5E0 /* Comparable+Clamped.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E80E5BE24BD727B0030F5E0 /* Comparable+Clamped.swift */; };
+		1E80E5C124BD770C0030F5E0 /* Image+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E80E5C024BD770C0030F5E0 /* Image+Custom.swift */; };
 		1E854E3124AECC6300E50973 /* Color+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E854E3024AECC6300E50973 /* Color+Custom.swift */; };
 		1E8A3DE4248557C200CBA65E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A3DE3248557C200CBA65E /* AppDelegate.swift */; };
 		1E8A3DE6248557C200CBA65E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A3DE5248557C200CBA65E /* SceneDelegate.swift */; };
@@ -66,6 +67,7 @@
 		1E67992824AEB1C300C18735 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		1E717C6D24B9970D0040877E /* VisitsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitsProvider.swift; sourceTree = "<group>"; };
 		1E80E5BE24BD727B0030F5E0 /* Comparable+Clamped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Clamped.swift"; sourceTree = "<group>"; };
+		1E80E5C024BD770C0030F5E0 /* Image+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Custom.swift"; sourceTree = "<group>"; };
 		1E854E3024AECC6300E50973 /* Color+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Custom.swift"; sourceTree = "<group>"; };
 		1E8A3DE0248557C200CBA65E /* ElegantTimeline.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ElegantTimeline.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E8A3DE3248557C200CBA65E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 				1E66EC3724AC19CD0070F16E /* EnvironmentKey+Timer.swift */,
 				1E8A3E0A24859F2200CBA65E /* View+Rotated.swift */,
 				1E5017FA2488B4C1002496DE /* View+CaptureSize.swift */,
+				1E80E5C024BD770C0030F5E0 /* Image+Custom.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -421,6 +424,7 @@
 				1E8A3E0B24859F2200CBA65E /* View+Rotated.swift in Sources */,
 				1E8E711E24AFC9FF006380B6 /* VisitsPreviewList.swift in Sources */,
 				1E995B0124A69C2D00F436BE /* Constants.swift in Sources */,
+				1E80E5C124BD770C0030F5E0 /* Image+Custom.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
