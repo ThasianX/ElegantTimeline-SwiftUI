@@ -303,7 +303,7 @@ extension VisitsSideBarTracker: UITableViewDelegate {
         // day block, which is constant. By casting the result to an Int, we essentially perform
         // a floor operation, giving us the current day component's index
         let currentIndex = min(max(Int(scrollOffset / VisitPreviewConstants.blockHeight), 0), descendingDayComponents.count-1)
-
+        
         let scrolledDayComponent = descendingDayComponents[currentIndex]
         let scrolledMonthYearComponent = scrolledDayComponent.monthAndYear
         
