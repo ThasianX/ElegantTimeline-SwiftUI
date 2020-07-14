@@ -43,6 +43,7 @@ struct MonthYearSideBar<Provider>: View where Provider: MonthYearSideBarProvider
                 .captureSize(in: $size2)
                 .offset(y: offset2)
         }
+        .frame(width: VisitPreviewConstants.monthYearWidth)
     }
 
 }

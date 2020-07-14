@@ -71,7 +71,6 @@ struct VisitsPreviewList: UIViewRepresentable {
         }
 
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            // TODO: Ok so I've figured out that the tableview sets the contentinset based on the number of rows
             visitsTracker.descendingDayComponents.count
         }
 
@@ -108,8 +107,7 @@ private extension UITableView {
     static func visitsPreview(source: UITableViewDataSource) -> UITableView {
         let tableView = UITableView()
 
-        // TODO: uncomment this out in the future
-//        tableView.showsVerticalScrollIndicator = false
+        tableView.showsVerticalScrollIndicator = false
         tableView.allowsSelection = false
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
