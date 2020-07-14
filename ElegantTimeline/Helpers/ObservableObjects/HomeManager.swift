@@ -30,7 +30,7 @@ class HomeManager: ObservableObject {
             ascending: false,
             startDate: visitsProvider.descendingDayComponents.last!.date,
             endDate: visitsProvider.descendingDayComponents.first!.date,
-            themeColor: .blackPearl)
+            themeColor: .mauvePurple)
 
         yearlyCalendarManager = YearlyCalendarManager(configuration: configuration)
         monthlyCalendarManager = MonthlyCalendarManager(configuration: configuration)

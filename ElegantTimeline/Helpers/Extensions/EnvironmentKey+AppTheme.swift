@@ -11,7 +11,7 @@ struct AppTheme {
 
 extension AppTheme {
     
-    static let `default` = AppTheme(primary: .blackPearl, complementary: .blackPearlComplement)
+    static let `default` = AppTheme(primary: .mauvePurple, complementary: .mauvePurpleComplement)
     
 }
 

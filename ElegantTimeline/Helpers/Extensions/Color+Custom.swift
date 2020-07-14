@@ -4,8 +4,11 @@ import SwiftUI
 
 extension Color {
 
-    static let blackPearl = Color("blackPearl")
-    static let blackPearlComplement = Color("blackPearlComplement")
+    static let brilliantViolet = Color("brilliantViolet")
+    static let brilliantVioletComplement = Color("brilliantVioletComplement")
+
+    static let mauvePurple = Color("mauvePurple")
+    static let mauvePurpleComplement = Color("mauvePurpleComplement")
 
     static let systemBackground = Color(UIColor.systemBackground)
 
