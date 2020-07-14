@@ -64,6 +64,10 @@ class VisitsSideBarTracker: NSObject, ObservableObject, UITableViewDirectAccess 
         -VisitPreviewConstants.listTopPadding
     }()
 
+    private func adjustedScrollOffset(_ scrollOffset: CGFloat) -> CGFloat {
+        scrollOffset - startingOffset
+    }
+
     init(descendingDayComponents: [DateComponents]) {
         self.descendingDayComponents = descendingDayComponents
         indexForDayComponents = descendingDayComponents.pairKeysWithIndex
@@ -131,6 +135,7 @@ extension VisitsSideBarTracker {
 
         isFastDragging = false
 
+        // TODO: animate it to a translation that is at the top of the cell
         animateTableViewContentOffset(by: translation, duration: 0.1) { [unowned self] in
             self.scrollViewDidEndDecelerating(self.tableView)
         }
@@ -214,7 +219,7 @@ extension VisitsSideBarTracker: UITableViewDelegate {
 
     // Kudos: https://stackoverflow.com/a/20943198/6074750
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        let targetOffset = targetContentOffset.pointee.y
+        let targetOffset = adjustedScrollOffset(targetContentOffset.pointee.y)
         let index = round(targetOffset / VisitPreviewConstants.blockHeight)
 
         targetContentOffset.pointee.y = cellOffset(for: Int(index))
@@ -248,8 +253,8 @@ extension VisitsSideBarTracker: UITableViewDelegate {
         if notifyDelegate {
             delegate?.listDidBeginScrolling()
         }
-        
-        let scrollOffset = scrollView.contentOffset.y + VisitPreviewConstants.listTopPadding
+
+        let scrollOffset = adjustedScrollOffset(scrollView.contentOffset.y)
         determineHeaderAndFooterVisibilityAndOffset(scrollOffset: scrollOffset)
         setSideBarOffsetAndCorrespondingMonthYearComponent(scrollOffset: scrollOffset)
     }
@@ -298,10 +303,10 @@ extension VisitsSideBarTracker: UITableViewDelegate {
         // day block, which is constant. By casting the result to an Int, we essentially perform
         // a floor operation, giving us the current day component's index
         let currentIndex = min(max(Int(scrollOffset / VisitPreviewConstants.blockHeight), 0), descendingDayComponents.count-1)
-
+        
         let scrolledDayComponent = descendingDayComponents[currentIndex]
         let scrolledMonthYearComponent = scrolledDayComponent.monthAndYear
-
+        
         defer {
             withAnimation(.spring(response: 0.55, dampingFraction: 0.4)) {
                 currentDayComponent = scrolledDayComponent
@@ -370,8 +375,13 @@ extension VisitsSideBarTracker: UITableViewDelegate {
             offset = centerOffset
         }
 
-        monthYear1Component = monthYearComponent
-        monthYear1Offset = offset
+        if isMonthYear1Active {
+            monthYear1Component = monthYearComponent
+            monthYear1Offset = offset
+        } else {
+            monthYear2Component = monthYearComponent
+            monthYear2Offset = offset
+        }
     }
 
     private func configureSideBarForLastMonth(
