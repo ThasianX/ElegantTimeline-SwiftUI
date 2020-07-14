@@ -22,21 +22,12 @@ struct VisitPreviewConstants {
 
     static let previewTime: TimeInterval = 4
 
+    static let monthYearWidth: CGFloat = 30
+
     static let sideBarWidth: CGFloat = 35
     static let sideBarPadding: CGFloat = 4
 
-    static func height(forBlockCount count: Int) -> CGFloat {
-        return blockHeight * CGFloat(count)
-    }
-
-    static let blocksInEndShiftRange: CGFloat = 1
-    static let endShiftRangeHeight: CGFloat = blockHeight * blocksInEndShiftRange
-
-    static let blocksInStartShiftRange: CGFloat = 2
-    static let startShiftRangeHeight: CGFloat = blockHeight * blocksInStartShiftRange
-
-    static let blocksInShiftRange: CGFloat = Self.blocksInStartShiftRange + Self.blocksInEndShiftRange
-
+    // TODO: Need to refine this for different phones
     static let listTopPadding: CGFloat = statusBarHeight - 18 // iphone 11
 
 }

@@ -6,8 +6,10 @@ extension View {
 
     func captureSize(in binding: Binding<CGSize>) -> some View {
         modifier(SizeModifier())
-            .onPreferenceChange(SizePreferenceKey.self) {
-                binding.wrappedValue = $0
+            .onPreferenceChange(SizePreferenceKey.self) { size in
+                DispatchQueue.main.async {
+                    binding.wrappedValue = size
+                }
             }
     }
 

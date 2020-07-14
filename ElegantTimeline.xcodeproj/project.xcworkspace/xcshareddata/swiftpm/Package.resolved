@@ -5,27 +5,18 @@
         "package": "ElegantCalendar",
         "repositoryURL": "https://github.com/ThasianX/ElegantCalendar",
         "state": {
-          "branch": null,
-          "revision": "7cee48387fa7527b65ee38ad07bc1685e7c84966",
-          "version": "1.3.0"
+          "branch": "feature/custom-width",
+          "revision": "1837f0b53b312bf214d32148b84c141086e33e53",
+          "version": null
         }
       },
       {
         "package": "ElegantPages",
         "repositoryURL": "https://github.com/ThasianX/ElegantPages",
         "state": {
-          "branch": null,
-          "revision": "450ed57eed98174448929918342889b255c664d1",
-          "version": "1.1.0"
-        }
-      },
-      {
-        "package": "Introspect",
-        "repositoryURL": "https://github.com/siteline/SwiftUI-Introspect",
-        "state": {
-          "branch": null,
-          "revision": "de5c32c15ae169cfcb27397ffb2734dcd0e1e6d5",
-          "version": "0.1.0"
+          "branch": "custom-width",
+          "revision": "52c65b97628602855e13c62fb83e914510944ebb",
+          "version": null
         }
       }
     ]

@@ -20,6 +20,7 @@ struct ScaleButtonStyle: ButtonStyle {
 
 struct ScrollBackToTodayButton<Provider>: View where Provider: ScrollToTodayProvider {
 
+    @Environment(\.appTheme) private var appTheme: AppTheme
     @ObservedObject var provider: Provider
 
     private var isCurrentDayWithinToday: Bool {
@@ -34,12 +35,22 @@ struct ScrollBackToTodayButton<Provider>: View where Provider: ScrollToTodayProv
 
     private var scrollToTodayButton: some View {
         Button(action: provider.scrollToToday) {
-            Image(systemName: "chevron.up.circle.fill") // TODO: choose timepage image
+            scrollImage
+        }
+        .buttonStyle(ScaleButtonStyle())
+    }
+
+    private var scrollImage: some View {
+        ZStack {
+            Image(systemName: "circle.fill")
                 .resizable()
                 .frame(width: 50, height: 50)
+                .foregroundColor(.white)
+            Image(systemName: "chevron.up") // TODO: need to get better asset for this
+                .resizable()
+                .frame(width: 20, height: 10)
+                .foregroundColor(appTheme.primary)
         }
-        .foregroundColor(.white)
-        .buttonStyle(ScaleButtonStyle())
     }
 
 }
