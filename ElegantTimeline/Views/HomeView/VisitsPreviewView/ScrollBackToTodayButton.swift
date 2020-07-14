@@ -44,11 +44,11 @@ struct ScrollBackToTodayButton<Provider>: View where Provider: ScrollToTodayProv
         ZStack {
             Image(systemName: "circle.fill")
                 .resizable()
-                .frame(width: 50, height: 50)
+                .frame(width: 55, height: 55)
                 .foregroundColor(.white)
-            Image(systemName: "chevron.up") // TODO: need to get better asset for this
+            Image.chevronUp
                 .resizable()
-                .frame(width: 20, height: 10)
+                .frame(width: 50, height: 50)
                 .foregroundColor(appTheme.primary)
         }
     }
