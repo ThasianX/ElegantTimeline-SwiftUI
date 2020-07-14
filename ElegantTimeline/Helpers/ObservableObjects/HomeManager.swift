@@ -72,10 +72,8 @@ extension HomeManager: MonthlyCalendarDelegate {
 
     func calendar(willDisplayMonth date: Date) {
         guard sideBarTracker.currentDayComponent != DateComponents() else { return }
-        print("will display month: \(date)")
 
         if !appCalendar.isDate(date, equalTo: sideBarTracker.currentDayComponent.date, toGranularities: [.month, .year]) {
-            print("scrolling to displayed month")
             sideBarTracker.scroll(to: appCalendar.endOfMonth(for: date))
         }
     }

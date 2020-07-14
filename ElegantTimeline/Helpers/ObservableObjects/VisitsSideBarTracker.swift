@@ -306,9 +306,7 @@ extension VisitsSideBarTracker: UITableViewDelegate {
 
         let scrolledDayComponent = descendingDayComponents[currentIndex]
         let scrolledMonthYearComponent = scrolledDayComponent.monthAndYear
-
-        print("index: \(currentIndex)")
-        print("currentDayComponent: \(scrolledDayComponent)")
+        
         defer {
             withAnimation(.spring(response: 0.55, dampingFraction: 0.4)) {
                 currentDayComponent = scrolledDayComponent
