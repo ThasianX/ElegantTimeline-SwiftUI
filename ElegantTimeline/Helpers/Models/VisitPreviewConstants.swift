@@ -13,7 +13,8 @@ struct VisitPreviewConstants {
     static let numberOfBlocksOnScreen: Int = 6
     static let blockHeight: CGFloat = {
         let visibleListHeight = screen.height - Self.listTopPadding
-        return visibleListHeight / CGFloat(Self.numberOfBlocksOnScreen)
+        let blockHeight = visibleListHeight / CGFloat(Self.numberOfBlocksOnScreen)
+        return blockHeight.floor(nearest: 0.5)
     }()
     static let blockHorizontalPadding: CGFloat = 12
 
@@ -29,5 +30,14 @@ struct VisitPreviewConstants {
 
     // TODO: Need to refine this for different phones
     static let listTopPadding: CGFloat = statusBarHeight - 18 // iphone 11
+
+}
+
+private extension CGFloat {
+
+    func floor(nearest: CGFloat) -> CGFloat {
+        let intDiv = CGFloat(Int(self / nearest))
+        return intDiv * nearest
+    }
 
 }
