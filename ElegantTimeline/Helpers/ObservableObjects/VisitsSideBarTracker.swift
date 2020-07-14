@@ -102,11 +102,6 @@ extension VisitsSideBarTracker {
         let index = Calendar.current.dateComponents([.day], from: startOfTodayForDate, to: startOfTodayForFirstDay).day!
         let boundedIndex = max(0, index)
 
-        if boundedIndex == 0 {
-            // makes the first month the active month, in case it isn't.
-            monthYear2Offset = hiddenOffset
-        }
-
         scrollTableView(to: cellOffset(for: boundedIndex), animated: false) { [unowned self] in
             self.scrollViewDidEndDecelerating(self.tableView)
             self.notifyDelegate = true
@@ -201,7 +196,6 @@ extension VisitsSideBarTracker: MonthYearSideBarProvider {}
 
 extension VisitsSideBarTracker: ScrollToTodayProvider {
 
-    // TODO: this is not working when scrolling from the last month to today
     func scrollToToday() {
         tableView.setContentOffset(.init(x: 0, y: cellOffset(for: 0)), animated: true)
     }
@@ -383,8 +377,13 @@ extension VisitsSideBarTracker: UITableViewDelegate {
             offset = centerOffset
         }
 
-        monthYear1Component = monthYearComponent
-        monthYear1Offset = offset
+        if isMonthYear1Active {
+            monthYear1Component = monthYearComponent
+            monthYear1Offset = offset
+        } else {
+            monthYear2Component = monthYearComponent
+            monthYear2Offset = offset
+        }
     }
 
     private func configureSideBarForLastMonth(
