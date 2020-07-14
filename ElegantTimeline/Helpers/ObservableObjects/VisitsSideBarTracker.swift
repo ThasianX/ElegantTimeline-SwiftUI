@@ -123,7 +123,7 @@ extension VisitsSideBarTracker {
 
         isFastDraggingTimer?.invalidate()
         isFastDraggingTimer = .scheduledTimer(withTimeInterval: 0.01, repeats: true) { [unowned self] _ in
-            self.animateTableViewContentOffset(by: translation, duration: 0.01)
+            self.animateTableViewContentOffset(by: translation, snapToCell: false, duration: 0.01)
         }
     }
 
@@ -135,28 +135,31 @@ extension VisitsSideBarTracker {
 
         isFastDragging = false
 
-        // TODO: animate it to a translation that is at the top of the cell
-        animateTableViewContentOffset(by: translation, duration: 0.1) { [unowned self] in
+        animateTableViewContentOffset(by: translation, snapToCell: true, duration: 0.1) { [unowned self] in
             self.scrollViewDidEndDecelerating(self.tableView)
         }
     }
 
-    private func animateTableViewContentOffset(by offset: CGFloat, duration: Double, completion: (() -> Void)? = nil) {
+    private func animateTableViewContentOffset(by offset: CGFloat, snapToCell: Bool, duration: Double, completion: (() -> Void)? = nil) {
         let newOffset = tableView.contentOffset.y + (offset / tableViewContentOffsetDamping)
 
-        scrollTableView(to: newOffset, duration: duration, completion: completion)
+        scrollTableView(to: newOffset, snapToCell: snapToCell, duration: duration, completion: completion)
     }
 
-    private func scrollTableView(to offset: CGFloat, duration: Double? = nil, animated: Bool = true, completion: (() -> Void)? = nil) {
+    private func scrollTableView(to offset: CGFloat, snapToCell: Bool = false, duration: Double? = nil, animated: Bool = true, completion: (() -> Void)? = nil) {
         let gapBetweenOffsetAndListEnd = listContentHeight - offset
         let differenceBetweenListHeightAndGapToEnd = listHeight - gapBetweenOffsetAndListEnd
 
-        var newOffset: CGFloat = offset
+        let newOffset: CGFloat
 
-        if newOffset < startingOffset {
+        if offset < startingOffset {
             newOffset = startingOffset
         } else if differenceBetweenListHeightAndGapToEnd > startingOffset {
             newOffset = (listContentHeight - listHeight) - adjustedVerticalContentInset
+        } else if snapToCell {
+            newOffset = nearestCellOffset(for: offset)
+        } else {
+            newOffset = offset
         }
 
         DispatchQueue.main.async {
@@ -220,9 +223,13 @@ extension VisitsSideBarTracker: UITableViewDelegate {
     // Kudos: https://stackoverflow.com/a/20943198/6074750
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let targetOffset = adjustedScrollOffset(targetContentOffset.pointee.y)
-        let index = round(targetOffset / VisitPreviewConstants.blockHeight)
 
-        targetContentOffset.pointee.y = cellOffset(for: Int(index))
+        targetContentOffset.pointee.y = nearestCellOffset(for: targetOffset)
+    }
+
+    private func nearestCellOffset(for scrollOffset: CGFloat) -> CGFloat {
+        let index = Int(round(scrollOffset / VisitPreviewConstants.blockHeight))
+        return cellOffset(for: index)
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
