@@ -44,6 +44,7 @@ class PageScrollState: ObservableObject {
 
     @Published var activePage: Page = .list
     @Published var translation: CGFloat = .zero
+    @Published var canDrag = true
 
     private var isDragging = false
     private var isTurningPage = false

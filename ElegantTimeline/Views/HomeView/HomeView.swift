@@ -6,19 +6,11 @@ import SwiftUI
 fileprivate let visibleListWidth: CGFloat = 15
 fileprivate let monthlyCalendarShiftDelta: CGFloat = (VisitPreviewConstants.monthYearWidth + VisitPreviewConstants.sideBarWidth + VisitPreviewConstants.sideBarPadding) + visibleListWidth
 
-struct HomeView: View, PageScrollStateDirectAccess {
+struct HomeView: View, HomeManagerDirectAccess {
 
     @ObservedObject var manager: HomeManager
 
     @GestureState var stateTransaction: PageScrollState.TransactionInfo
-
-    var scrollState: PageScrollState {
-        manager.scrollState
-    }
-
-    var appTheme: AppTheme {
-        manager.appTheme
-    }
 
     init(manager: HomeManager) {
         self.manager = manager
@@ -54,7 +46,7 @@ struct HomeView: View, PageScrollStateDirectAccess {
     }
 
     private var gesturesToMask: GestureMask {
-        if manager.canDrag {
+        if scrollState.canDrag {
             if activePage == .monthlyCalendar && isSwipingLeft {
                 return .gesture
             } else {
@@ -68,7 +60,7 @@ struct HomeView: View, PageScrollStateDirectAccess {
         horizontalPagingStack
             .environment(\.appTheme, appTheme)
             .contentShape(Rectangle())  
-            .frame(width: screen.width, alignment: .leading)
+            .frame(width: pageWidth, alignment: .leading)
             .offset(x: pageOffset)
             .offset(x: boundedTranslation)
             .simultaneousGesture(pagingGesture, including: gesturesToMask)
@@ -111,22 +103,22 @@ private extension HomeView {
     }
 
     var yearlyCalendarView: some View {
-        YearlyCalendarView(calendarManager: manager.yearlyCalendarManager)
+        YearlyCalendarView(calendarManager: yearlyCalendarManager)
             .theme(CalendarTheme(primary: appTheme.primary))
     }
 
     var monthlyCalendarView: some View {
-        MonthlyCalendarView(calendarManager: manager.monthlyCalendarManager)
+        MonthlyCalendarView(calendarManager: monthlyCalendarManager)
             .theme(CalendarTheme(primary: appTheme.primary))
     }
 
     var visitsPreviewView: some View {
-        VisitsPreviewView(visitsProvider: manager.visitsProvider,
-                          sideBarTracker: manager.sideBarTracker)
+        VisitsPreviewView(visitsProvider: visitsProvider,
+                          sideBarTracker: sideBarTracker)
     }
 
     var menuView: some View {
-        MenuView(changeTheme: manager.changeTheme)
+        MenuView(changeTheme: changeTheme)
     }
 
 }

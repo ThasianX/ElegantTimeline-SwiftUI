@@ -9,20 +9,17 @@ let appCalendar = Calendar.current
 class HomeManager: ObservableObject {
 
     @Published var scrollState: PageScrollState = .init()
-    @Published var canDrag: Bool = true
+    @Published var appTheme: AppTheme = .royalBlue
 
     let visitsProvider: VisitsProvider
 
     let sideBarTracker: VisitsSideBarTracker
 
-    @Published var yearlyCalendarManager: YearlyCalendarManager
-    @Published var monthlyCalendarManager: MonthlyCalendarManager
+    let yearlyCalendarManager: YearlyCalendarManager
+    let monthlyCalendarManager: MonthlyCalendarManager
 
     private var anyCancellable: AnyCancellable?
 
-    @Published var appTheme: AppTheme = .royalBlue
-
-    // TODO: Clean up this class later
     init(visits: [Visit]) {
         visitsProvider = VisitsProvider(visits: visits)
         sideBarTracker = VisitsSideBarTracker(
@@ -36,8 +33,11 @@ class HomeManager: ObservableObject {
         yearlyCalendarManager = YearlyCalendarManager(configuration: configuration)
         monthlyCalendarManager = MonthlyCalendarManager(configuration: configuration)
 
-        scrollState.delegate = self
+        configureDelegatesAndPublishers()
+    }
 
+    private func configureDelegatesAndPublishers() {
+        scrollState.delegate = self
         sideBarTracker.delegate = self
 
         monthlyCalendarManager.datasource = self
@@ -112,12 +112,12 @@ extension HomeManager: PageScrollStateDelegate {
 extension HomeManager: VisitsListDelegate {
 
     func listDidBeginScrolling() {
-        canDrag = false
+        scrollState.canDrag = false
     }
 
     func listDidEndScrolling(dayComponent: DateComponents) {
         monthlyCalendarManager.scrollToMonth(dayComponent.date, animated: false)
-        canDrag = true
+        scrollState.canDrag = true
     }
 
     func listDidScrollToToday() {
@@ -126,10 +126,41 @@ extension HomeManager: VisitsListDelegate {
 
 }
 
-extension HomeManager {
+protocol HomeManagerDirectAccess: PageScrollStateDirectAccess {
+
+    var manager: HomeManager { get }
+    var scrollState: PageScrollState { get }
+
+}
+
+extension HomeManagerDirectAccess {
+
+    var scrollState: PageScrollState {
+        manager.scrollState
+    }
+
+    var appTheme: AppTheme {
+        manager.appTheme
+    }
+
+    var visitsProvider: VisitsProvider {
+        manager.visitsProvider
+    }
+
+    var sideBarTracker: VisitsSideBarTracker {
+        manager.sideBarTracker
+    }
+
+    var yearlyCalendarManager: YearlyCalendarManager {
+        manager.yearlyCalendarManager
+    }
+
+    var monthlyCalendarManager: MonthlyCalendarManager {
+        manager.monthlyCalendarManager
+    }
 
     func changeTheme(to theme: AppTheme) {
-        appTheme = theme
+        manager.appTheme = theme
     }
 
 }
