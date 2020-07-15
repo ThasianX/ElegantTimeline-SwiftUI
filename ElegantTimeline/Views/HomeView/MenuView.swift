@@ -35,7 +35,7 @@ private extension MenuView {
     }
 
     var themePickerList: some View {
-        VStack(alignment: .leading, spacing: 30) {
+        VStack(alignment: .leading, spacing: 25) {
             ForEach(AppTheme.allThemes, id: \.self) {
                 AppThemePickerCell(theme: $0, onTap: self.changeTheme)
             }
@@ -60,12 +60,12 @@ struct AppThemePickerCell: View {
         HStack(spacing: 16) {
             Circle()
                 .fill(theme.primary)
-                .frame(width: 30, height: 30)
+                .frame(width: 25, height: 25)
 
             Text(theme.name)
-                .font(.system(size: 20))
+                .font(.system(size: 18))
         }
-        .padding(16)
+        .padding(12)
         .contentShape(Rectangle())
         .background(roundedComplementaryBackground)
         .onTapGesture(perform: setTheme)
@@ -78,7 +78,7 @@ struct AppThemePickerCell: View {
     }
 
     private func setTheme() {
-        withAnimation(.linear) {
+        withAnimation(.easeInOut) {
             onTap(theme)
         }
     }
