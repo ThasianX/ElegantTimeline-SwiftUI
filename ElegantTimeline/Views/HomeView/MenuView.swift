@@ -72,7 +72,9 @@ struct AppThemePickerCell: View {
     }
 
     private func setTheme() {
-        onTap(theme)
+        withAnimation(.linear) {
+            onTap(theme)
+        }
     }
 
 }
