@@ -62,6 +62,7 @@ struct HomeView: View, PageScrollStateDirectAccess {
 
     var body: some View {
         horizontalPagingStack
+            .environment(\.appTheme, manager.appTheme)
             .contentShape(Rectangle())  
             .frame(width: screen.width, alignment: .leading)
             .offset(x: pageOffset)
@@ -119,7 +120,7 @@ private extension HomeView {
     }
 
     var menuView: some View {
-        MenuView()
+        MenuView(changeTheme: manager.changeTheme)
     }
 
 }

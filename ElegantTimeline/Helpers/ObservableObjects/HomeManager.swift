@@ -15,10 +15,13 @@ class HomeManager: ObservableObject {
 
     let sideBarTracker: VisitsSideBarTracker
 
-    let yearlyCalendarManager: YearlyCalendarManager
-    let monthlyCalendarManager: MonthlyCalendarManager
+    // TODO: Figure out how to update the calendar app theme. possibly may include changes to the actual library itself
+    @Published var yearlyCalendarManager: YearlyCalendarManager
+    @Published var monthlyCalendarManager: MonthlyCalendarManager
 
     private var anyCancellable: AnyCancellable?
+
+    @Published var appTheme: AppTheme = .mauvePurple
 
     // TODO: Clean up this class later
     init(visits: [Visit]) {
@@ -121,6 +124,21 @@ extension HomeManager: VisitsListDelegate {
 
     func listDidScrollToToday() {
         monthlyCalendarManager.scrollToDay(Date(), animated: false)
+    }
+
+}
+
+extension HomeManager {
+
+    func changeTheme(to theme: AppTheme) {
+        appTheme = theme
+        let configuration = CalendarConfiguration(
+            ascending: false,
+            startDate: visitsProvider.descendingDayComponents.last!.date,
+            endDate: visitsProvider.descendingDayComponents.first!.date,
+            themeColor: theme.primary)
+        monthlyCalendarManager = MonthlyCalendarManager(configuration: configuration)
+        yearlyCalendarManager = YearlyCalendarManager(configuration: configuration)
     }
 
 }

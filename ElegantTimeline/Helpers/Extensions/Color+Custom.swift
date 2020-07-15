@@ -7,8 +7,14 @@ extension Color {
     static let brilliantViolet = Color("brilliantViolet")
     static let brilliantVioletComplement = Color("brilliantVioletComplement")
 
+    static let kiwiGreen = Color("kiwiGreen")
+    static let kiwiGreenComplement = Color("kiwiGreenComplement")
+
     static let mauvePurple = Color("mauvePurple")
     static let mauvePurpleComplement = Color("mauvePurpleComplement")
+
+    static let royalBlue = Color("royalBlue")
+    static let royalBlueComplement = Color("royalBlueComplement")
 
     static let systemBackground = Color(UIColor.systemBackground)
 

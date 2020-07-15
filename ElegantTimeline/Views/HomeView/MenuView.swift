@@ -2,32 +2,77 @@
 
 import SwiftUI
 
-fileprivate let menuOptions = ["What's New", "Search", "RSVP", "Smart Alerts", "Siri Shortcuts", "Preferences", "Themes", "User Guides", "Help & Support", "What's New", "About", "My Account"]
-
 struct MenuView: View, PageScrollStateDirectAccess {
 
     @EnvironmentObject var scrollState: PageScrollState
+    let changeTheme: (AppTheme) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
-            HStack(spacing: 4) {
-                Text("ELEGANT")
-                    .font(.system(size: 26, weight: .semibold))
-                Text("TIMELINE")
-                    .font(.system(size: 26, weight: .light))
-            }
-            .padding(.bottom, 5)
-
-            ForEach(menuOptions, id: \.self) {
-                Text($0)
-                    .font(.system(size: 20))
-            }
+            header
+            themePickerList
         }
+        .padding(.leading, 24)
         .rotation3DEffect(menuRotationAngle,
                           axis: (x: 0, y: 10.0, z: 0),
                           anchor: .leading)
         .opacity(menuOpacity)
         .frame(width: pageWidth * deltaCutoff)
+    }
+
+}
+
+private extension MenuView {
+
+    var header: some View {
+        HStack(spacing: 4) {
+            Text("ELEGANT")
+                .font(.system(size: 30, weight: .semibold))
+            Text("TIMELINE")
+                .font(.system(size: 30, weight: .light))
+        }
+        .padding(.bottom, 5)
+    }
+
+    var themePickerList: some View {
+        VStack(alignment: .leading, spacing: 30) {
+            ForEach(AppTheme.allThemes, id: \.self) {
+                AppThemePickerCell(theme: $0, onTap: self.changeTheme)
+            }
+        }
+    }
+
+}
+
+struct AppThemePickerCell: View {
+
+    let theme: AppTheme
+    let onTap: (AppTheme) -> Void
+
+    var body: some View {
+        HStack {
+            pickerContent
+            Spacer()
+        }
+    }
+
+    private var pickerContent: some View {
+        HStack(spacing: 16) {
+            Circle()
+                .fill(theme.primary)
+                .frame(width: 30, height: 30)
+
+            Text(theme.name)
+                .font(.system(size: 20))
+        }
+        .padding(16)
+        .contentShape(Rectangle())
+        .background(RoundedRectangle(cornerRadius: 16, style: .circular).fill(theme.complementary).opacity(0.7))
+        .onTapGesture(perform: setTheme)
+    }
+
+    private func setTheme() {
+        onTap(theme)
     }
 
 }
@@ -114,7 +159,7 @@ private extension MenuView {
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {
         DarkThemePreview {
-            MenuView()
+            MenuView(changeTheme: { _ in })
         }
     }
 }
