@@ -67,8 +67,14 @@ struct AppThemePickerCell: View {
         }
         .padding(16)
         .contentShape(Rectangle())
-        .background(RoundedRectangle(cornerRadius: 16, style: .circular).fill(theme.complementary).opacity(0.7))
+        .background(roundedComplementaryBackground)
         .onTapGesture(perform: setTheme)
+    }
+
+    private var roundedComplementaryBackground: some View {
+        RoundedRectangle(cornerRadius: 16, style: .circular)
+            .fill(theme.complementary)
+            .opacity(0.7)
     }
 
     private func setTheme() {
