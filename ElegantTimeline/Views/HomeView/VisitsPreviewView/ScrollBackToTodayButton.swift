@@ -13,8 +13,8 @@ struct ScaleButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            // TODO: need to animate this scale effect without animating the offset
             .scaleEffect(configuration.isPressed ? 1.25 : 1)
+            .animation(.easeInOut)
     }
 
 }
