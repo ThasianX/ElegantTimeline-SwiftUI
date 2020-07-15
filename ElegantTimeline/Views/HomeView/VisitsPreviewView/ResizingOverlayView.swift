@@ -15,6 +15,8 @@ struct ResizingOverlayView: View, PageScrollStateDirectAccess {
             Color.black
                 .edgesIgnoringSafeArea(.top)
 
+            // transparent content layer. This is used to round the corners of the content as the
+            // menu appears
             RoundedRectangle(cornerRadius: centerCornerRadius, style: .continuous)
                 .stroke(Color.black, style: StrokeStyle(lineWidth: strokeWidth, lineCap: .round, lineJoin: .round))
                 .frame(width: pageWidth + strokeWidth, height: centerPageHeight + 60)
