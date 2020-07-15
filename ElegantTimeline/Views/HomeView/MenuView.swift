@@ -88,6 +88,7 @@ struct AppThemePickerCell: View {
 fileprivate let menuClosedDegrees: Double = 90
 fileprivate let menuOpenDegrees: Double = 0
 
+// TODO: Update the angle to match timepage
 private extension MenuView {
 
     var menuRotationAngle: Angle {

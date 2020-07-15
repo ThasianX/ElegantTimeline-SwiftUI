@@ -46,7 +46,6 @@ class PageScrollState: ObservableObject {
     @Published var translation: CGFloat = .zero
     @Published var canDrag = true
 
-    private var isDragging = false
     private var isTurningPage = false
 
     let pageWidth: CGFloat = screen.width
@@ -70,6 +69,7 @@ class PageScrollState: ObservableObject {
 
     func horizontalDragChanged(_ value: DragGesture.Value) {
         let horizontalTranslation = value.translation.width
+        // This makes sure that while turning a page, no vertical gestures can be active
         guard abs(horizontalTranslation) > abs(value.translation.height) else {
             withAnimation(regularTurnAnimation) {
                 translation = .zero
@@ -77,11 +77,11 @@ class PageScrollState: ObservableObject {
             return
         }
 
+        // For early page turns, after the page turns and the user still has his finger
+        // on the screen, this prevents another page turn when their finger is let go of.
+        // Since there is no way to actually programatically end the gesture, this is
+        // the workaround that I've chosen
         guard !isTurningPage else { return }
-
-        if abs(horizontalTranslation) > minDragDistance {
-            isDragging = true
-        }
 
         if activePage == .yearlyCalendar || (activePage == .monthlyCalendar && horizontalTranslation > 0) {
             withAnimation(calendarEarlySwipe.pageTurnAnimation) {
@@ -132,13 +132,10 @@ class PageScrollState: ObservableObject {
     }
 
     private func horizontalDragEnded(_ value: DragGesture.Value) {
-        guard isDragging else { return }
         guard !isTurningPage else {
             isTurningPage = false
             return
         }
-
-        isDragging = false
 
         let horizontalTranslation = value.predictedEndTranslation.width
 
