@@ -16,6 +16,10 @@ struct HomeView: View, PageScrollStateDirectAccess {
         manager.scrollState
     }
 
+    var appTheme: AppTheme {
+        manager.appTheme
+    }
+
     init(manager: HomeManager) {
         self.manager = manager
 
@@ -62,6 +66,7 @@ struct HomeView: View, PageScrollStateDirectAccess {
 
     var body: some View {
         horizontalPagingStack
+            .environment(\.appTheme, appTheme)
             .contentShape(Rectangle())  
             .frame(width: screen.width, alignment: .leading)
             .offset(x: pageOffset)
@@ -107,10 +112,12 @@ private extension HomeView {
 
     var yearlyCalendarView: some View {
         YearlyCalendarView(calendarManager: manager.yearlyCalendarManager)
+            .theme(CalendarTheme(primary: appTheme.primary))
     }
 
     var monthlyCalendarView: some View {
         MonthlyCalendarView(calendarManager: manager.monthlyCalendarManager)
+            .theme(CalendarTheme(primary: appTheme.primary))
     }
 
     var visitsPreviewView: some View {
@@ -119,7 +126,7 @@ private extension HomeView {
     }
 
     var menuView: some View {
-        MenuView()
+        MenuView(changeTheme: manager.changeTheme)
     }
 
 }

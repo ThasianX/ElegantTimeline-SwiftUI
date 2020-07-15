@@ -15,10 +15,12 @@ class HomeManager: ObservableObject {
 
     let sideBarTracker: VisitsSideBarTracker
 
-    let yearlyCalendarManager: YearlyCalendarManager
-    let monthlyCalendarManager: MonthlyCalendarManager
+    @Published var yearlyCalendarManager: YearlyCalendarManager
+    @Published var monthlyCalendarManager: MonthlyCalendarManager
 
     private var anyCancellable: AnyCancellable?
+
+    @Published var appTheme: AppTheme = .royalBlue
 
     // TODO: Clean up this class later
     init(visits: [Visit]) {
@@ -29,8 +31,7 @@ class HomeManager: ObservableObject {
         let configuration = CalendarConfiguration(
             ascending: false,
             startDate: visitsProvider.descendingDayComponents.last!.date,
-            endDate: visitsProvider.descendingDayComponents.first!.date,
-            themeColor: .blackPearl)
+            endDate: visitsProvider.descendingDayComponents.first!.date)
 
         yearlyCalendarManager = YearlyCalendarManager(configuration: configuration)
         monthlyCalendarManager = MonthlyCalendarManager(configuration: configuration)
@@ -121,6 +122,14 @@ extension HomeManager: VisitsListDelegate {
 
     func listDidScrollToToday() {
         monthlyCalendarManager.scrollToDay(Date(), animated: false)
+    }
+
+}
+
+extension HomeManager {
+
+    func changeTheme(to theme: AppTheme) {
+        appTheme = theme
     }
 
 }
