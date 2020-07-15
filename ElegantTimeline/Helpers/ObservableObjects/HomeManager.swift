@@ -15,7 +15,6 @@ class HomeManager: ObservableObject {
 
     let sideBarTracker: VisitsSideBarTracker
 
-    // TODO: Figure out how to update the calendar app theme. possibly may include changes to the actual library itself
     @Published var yearlyCalendarManager: YearlyCalendarManager
     @Published var monthlyCalendarManager: MonthlyCalendarManager
 
@@ -116,6 +115,7 @@ extension HomeManager: VisitsListDelegate {
         canDrag = false
     }
 
+    // TODO: fix not scrolling to right month. like scroll list from july to june and the calendar dosen't even scroll to new month. this is bc of the calendar library. need to make it so that when .theme is called, the proper active index gets set, which it isn't right now
     func listDidEndScrolling(dayComponent: DateComponents) {
         monthlyCalendarManager.scrollToMonth(dayComponent.date, animated: false)
         canDrag = true
