@@ -31,7 +31,7 @@ extension AppTheme {
 
 struct AppThemeKey: EnvironmentKey {
     
-    static let defaultValue: AppTheme = .mauvePurple
+    static let defaultValue: AppTheme = .royalBlue
     
 }
 

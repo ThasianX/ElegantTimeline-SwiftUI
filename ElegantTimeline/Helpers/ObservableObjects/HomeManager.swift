@@ -21,7 +21,7 @@ class HomeManager: ObservableObject {
 
     private var anyCancellable: AnyCancellable?
 
-    @Published var appTheme: AppTheme = .mauvePurple
+    @Published var appTheme: AppTheme = .royalBlue
 
     // TODO: Clean up this class later
     init(visits: [Visit]) {
@@ -32,8 +32,7 @@ class HomeManager: ObservableObject {
         let configuration = CalendarConfiguration(
             ascending: false,
             startDate: visitsProvider.descendingDayComponents.last!.date,
-            endDate: visitsProvider.descendingDayComponents.first!.date,
-            themeColor: .mauvePurple)
+            endDate: visitsProvider.descendingDayComponents.first!.date)
 
         yearlyCalendarManager = YearlyCalendarManager(configuration: configuration)
         monthlyCalendarManager = MonthlyCalendarManager(configuration: configuration)
@@ -132,13 +131,6 @@ extension HomeManager {
 
     func changeTheme(to theme: AppTheme) {
         appTheme = theme
-        let configuration = CalendarConfiguration(
-            ascending: false,
-            startDate: visitsProvider.descendingDayComponents.last!.date,
-            endDate: visitsProvider.descendingDayComponents.first!.date,
-            themeColor: theme.primary)
-        monthlyCalendarManager = MonthlyCalendarManager(configuration: configuration)
-        yearlyCalendarManager = YearlyCalendarManager(configuration: configuration)
     }
 
 }
