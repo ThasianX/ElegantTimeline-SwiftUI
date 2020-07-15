@@ -6,7 +6,7 @@
         "repositoryURL": "https://github.com/ThasianX/ElegantCalendar",
         "state": {
           "branch": "feature/custom-width",
-          "revision": "e9942c4784312856e78c032096107e13171afbfd",
+          "revision": "05e58eef0d1889b0f787e11fe4a814dbd10ed7d2",
           "version": null
         }
       },
@@ -15,7 +15,7 @@
         "repositoryURL": "https://github.com/ThasianX/ElegantPages",
         "state": {
           "branch": "custom-width",
-          "revision": "ee7d1ce53f2918e6f7c6d4798d22553ce6660217",
+          "revision": "9c6066505607064ff32dcb7d4072306a59dbebe6",
           "version": null
         }
       }
