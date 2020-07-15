@@ -78,7 +78,7 @@ struct AppThemePickerCell: View {
     }
 
     private func setTheme() {
-        withAnimation(.easeInOut) {
+        withAnimation(.easeInOut(duration: 1)) {
             onTap(theme)
         }
     }
