@@ -2,13 +2,6 @@
 
 import SwiftUI
 
-private enum ScrollDirection {
-
-    case up
-    case down
-
-}
-
 protocol VisitsListDelegate {
 
     func listDidBeginScrolling()
@@ -39,8 +32,6 @@ class VisitsSideBarTracker: NSObject, ObservableObject, UITableViewDirectAccess 
     @Published var monthYear2Component: DateComponents = .init()
     @Published var monthYear2Offset: CGFloat = hiddenOffset
 
-    private let indexForDayComponents: [DateComponents: Int]
-
     let listHeight: CGFloat = screen.height
     let descendingDayComponents: [DateComponents]
     private lazy var maxYForMonthYearComponents: [DateComponents: CGFloat] = {
@@ -70,7 +61,6 @@ class VisitsSideBarTracker: NSObject, ObservableObject, UITableViewDirectAccess 
 
     init(descendingDayComponents: [DateComponents]) {
         self.descendingDayComponents = descendingDayComponents
-        indexForDayComponents = descendingDayComponents.pairKeysWithIndex
     }
 
 }
