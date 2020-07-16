@@ -12,7 +12,6 @@ class HomeManager: ObservableObject {
     @Published var appTheme: AppTheme = .royalBlue
 
     let visitsProvider: VisitsProvider
-
     let sideBarTracker: VisitsSideBarTracker
 
     let yearlyCalendarManager: YearlyCalendarManager
