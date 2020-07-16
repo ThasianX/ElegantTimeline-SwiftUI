@@ -62,9 +62,9 @@ class HomeManager: ObservableObject {
 
 extension HomeManager: MonthlyCalendarDataSource {
 
-    // TODO: update opacity formula
     func calendar(backgroundColorOpacityForDate date: Date) -> Double {
-        Double((visitsProvider.visitsForDayComponents[date.dateComponents]?.count ?? 0) + 2) / 7.0
+        let visitCount = visitsProvider.visitsForDayComponents[date.dateComponents]?.count ?? minVisitCount
+        return Double(visitCount) / Double(maxVisitCount)
     }
 
     func calendar(viewForSelectedDate date: Date, dimensions size: CGSize) -> AnyView {

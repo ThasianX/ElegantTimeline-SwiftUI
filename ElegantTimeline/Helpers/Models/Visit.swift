@@ -47,7 +47,9 @@ extension Visit {
 
 }
 
-fileprivate let visitCountRange = 0...7
+let minVisitCount = 0
+let maxVisitCount = 7
+fileprivate let visitCountRange = minVisitCount...maxVisitCount
 
 private extension Calendar {
 
