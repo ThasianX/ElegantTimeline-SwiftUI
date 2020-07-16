@@ -8,7 +8,7 @@ struct VisitsPreviewView: View, PageScrollStateDirectAccess {
     @EnvironmentObject var scrollState: PageScrollState
 
     let visitsProvider: VisitsProvider
-    let sideBarTracker: VisitsSideBarTracker
+    let listScrollState: ListScrollState
 
     var body: some View {
         ZStack {
@@ -40,17 +40,17 @@ struct VisitsPreviewView: View, PageScrollStateDirectAccess {
 private extension VisitsPreviewView {
 
     var timelineView: some View {
-        VisitsTimelineView(sideBarTracker: sideBarTracker,
+        VisitsTimelineView(listScrollState: listScrollState,
                            visitsProvider: visitsProvider,
                            contentOpacity: contentOpacity)
     }
 
     var fromTodayPopupView: some View {
-        FromTodayPopupView(provider: sideBarTracker)
+        FromTodayPopupView(provider: listScrollState)
     }
 
     var scrollToTodayButton: some View {
-        ScrollBackToTodayButton(provider: sideBarTracker)
+        ScrollBackToTodayButton(provider: listScrollState)
     }
 
     var menuBarIndicator: some View {

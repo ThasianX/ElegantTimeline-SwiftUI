@@ -40,11 +40,11 @@ struct VisitsPreviewList: UIViewRepresentable {
     typealias UIViewType = UITableView
 
     let visitsProvider: VisitsProvider
-    let sideBarTracker: VisitsSideBarTracker
+    let listScrollState: ListScrollState
 
     func makeUIView(context: Context) -> UITableView {
         let tableView = UITableView.visitsPreview(source: context.coordinator)
-        sideBarTracker.attach(to: tableView)
+        listScrollState.attach(to: tableView)
         return tableView
     }
 
@@ -58,8 +58,8 @@ struct VisitsPreviewList: UIViewRepresentable {
 
         private let parent: VisitsPreviewList
 
-        private var visitsTracker: VisitsSideBarTracker {
-            parent.sideBarTracker
+        private var visitsTracker: ListScrollState {
+            parent.listScrollState
         }
 
         private var visitsProvider: VisitsProvider {

@@ -74,7 +74,7 @@ private extension HomeView {
 
     var visitsPreviewView: some View {
         VisitsPreviewView(visitsProvider: visitsProvider,
-                          sideBarTracker: sideBarTracker)
+                          listScrollState: listScrollState)
     }
 
     var menuView: some View {

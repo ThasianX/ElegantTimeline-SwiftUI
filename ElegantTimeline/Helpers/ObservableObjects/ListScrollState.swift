@@ -21,8 +21,9 @@ extension VisitsListDelegate {
 }
 
 fileprivate let hiddenOffset: CGFloat = screen.height + 100
+// Used in the visitpreviewlist, timeline view
 
-class VisitsSideBarTracker: NSObject, ObservableObject, UITableViewDirectAccess {
+class ListScrollState: NSObject, ObservableObject, UITableViewDirectAccess {
 
     @Published var currentDayComponent: DateComponents = .init()
     @Published var showFromTodayPopup: Bool = false
@@ -68,7 +69,7 @@ class VisitsSideBarTracker: NSObject, ObservableObject, UITableViewDirectAccess 
 fileprivate let monthScrollDistance = Constants.List.blockHeight * 30
 fileprivate let tableViewContentOffsetDamping: CGFloat = 6
 
-extension VisitsSideBarTracker {
+extension ListScrollState {
 
     func attach(to tableView: UITableView) {
         if self.tableView == nil {
@@ -105,7 +106,7 @@ extension VisitsSideBarTracker {
 }
 
 // MARK: Fast Scrolling
-extension VisitsSideBarTracker {
+extension ListScrollState {
 
     func fastScroll(translation: CGFloat) {
         isFastDragging = true
@@ -174,7 +175,7 @@ extension VisitsSideBarTracker {
 
 }
 
-extension VisitsSideBarTracker: FromTodayPopupProvider {
+extension ListScrollState: FromTodayPopupProvider {
 
     var weeksFromCurrentMonthToToday: Int {
         let startOfToday = appCalendar.startOfDay(for: Date())
@@ -185,9 +186,9 @@ extension VisitsSideBarTracker: FromTodayPopupProvider {
 
 }
 
-extension VisitsSideBarTracker: MonthYearSideBarProvider {}
+extension ListScrollState: MonthYearSideBarProvider {}
 
-extension VisitsSideBarTracker: ScrollToTodayProvider {
+extension ListScrollState: ScrollToTodayProvider {
 
     func scrollToToday() {
         tableView.setContentOffset(.init(x: 0, y: cellOffset(for: 0)), animated: true)
@@ -197,7 +198,7 @@ extension VisitsSideBarTracker: ScrollToTodayProvider {
 
 fileprivate let minDragDistanceToShowHeaderOrFooter: CGFloat = 80
 
-extension VisitsSideBarTracker: UITableViewDelegate {
+extension ListScrollState: UITableViewDelegate {
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         delegate?.listDidBeginScrolling()

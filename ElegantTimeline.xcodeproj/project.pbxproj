@@ -48,7 +48,7 @@
 		1E9C2AC924BA505E0095FC6E /* ResizingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9C2AC824BA505E0095FC6E /* ResizingOverlayView.swift */; };
 		1EAAC5332485C5A0006DBB8E /* Date+toDateComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAAC5322485C5A0006DBB8E /* Date+toDateComponents.swift */; };
 		1EAAC5352485DBED006DBB8E /* DateComponents+Subcomponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAAC5342485DBED006DBB8E /* DateComponents+Subcomponents.swift */; };
-		1EAAC539248613EC006DBB8E /* VisitsSideBarTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAAC538248613EC006DBB8E /* VisitsSideBarTracker.swift */; };
+		1EAAC539248613EC006DBB8E /* ListScrollState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAAC538248613EC006DBB8E /* ListScrollState.swift */; };
 		1EAAC53B24875D14006DBB8E /* DateComponents+Strideable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EAAC53A24875D14006DBB8E /* DateComponents+Strideable.swift */; };
 		1EBDB47924AAA71D00F0C3E5 /* QuoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBDB47824AAA71D00F0C3E5 /* QuoteView.swift */; };
 		1EE035E824B298B500DE6850 /* UITableViewDirectAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE035E724B298B500DE6850 /* UITableViewDirectAccess.swift */; };
@@ -99,7 +99,7 @@
 		1E9C2AC824BA505E0095FC6E /* ResizingOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizingOverlayView.swift; sourceTree = "<group>"; };
 		1EAAC5322485C5A0006DBB8E /* Date+toDateComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+toDateComponents.swift"; sourceTree = "<group>"; };
 		1EAAC5342485DBED006DBB8E /* DateComponents+Subcomponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateComponents+Subcomponents.swift"; sourceTree = "<group>"; };
-		1EAAC538248613EC006DBB8E /* VisitsSideBarTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitsSideBarTracker.swift; sourceTree = "<group>"; };
+		1EAAC538248613EC006DBB8E /* ListScrollState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListScrollState.swift; sourceTree = "<group>"; };
 		1EAAC53A24875D14006DBB8E /* DateComponents+Strideable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateComponents+Strideable.swift"; sourceTree = "<group>"; };
 		1EBDB47824AAA71D00F0C3E5 /* QuoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteView.swift; sourceTree = "<group>"; };
 		1EE035E724B298B500DE6850 /* UITableViewDirectAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewDirectAccess.swift; sourceTree = "<group>"; };
@@ -287,8 +287,8 @@
 			isa = PBXGroup;
 			children = (
 				1E15AC7224AEA18C00623E98 /* HomeManager.swift */,
+				1EAAC538248613EC006DBB8E /* ListScrollState.swift */,
 				1E8D768A24B816A40027073E /* PageScrollState.swift */,
-				1EAAC538248613EC006DBB8E /* VisitsSideBarTracker.swift */,
 			);
 			path = ObservableObjects;
 			sourceTree = "<group>";
@@ -407,7 +407,7 @@
 				1E8D768B24B816A50027073E /* PageScrollState.swift in Sources */,
 				1E854E3124AECC6300E50973 /* Color+Custom.swift in Sources */,
 				1E80E5BF24BD727B0030F5E0 /* Comparable+Clamped.swift in Sources */,
-				1EAAC539248613EC006DBB8E /* VisitsSideBarTracker.swift in Sources */,
+				1EAAC539248613EC006DBB8E /* ListScrollState.swift in Sources */,
 				1E8A3DF824855E1100CBA65E /* Visit.swift in Sources */,
 				1E717C6E24B9970D0040877E /* VisitsProvider.swift in Sources */,
 				1E995AF924A573BC00F436BE /* LightDarkThemePreview.swift in Sources */,

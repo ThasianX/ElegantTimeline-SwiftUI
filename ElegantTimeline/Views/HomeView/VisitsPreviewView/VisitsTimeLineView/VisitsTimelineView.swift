@@ -6,7 +6,7 @@ struct VisitsTimelineView: View {
 
     @Environment(\.appTheme) private var appTheme: AppTheme
 
-    let sideBarTracker: VisitsSideBarTracker
+    let listScrollState: ListScrollState
     let visitsProvider: VisitsProvider
 
     let contentOpacity: Double
@@ -30,16 +30,16 @@ struct VisitsTimelineView: View {
 private extension VisitsTimelineView {
 
     var monthYearSideBarView: some View {
-        MonthYearSideBar(provider: sideBarTracker)
+        MonthYearSideBar(provider: listScrollState)
     }
 
     var quoteBackgroundView: some View {
-        QuoteView(sideBarTracker: sideBarTracker)
+        QuoteView(listScrollState: listScrollState)
     }
 
     var visitsPreviewList: some View {
         VisitsPreviewList(visitsProvider: visitsProvider,
-                          sideBarTracker: sideBarTracker)
+                          listScrollState: listScrollState)
             .frame(height: screen.height)
     }
 
@@ -73,18 +73,18 @@ private extension VisitsTimelineView {
                 let translation = -value.translation.height
 
                 guard abs(value.translation.width) < 20 else {
-                    self.sideBarTracker.fastDragDidEnd(translation: translation)
+                    self.listScrollState.fastDragDidEnd(translation: translation)
                     return
                 }
 
                 if value.startLocation.x < Constants.List.monthYearWidth &&
                     value.startLocation.y < homeButtonThresholdLocation &&
                     self.contentOpacity != 0 {
-                    self.sideBarTracker.fastScroll(translation: translation)
+                    self.listScrollState.fastScroll(translation: translation)
                 }
             }
             .onEnded { value in
-                self.sideBarTracker.fastDragDidEnd(translation: -value.translation.height)
+                self.listScrollState.fastDragDidEnd(translation: -value.translation.height)
             }
     }
 

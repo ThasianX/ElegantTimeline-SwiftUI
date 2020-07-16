@@ -10,7 +10,7 @@ class HomeManager: ObservableObject {
     @Published var appTheme: AppTheme = .royalBlue
 
     let visitsProvider: VisitsProvider
-    let sideBarTracker: VisitsSideBarTracker
+    let listScrollState: ListScrollState
 
     let yearlyCalendarManager: YearlyCalendarManager
     let monthlyCalendarManager: MonthlyCalendarManager
@@ -19,7 +19,7 @@ class HomeManager: ObservableObject {
 
     init(visits: [Visit]) {
         visitsProvider = VisitsProvider(visits: visits)
-        sideBarTracker = VisitsSideBarTracker(
+        listScrollState = ListScrollState(
             descendingDayComponents: visitsProvider.descendingDayComponents)
 
         let configuration = CalendarConfiguration(
@@ -34,7 +34,7 @@ class HomeManager: ObservableObject {
     }
 
     private func configureDelegatesAndPublishers() {
-        sideBarTracker.delegate = self
+        listScrollState.delegate = self
 
         monthlyCalendarManager.datasource = self
         monthlyCalendarManager.delegate = self
@@ -75,14 +75,14 @@ extension HomeManager: MonthlyCalendarDataSource {
 extension HomeManager: MonthlyCalendarDelegate {
 
     func calendar(didSelectDay date: Date) {
-        sideBarTracker.scroll(to: date)
+        listScrollState.scroll(to: date)
     }
 
     func calendar(willDisplayMonth date: Date) {
-        guard sideBarTracker.currentDayComponent != DateComponents() else { return }
+        guard listScrollState.currentDayComponent != DateComponents() else { return }
 
-        if !appCalendar.isDate(date, equalTo: sideBarTracker.currentDayComponent.date, toGranularities: [.month, .year]) {
-            sideBarTracker.scroll(to: appCalendar.endOfMonth(for: date))
+        if !appCalendar.isDate(date, equalTo: listScrollState.currentDayComponent.date, toGranularities: [.month, .year]) {
+            listScrollState.scroll(to: appCalendar.endOfMonth(for: date))
         }
     }
 
@@ -142,8 +142,8 @@ extension HomeManagerDirectAccess {
         manager.visitsProvider
     }
 
-    var sideBarTracker: VisitsSideBarTracker {
-        manager.sideBarTracker
+    var listScrollState: ListScrollState {
+        manager.listScrollState
     }
 
     var yearlyCalendarManager: YearlyCalendarManager {
