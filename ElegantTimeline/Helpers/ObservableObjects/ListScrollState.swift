@@ -23,48 +23,42 @@ extension VisitsListDelegate {
 
 class ListScrollState: NSObject, ObservableObject, UITableViewDirectAccess {
 
-    @Published var currentDayComponent: DateComponents = .init()
-
     @Published var fromTodayPopupState: FromTodayPopupState = .init()
     @Published var monthYearSideBarState: MonthYearSideBarState
     @Published var quoteState: QuoteState = .init()
 
+    @Published var currentDayComponent: DateComponents = .init()
     let descendingDayComponents: [DateComponents]
-
-    var tableView: UITableView!
 
     private var isFastDraggingTimer: Timer? = nil
     private var isFastDragging: Bool = false
 
+    // used to prevent intermediary notifications from being sent out when scrolling to a specific month
+    private var notifyDelegate: Bool = true
+
+    var tableView: UITableView!
     var delegate: VisitsListDelegate?
 
-    private var notifyDelegate: Bool = true
+    private var cancellable: AnyCancellable?
 
     lazy var startingOffset: CGFloat = {
         -Constants.List.listTopPadding
     }()
-
-    private func adjustedScrollOffset(_ scrollOffset: CGFloat) -> CGFloat {
-        scrollOffset - startingOffset
-    }
-
-    private var cancellables = Set<AnyCancellable>()
 
     init(descendingDayComponents: [DateComponents]) {
         self.descendingDayComponents = descendingDayComponents
         monthYearSideBarState = MonthYearSideBarState(descendingDayComponents: descendingDayComponents)
         super.init()
 
-        $currentDayComponent
+        cancellable = $currentDayComponent
             .sink(receiveValue: fromTodayPopupState.dayChanged)
-            .store(in: &cancellables)
     }
 
 }
 
-fileprivate let monthScrollDistance = Constants.List.blockHeight * 30
 fileprivate let tableViewContentOffsetDamping: CGFloat = 6
 
+// MARK: API
 extension ListScrollState {
 
     func attach(to tableView: UITableView) {
@@ -96,10 +90,6 @@ extension ListScrollState {
             self.scrollViewDidEndDecelerating(self.tableView)
             self.notifyDelegate = true
         }
-    }
-
-    private func cellOffset(for index: Int) -> CGFloat {
-        startingOffset + (CGFloat(index) * Constants.List.blockHeight)
     }
 
 }
@@ -174,6 +164,7 @@ extension ListScrollState {
 
 }
 
+// MARK: ScrollToTodayProvider
 extension ListScrollState: ScrollToTodayProvider {
 
     func scrollToToday() {
@@ -182,6 +173,7 @@ extension ListScrollState: ScrollToTodayProvider {
 
 }
 
+// MARK: UITableViewDelegate
 extension ListScrollState: UITableViewDelegate {
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -194,11 +186,6 @@ extension ListScrollState: UITableViewDelegate {
         let targetOffset = adjustedScrollOffset(targetContentOffset.pointee.y)
 
         targetContentOffset.pointee.y = nearestCellOffset(for: targetOffset)
-    }
-
-    private func nearestCellOffset(for scrollOffset: CGFloat) -> CGFloat {
-        let index = Int(round(scrollOffset / Constants.List.blockHeight))
-        return cellOffset(for: index)
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -242,6 +229,24 @@ extension ListScrollState: UITableViewDelegate {
         withAnimation(.spring(response: 0.55, dampingFraction: 0.4)) {
             currentDayComponent = scrolledDayComponent
         }
+    }
+
+}
+
+// MARK: Helpers
+private extension ListScrollState {
+
+    func cellOffset(for index: Int) -> CGFloat {
+        startingOffset + (CGFloat(index) * Constants.List.blockHeight)
+    }
+
+    func adjustedScrollOffset(_ scrollOffset: CGFloat) -> CGFloat {
+        scrollOffset - startingOffset
+    }
+
+    func nearestCellOffset(for scrollOffset: CGFloat) -> CGFloat {
+        let index = Int(round(scrollOffset / Constants.List.blockHeight))
+        return cellOffset(for: index)
     }
 
 }
