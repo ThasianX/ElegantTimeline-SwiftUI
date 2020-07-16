@@ -216,7 +216,7 @@ extension PageScrollStateDirectAccess {
     }
 
     var delta: CGFloat {
-        translation / screen.width
+        translation / pageWidth
     }
 
     var isSwipingLeft: Bool {

@@ -3,57 +3,18 @@
 import ElegantCalendar
 import SwiftUI
 
-fileprivate let visibleListWidth: CGFloat = 15
-fileprivate let monthlyCalendarShiftDelta: CGFloat = (VisitPreviewConstants.monthYearWidth + VisitPreviewConstants.sideBarWidth + VisitPreviewConstants.sideBarPadding) + visibleListWidth
+fileprivate let listSideBarWidth: CGFloat = VisitPreviewConstants.monthYearWidth + VisitPreviewConstants.sideBarWidth + VisitPreviewConstants.sideBarPadding
+fileprivate let listWidthToShowInCalendar: CGFloat = 15
+fileprivate let monthlyCalendarOffsetDistance: CGFloat = listSideBarWidth + listWidthToShowInCalendar
 
 struct HomeView: View, HomeManagerDirectAccess {
 
     @ObservedObject var manager: HomeManager
-
     @GestureState var stateTransaction: PageScrollState.TransactionInfo
 
     init(manager: HomeManager) {
         self.manager = manager
-
         _stateTransaction = manager.scrollState.horizontalGestureState
-    }
-
-    var pageOffset: CGFloat {
-        var offset = -CGFloat(activePage.rawValue) * pageWidth
-
-        switch activePage {
-        case .yearlyCalendar:
-            ()
-        case .monthlyCalendar:
-            offset -= monthlyCalendarShiftDelta - visibleListWidth
-        case .list:
-            offset += visibleListWidth
-        case .menu:
-            // Because the menu has a fraction of the screen's width,
-            // we have to account for that in the offset
-            offset += pageWidth * (1 - deltaCutoff)
-        }
-
-        return offset
-    }
-
-    var boundedTranslation: CGFloat {
-        if (activePage == .yearlyCalendar && translation > 0) ||
-            (activePage == .menu && translation < 0) {
-            return 0
-        }
-        return translation
-    }
-
-    private var gesturesToMask: GestureMask {
-        if scrollState.canDrag {
-            if activePage == .monthlyCalendar && isSwipingLeft {
-                return .gesture
-            } else {
-                return .all
-            }
-        }
-        return .subviews
     }
 
     var body: some View {
@@ -75,7 +36,7 @@ private extension HomeView {
             yearlyCalendarView
                 .frame(width: pageWidth)
             monthlyCalendarView
-                .frame(width: pageWidth - visibleListWidth)
+                .frame(width: pageWidth - listWidthToShowInCalendar)
                 .offset(x: calendarOffset)
                 .zIndex(1)
             visitsPreviewView
@@ -85,15 +46,14 @@ private extension HomeView {
     }
 
     var calendarOffset: CGFloat {
-        let offset: CGFloat
+        var offset: CGFloat
 
         if activePage == .list && isSwipingRight {
-            offset = monthlyCalendarShiftDelta * (translation / screen.width)
+            offset = monthlyCalendarOffsetDistance * delta
         } else if activePage == .monthlyCalendar {
+            offset = listSideBarWidth
             if isSwipingLeft {
-                offset = (monthlyCalendarShiftDelta - visibleListWidth) - (monthlyCalendarShiftDelta * (-translation / screen.width))
-            } else {
-                offset = monthlyCalendarShiftDelta - visibleListWidth
+                offset -= listSideBarWidth * -delta
             }
         } else {
             offset = 0
@@ -125,6 +85,35 @@ private extension HomeView {
 
 private extension HomeView {
 
+    var pageOffset: CGFloat {
+        var offset = -CGFloat(activePage.rawValue) * pageWidth
+
+        switch activePage {
+        case .yearlyCalendar:
+            ()
+        case .monthlyCalendar:
+            offset -= listSideBarWidth
+        case .list:
+            // Because the monthly calendar's width is less than the pageWidth,
+            // we have to account for that
+            offset += listWidthToShowInCalendar
+        case .menu:
+            // Because the menu has a fraction of the screen's width,
+            // we have to account for that in the offset
+            offset += pageWidth * (1 - deltaCutoff)
+        }
+
+        return offset
+    }
+
+    var boundedTranslation: CGFloat {
+        if (activePage == .yearlyCalendar && translation > 0) ||
+            (activePage == .menu && translation < 0) {
+            return 0
+        }
+        return translation
+    }
+
     var pagingGesture: some Gesture {
         DragGesture()
             .updating($stateTransaction) { value, state, _ in
@@ -135,10 +124,15 @@ private extension HomeView {
             }
     }
 
+    var gesturesToMask: GestureMask {
+        if scrollState.canDrag {
+            if activePage == .monthlyCalendar && isSwipingLeft {
+                return .gesture
+            } else {
+                return .all
+            }
+        }
+        return .subviews
+    }
+
 }
-//
-//struct HomeView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        HomeView()
-//    }
-//}
