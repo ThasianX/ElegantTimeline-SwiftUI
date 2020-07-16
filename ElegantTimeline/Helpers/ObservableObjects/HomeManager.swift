@@ -45,7 +45,8 @@ class HomeManager: ObservableObject {
         yearlyCalendarManager.communicator = self
 
         scrollState
-            .onPageChanged { page in
+            .onPageChanged { [weak self] page in
+                guard let `self` = self else { return }
                 if page == .yearlyCalendar {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
                         self.yearlyCalendarManager.scrollToYear(self.monthlyCalendarManager.currentMonth)
