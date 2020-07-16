@@ -11,7 +11,7 @@ struct QuoteView: View {
     var body: some View {
         HStack(spacing: 0) {
             Spacer()
-                .frame(width: VisitPreviewConstants.sideBarWidth + VisitPreviewConstants.sideBarPadding)
+                .frame(width: Constants.List.sideBarWidth + Constants.List.sideBarPadding)
 
             quotePreviewBlock
         }

@@ -3,7 +3,7 @@
 import ElegantCalendar
 import SwiftUI
 
-fileprivate let listSideBarWidth: CGFloat = VisitPreviewConstants.monthYearWidth + VisitPreviewConstants.sideBarWidth + VisitPreviewConstants.sideBarPadding
+fileprivate let listSideBarWidth: CGFloat = Constants.List.monthYearWidth + Constants.List.sideBarWidth + Constants.List.sideBarPadding
 fileprivate let listWidthToShowInCalendar: CGFloat = 15
 fileprivate let monthlyCalendarOffsetDistance: CGFloat = listSideBarWidth + listWidthToShowInCalendar
 

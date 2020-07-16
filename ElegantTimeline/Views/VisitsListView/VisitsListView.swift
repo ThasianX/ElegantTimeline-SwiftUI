@@ -4,7 +4,7 @@ import SwiftUI
 
 struct VisitsListView: View {
 
-    private let timer = Timer.publish(every: VisitPreviewConstants.previewTime,
+    private let timer = Timer.publish(every: Constants.List.previewTime,
                                       on: .main, in: .common).autoconnect()
     @State var visitIndex = 0
 
@@ -14,7 +14,7 @@ struct VisitsListView: View {
     init(visits: [Visit], height: CGFloat) {
         self.visits = visits
 
-        let cellHeightWithPadding = VisitPreviewConstants.Calendar.cellHeight + VisitPreviewConstants.Calendar.cellVerticalPadding*2
+        let cellHeightWithPadding = Constants.Calendar.cellHeight + Constants.Calendar.cellVerticalPadding*2
         numberOfCellsInBlock = Int(height / cellHeightWithPadding)
     }
 

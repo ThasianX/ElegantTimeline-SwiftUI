@@ -28,7 +28,7 @@ struct DayVisitsView: View {
                 }
             }
         }
-        .frame(height: VisitPreviewConstants.blockHeight)
+        .frame(height: Constants.List.blockHeight)
     }
 
     private var todayIndicator: some View {

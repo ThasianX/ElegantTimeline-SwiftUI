@@ -115,8 +115,8 @@ private extension UITableView {
 
         // Both are crucial towards making the scroll smoother and necessary for the tableview
         // to scroll to a specific row properly
-        tableView.rowHeight = VisitPreviewConstants.blockHeight
-        tableView.estimatedRowHeight = VisitPreviewConstants.blockHeight
+        tableView.rowHeight = Constants.List.blockHeight
+        tableView.estimatedRowHeight = Constants.List.blockHeight
 
         tableView.dataSource = source
 

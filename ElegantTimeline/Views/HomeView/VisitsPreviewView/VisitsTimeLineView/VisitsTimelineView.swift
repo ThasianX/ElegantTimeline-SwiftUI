@@ -46,7 +46,7 @@ private extension VisitsTimelineView {
     var listContentMaskingView: some View {
         HStack(spacing: 0) {
             sideBarContentMaskingView
-                .frame(width: VisitPreviewConstants.sideBarWidth + VisitPreviewConstants.sideBarPadding)
+                .frame(width: Constants.List.sideBarWidth + Constants.List.sideBarPadding)
             contentMaskingView(color: appTheme.primary)
         }
     }
@@ -77,7 +77,7 @@ private extension VisitsTimelineView {
                     return
                 }
 
-                if value.startLocation.x < VisitPreviewConstants.monthYearWidth &&
+                if value.startLocation.x < Constants.List.monthYearWidth &&
                     value.startLocation.y < homeButtonThresholdLocation &&
                     self.contentOpacity != 0 {
                     self.sideBarTracker.fastScroll(translation: translation)

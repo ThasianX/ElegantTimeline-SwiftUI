@@ -12,7 +12,7 @@ protocol MonthYearSideBarProvider: ObservableObject {
 }
 
 fileprivate let angle: Angle = .degrees(-90)
-fileprivate let offsetLowerBound: CGFloat = VisitPreviewConstants.listTopPadding
+fileprivate let offsetLowerBound: CGFloat = Constants.List.listTopPadding
 
 struct MonthYearSideBar<Provider>: View where Provider: MonthYearSideBarProvider {
 
@@ -24,11 +24,11 @@ struct MonthYearSideBar<Provider>: View where Provider: MonthYearSideBarProvider
     @ObservedObject var provider: Provider
 
     private var offset1: CGFloat {
-        provider.monthYear1Offset - (size1.height / 2) + VisitPreviewConstants.listTopPadding
+        provider.monthYear1Offset - (size1.height / 2) + Constants.List.listTopPadding
     }
 
     private var offset2: CGFloat {
-        provider.monthYear2Offset - (size2.height / 2) + VisitPreviewConstants.listTopPadding
+        provider.monthYear2Offset - (size2.height / 2) + Constants.List.listTopPadding
     }
 
     var body: some View {
@@ -43,7 +43,7 @@ struct MonthYearSideBar<Provider>: View where Provider: MonthYearSideBarProvider
                 .captureSize(in: $size2)
                 .offset(y: offset2)
         }
-        .frame(width: VisitPreviewConstants.monthYearWidth)
+        .frame(width: Constants.List.monthYearWidth)
     }
 
 }

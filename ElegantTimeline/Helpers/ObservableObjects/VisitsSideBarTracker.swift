@@ -61,7 +61,7 @@ class VisitsSideBarTracker: NSObject, ObservableObject, UITableViewDirectAccess 
     private var notifyDelegate: Bool = true
 
     lazy var startingOffset: CGFloat = {
-        -VisitPreviewConstants.listTopPadding
+        -Constants.List.listTopPadding
     }()
 
     private func adjustedScrollOffset(_ scrollOffset: CGFloat) -> CGFloat {
@@ -75,7 +75,7 @@ class VisitsSideBarTracker: NSObject, ObservableObject, UITableViewDirectAccess 
 
 }
 
-fileprivate let monthScrollDistance = VisitPreviewConstants.blockHeight * 30
+fileprivate let monthScrollDistance = Constants.List.blockHeight * 30
 fileprivate let tableViewContentOffsetDamping: CGFloat = 6
 
 extension VisitsSideBarTracker {
@@ -109,7 +109,7 @@ extension VisitsSideBarTracker {
     }
 
     private func cellOffset(for index: Int) -> CGFloat {
-        startingOffset + (CGFloat(index) * VisitPreviewConstants.blockHeight)
+        startingOffset + (CGFloat(index) * Constants.List.blockHeight)
     }
 
 }
@@ -228,7 +228,7 @@ extension VisitsSideBarTracker: UITableViewDelegate {
     }
 
     private func nearestCellOffset(for scrollOffset: CGFloat) -> CGFloat {
-        let index = Int(round(scrollOffset / VisitPreviewConstants.blockHeight))
+        let index = Int(round(scrollOffset / Constants.List.blockHeight))
         return cellOffset(for: index)
     }
 
@@ -309,7 +309,7 @@ extension VisitsSideBarTracker: UITableViewDelegate {
         // To get the current index, we divide the current scroll offset by the height of the
         // day block, which is constant. By casting the result to an Int, we essentially perform
         // a floor operation, giving us the current day component's index
-        let currentIndex = min(max(Int(scrollOffset / VisitPreviewConstants.blockHeight), 0), descendingDayComponents.count-1)
+        let currentIndex = min(max(Int(scrollOffset / Constants.List.blockHeight), 0), descendingDayComponents.count-1)
         
         let scrolledDayComponent = descendingDayComponents[currentIndex]
         let scrolledMonthYearComponent = scrolledDayComponent.monthAndYear
@@ -492,7 +492,7 @@ private extension Array where Element == DateComponents {
     var pairWithMaxY: [DateComponents: CGFloat] {
         var currentOffset: CGFloat = .zero
         return reduce(into: [DateComponents: CGFloat]()) {
-            currentOffset += VisitPreviewConstants.blockHeight
+            currentOffset += Constants.List.blockHeight
             $0[$1.monthAndYear, default: .zero] = currentOffset
         }
     }
