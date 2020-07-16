@@ -1,5 +1,6 @@
 // Kevin Li - 9:58 PM - 6/1/20
 
+import Combine
 import SwiftUI
 
 protocol VisitsListDelegate {
@@ -21,12 +22,12 @@ extension VisitsListDelegate {
 }
 
 fileprivate let hiddenOffset: CGFloat = screen.height + 100
-// Used in the visitpreviewlist, timeline view
 
 class ListScrollState: NSObject, ObservableObject, UITableViewDirectAccess {
 
     @Published var currentDayComponent: DateComponents = .init()
-    @Published var showFromTodayPopup: Bool = false
+
+    @Published var fromTodayPopupState: FromTodayPopupState = .init()
 
     @Published var monthYear1Component: DateComponents = .init()
     @Published var monthYear1Offset: CGFloat = .zero
@@ -60,8 +61,15 @@ class ListScrollState: NSObject, ObservableObject, UITableViewDirectAccess {
         scrollOffset - startingOffset
     }
 
+    private var cancellables = Set<AnyCancellable>()
+
     init(descendingDayComponents: [DateComponents]) {
         self.descendingDayComponents = descendingDayComponents
+        super.init()
+
+        $currentDayComponent
+            .sink(receiveValue: fromTodayPopupState.dayChanged)
+            .store(in: &cancellables)
     }
 
 }
@@ -175,17 +183,6 @@ extension ListScrollState {
 
 }
 
-extension ListScrollState: FromTodayPopupProvider {
-
-    var weeksFromCurrentMonthToToday: Int {
-        let startOfToday = appCalendar.startOfDay(for: Date())
-        let startOfSelectedDate = appCalendar.startOfDay(for: currentDayComponent.date)
-        let weeks = appCalendar.dateComponents([.weekOfYear], from: startOfToday, to: startOfSelectedDate).weekOfYear!
-        return weeks > 0 ? 0 : abs(weeks)
-    }
-
-}
-
 extension ListScrollState: MonthYearSideBarProvider {}
 
 extension ListScrollState: ScrollToTodayProvider {
@@ -202,13 +199,7 @@ extension ListScrollState: UITableViewDelegate {
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         delegate?.listDidBeginScrolling()
-        if weeksFromCurrentMonthToToday > 3 {
-            DispatchQueue.main.async {
-                withAnimation(.easeInOut) {
-                    self.showFromTodayPopup = true
-                }
-            }
-        }
+        fromTodayPopupState.didBeginDragging()
     }
 
     // Kudos: https://stackoverflow.com/a/20943198/6074750
@@ -228,11 +219,7 @@ extension ListScrollState: UITableViewDelegate {
             delegate?.listDidEndScrolling(dayComponent: currentDayComponent)
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            withAnimation(.easeInOut) {
-                self.showFromTodayPopup = false
-            }
-        }
+        fromTodayPopupState.didEndDragging()
     }
 
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {

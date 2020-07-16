@@ -2,25 +2,50 @@
 
 import SwiftUI
 
-protocol FromTodayPopupProvider: ObservableObject {
+class FromTodayPopupState: ObservableObject {
 
-    var showFromTodayPopup: Bool { get }
-    var weeksFromCurrentMonthToToday: Int { get }
+    @Published var showFromTodayPopup: Bool = false
+    @Published var weeksFromCurrentMonthToToday: Int = 0
+
+    func dayChanged(_ dayComponent: DateComponents) {
+        let startOfToday = appCalendar.startOfDay(for: Date())
+        let startOfSelectedDate = appCalendar.startOfDay(for: dayComponent.date)
+        let weeks = appCalendar.dateComponents([.weekOfYear], from: startOfToday, to: startOfSelectedDate).weekOfYear!
+        weeksFromCurrentMonthToToday = weeks > 0 ? 0 : abs(weeks)
+    }
+
+    func didBeginDragging() {
+        if weeksFromCurrentMonthToToday > 3 {
+            DispatchQueue.main.async {
+                withAnimation(.easeInOut) {
+                    self.showFromTodayPopup = true
+                }
+            }
+        }
+    }
+
+    func didEndDragging() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            withAnimation(.easeInOut) {
+                self.showFromTodayPopup = false
+            }
+        }
+    }
 
 }
 
-struct FromTodayPopupView<Provider>: View where Provider: FromTodayPopupProvider {
+struct FromTodayPopupView: View {
 
-    @ObservedObject var provider: Provider
+    @ObservedObject var state: FromTodayPopupState
 
     var body: some View {
         fromTodayPopupView
-            .scaleEffect(provider.showFromTodayPopup ? 1 : 0)
-            .opacity(provider.showFromTodayPopup ? 1 : 0)
+            .scaleEffect(state.showFromTodayPopup ? 1 : 0)
+            .opacity(state.showFromTodayPopup ? 1 : 0)
     }
 
     private var fromTodayPopupView: some View {
-        let weeksToToday = provider.weeksFromCurrentMonthToToday
+        let weeksToToday = state.weeksFromCurrentMonthToToday
 
         let unitsFromToday: String
         if weeksToToday < 8 {

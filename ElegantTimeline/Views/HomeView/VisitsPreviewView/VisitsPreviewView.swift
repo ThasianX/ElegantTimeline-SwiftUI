@@ -46,7 +46,7 @@ private extension VisitsPreviewView {
     }
 
     var fromTodayPopupView: some View {
-        FromTodayPopupView(provider: listScrollState)
+        FromTodayPopupView(state: listScrollState.fromTodayPopupState)
     }
 
     var scrollToTodayButton: some View {
