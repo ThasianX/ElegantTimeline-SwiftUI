@@ -6,7 +6,7 @@ struct QuoteView: View {
 
     @Environment(\.appTheme) private var appTheme: AppTheme
 
-    @ObservedObject var listScrollState: ListScrollState
+    @ObservedObject var quoteState: QuoteState
 
     var body: some View {
         HStack(spacing: 0) {
@@ -28,15 +28,15 @@ private extension QuoteView {
 
             VStack(alignment: .leading) {
                 headerQuoteText
-                    .opacity(listScrollState.shouldShowHeader ? 1 : 0)
+                    .opacity(quoteState.shouldShowHeader ? 1 : 0)
 
                 Spacer()
 
                 footerQuoteText
-                    .opacity(listScrollState.shouldShowFooter ? 1 : 0)
+                    .opacity(quoteState.shouldShowFooter ? 1 : 0)
             }
             .padding(.horizontal, 24)
-            .offset(y: listScrollState.headerFooterOffset)
+            .offset(y: quoteState.headerFooterOffset)
         }
     }
 

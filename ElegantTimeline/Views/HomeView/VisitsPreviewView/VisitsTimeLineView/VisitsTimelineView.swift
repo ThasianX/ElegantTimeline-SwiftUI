@@ -34,7 +34,7 @@ private extension VisitsTimelineView {
     }
 
     var quoteBackgroundView: some View {
-        QuoteView(listScrollState: listScrollState)
+        QuoteView(quoteState: listScrollState.quoteState)
     }
 
     var visitsPreviewList: some View {

@@ -27,6 +27,7 @@ class ListScrollState: NSObject, ObservableObject, UITableViewDirectAccess {
 
     @Published var fromTodayPopupState: FromTodayPopupState = .init()
     @Published var monthYearSideBarState: MonthYearSideBarState
+    @Published var quoteState: QuoteState = .init()
 
     let descendingDayComponents: [DateComponents]
 
@@ -34,10 +35,6 @@ class ListScrollState: NSObject, ObservableObject, UITableViewDirectAccess {
 
     private var isFastDraggingTimer: Timer? = nil
     private var isFastDragging: Bool = false
-
-    @Published var shouldShowHeader: Bool = false
-    @Published var shouldShowFooter: Bool = false
-    @Published var headerFooterOffset: CGFloat = .zero
 
     var delegate: VisitsListDelegate?
 
@@ -78,6 +75,8 @@ extension ListScrollState {
         monthYearSideBarState.setSideBarOffsetAndMonthYearComponent(
             scrollOffset: .zero,
             monthYearComponent: descendingDayComponents.first!.monthAndYear)
+
+        quoteState.tableView = tableView
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.scrollViewDidEndDecelerating(self.tableView)
@@ -183,8 +182,6 @@ extension ListScrollState: ScrollToTodayProvider {
 
 }
 
-fileprivate let minDragDistanceToShowHeaderOrFooter: CGFloat = 80
-
 extension ListScrollState: UITableViewDelegate {
 
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -236,7 +233,7 @@ extension ListScrollState: UITableViewDelegate {
         let scrolledDayComponent = descendingDayComponents[currentIndex]
         let scrolledMonthYearComponent = scrolledDayComponent.monthAndYear
 
-        determineHeaderAndFooterVisibilityAndOffset(scrollOffset: scrollOffset)
+        quoteState.determineHeaderAndFooterVisibilityAndOffset(scrollOffset: scrollOffset)
 
         monthYearSideBarState.setSideBarOffsetAndMonthYearComponent(
             scrollOffset: scrollOffset,
@@ -244,41 +241,6 @@ extension ListScrollState: UITableViewDelegate {
 
         withAnimation(.spring(response: 0.55, dampingFraction: 0.4)) {
             currentDayComponent = scrolledDayComponent
-        }
-    }
-
-    private func determineHeaderAndFooterVisibilityAndOffset(scrollOffset: CGFloat) {
-        determineHeaderVisibilityAndOffset(for: scrollOffset)
-        determineFooterVisibilityAndOffset(for: scrollOffset)
-    }
-
-    private func determineHeaderVisibilityAndOffset(for offset: CGFloat) {
-        withAnimation(.easeInOut(duration: 0.05)) {
-            shouldShowHeader = offset < -minDragDistanceToShowHeaderOrFooter
-            if shouldShowHeader {
-                headerFooterOffset = -offset / 1.3
-            } else {
-                if !shouldShowFooter {
-                    headerFooterOffset = 0
-                }
-            }
-        }
-    }
-
-    private func determineFooterVisibilityAndOffset(for offset: CGFloat) {
-        let maxVisibleHeight = (listContentHeight < listHeight) ? listContentHeight : listHeight
-        let gapBetweenOffsetAndListEnd = listContentHeight - offset
-        let differenceBetweenVisibleHeightAndGapToEnd = maxVisibleHeight - gapBetweenOffsetAndListEnd
-
-        withAnimation(.easeInOut(duration: 0.05)) {
-            shouldShowFooter = differenceBetweenVisibleHeightAndGapToEnd > minDragDistanceToShowHeaderOrFooter
-            if shouldShowFooter {
-                headerFooterOffset = -(differenceBetweenVisibleHeightAndGapToEnd - minDragDistanceToShowHeaderOrFooter) / 1.3
-            } else {
-                if !shouldShowHeader {
-                    headerFooterOffset = 0
-                }
-            }
         }
     }
 
