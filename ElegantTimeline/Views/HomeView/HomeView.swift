@@ -20,7 +20,7 @@ struct HomeView: View, HomeManagerDirectAccess {
     var body: some View {
         horizontalPagingStack
             .environment(\.appTheme, appTheme)
-            .contentShape(Rectangle())  
+            .contentShape(Rectangle())
             .frame(width: pageWidth, alignment: .leading)
             .offset(x: pageOffset)
             .offset(x: boundedTranslation)
