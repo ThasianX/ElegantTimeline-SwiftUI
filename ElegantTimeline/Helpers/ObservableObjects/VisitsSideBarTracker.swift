@@ -99,7 +99,7 @@ extension VisitsSideBarTracker {
         let startOfTodayForFirstDay = descendingDayComponents.first!.date
 
         // because the list is descending, we reverse the from and to date
-        let index = Calendar.current.dateComponents([.day], from: startOfTodayForDate, to: startOfTodayForFirstDay).day!
+        let index = appCalendar.dateComponents([.day], from: startOfTodayForDate, to: startOfTodayForFirstDay).day!
         let boundedIndex = max(0, index)
 
         scrollTableView(to: cellOffset(for: boundedIndex), animated: false) { [unowned self] in
@@ -187,9 +187,9 @@ extension VisitsSideBarTracker {
 extension VisitsSideBarTracker: FromTodayPopupProvider {
 
     var weeksFromCurrentMonthToToday: Int {
-        let startOfToday = Calendar.current.startOfDay(for: Date())
-        let startOfSelectedDate = Calendar.current.startOfDay(for: currentDayComponent.date)
-        let weeks = Calendar.current.dateComponents([.weekOfYear], from: startOfToday, to: startOfSelectedDate).weekOfYear!
+        let startOfToday = appCalendar.startOfDay(for: Date())
+        let startOfSelectedDate = appCalendar.startOfDay(for: currentDayComponent.date)
+        let weeks = appCalendar.dateComponents([.weekOfYear], from: startOfToday, to: startOfSelectedDate).weekOfYear!
         return weeks > 0 ? 0 : abs(weeks)
     }
 
@@ -513,11 +513,11 @@ private extension Array where Element == DateComponents {
 extension DateComponents {
 
     var addingMonth: DateComponents {
-        Calendar.current.date(byAdding: .month, value: 1, to: date)?.monthYearComponents ?? self
+        appCalendar.date(byAdding: .month, value: 1, to: date)?.monthYearComponents ?? self
     }
 
     var subtractingMonth: DateComponents {
-        Calendar.current.date(byAdding: .month, value: -1, to: date)?.monthYearComponents ?? self
+        appCalendar.date(byAdding: .month, value: -1, to: date)?.monthYearComponents ?? self
     }
 
     func isInSameMonthAndYear(as components: DateComponents) -> Bool {

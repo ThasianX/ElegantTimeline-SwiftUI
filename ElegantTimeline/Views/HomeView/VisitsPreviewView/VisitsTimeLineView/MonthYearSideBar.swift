@@ -62,8 +62,8 @@ private extension MonthYearSideBar {
     }
 
     var isMonthYear1SameMonthAndYearAsToday: Bool {
-        Calendar.current.isDate(provider.monthYear1Component.date, equalTo: Date(), toGranularity: .month) &&
-            Calendar.current.isDate(provider.monthYear1Component.date, equalTo: Date(), toGranularity: .year)
+        appCalendar.isDate(provider.monthYear1Component.date, equalTo: Date(), toGranularity: .month) &&
+            appCalendar.isDate(provider.monthYear1Component.date, equalTo: Date(), toGranularity: .year)
     }
 
     var monthYear1FullMonthWithYear: String {
@@ -86,8 +86,8 @@ private extension MonthYearSideBar {
     }
 
     var isMonthYear2SameMonthAndYearAsToday: Bool {
-        Calendar.current.isDate(provider.monthYear2Component.date, equalTo: Date(), toGranularity: .month) &&
-            Calendar.current.isDate(provider.monthYear2Component.date, equalTo: Date(), toGranularity: .year)
+        appCalendar.isDate(provider.monthYear2Component.date, equalTo: Date(), toGranularity: .month) &&
+            appCalendar.isDate(provider.monthYear2Component.date, equalTo: Date(), toGranularity: .year)
     }
 
     var monthYear2FullMonthWithYear: String {

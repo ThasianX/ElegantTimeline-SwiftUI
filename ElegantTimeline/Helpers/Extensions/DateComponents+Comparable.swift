@@ -9,7 +9,7 @@ extension DateComponents: Comparable {
     }
 
     var date: Date {
-        Calendar.current.date(from: self) ?? Date.distantFuture
+        appCalendar.date(from: self) ?? Date.distantFuture
     }
 
 }

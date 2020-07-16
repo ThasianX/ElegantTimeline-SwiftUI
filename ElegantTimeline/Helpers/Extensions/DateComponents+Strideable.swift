@@ -5,11 +5,11 @@ import Foundation
 extension DateComponents: Strideable {
 
     public func distance(to other: DateComponents) -> Int {
-        return Calendar.current.dateComponents([.day], from: other.date, to: date).day ?? 0
+        appCalendar.dateComponents([.day], from: other.date, to: date).day ?? 0
     }
 
     public func advanced(by n: Int) -> DateComponents {
-        return Calendar.current.date(byAdding: .day, value: n, to: date)?.dateComponents ?? self
+        appCalendar.date(byAdding: .day, value: n, to: date)?.dateComponents ?? self
     }
 
 }

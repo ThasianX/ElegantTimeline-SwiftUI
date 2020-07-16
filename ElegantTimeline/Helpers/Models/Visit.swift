@@ -40,7 +40,7 @@ extension Visit {
     }
 
     static func mocks(start: Date) -> [Visit] {
-        Calendar.current.generateVisits(
+        appCalendar.generateVisits(
             start: start,
             end: Date())
     }
@@ -61,7 +61,7 @@ private extension Calendar {
             matching: .everyDay,
             matchingPolicy: .nextTime) { date, _, stop in
             if let date = date {
-                if Calendar.current.isDateInToday(date) {
+                if isDateInToday(date) {
                     // This is just to guarantee that the today visit block does have visits
                     visits.append(.mock(withDate: date))
                     visits.append(.mock(withDate: date))
