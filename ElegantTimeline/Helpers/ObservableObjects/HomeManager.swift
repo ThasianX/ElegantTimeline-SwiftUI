@@ -37,13 +37,21 @@ class HomeManager: ObservableObject {
     }
 
     private func configureDelegatesAndPublishers() {
-        scrollState.delegate = self
         sideBarTracker.delegate = self
 
         monthlyCalendarManager.datasource = self
         monthlyCalendarManager.delegate = self
         monthlyCalendarManager.communicator = self
         yearlyCalendarManager.communicator = self
+
+        scrollState
+            .onPageChanged { page in
+                if page == .yearlyCalendar {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+                        self.yearlyCalendarManager.scrollToYear(self.monthlyCalendarManager.currentMonth)
+                    }
+                }
+            }
 
         anyCancellable = scrollState.objectWillChange.sink { _ in
             self.objectWillChange.send()
@@ -54,6 +62,7 @@ class HomeManager: ObservableObject {
 
 extension HomeManager: MonthlyCalendarDataSource {
 
+    // TODO: update opacity formula
     func calendar(backgroundColorOpacityForDate date: Date) -> Double {
         Double((visitsProvider.visitsForDayComponents[date.dateComponents]?.count ?? 0) + 2) / 7.0
     }
@@ -93,18 +102,6 @@ extension HomeManager: ElegantCalendarCommunicator {
 
     func showYearlyView() {
         scrollState.scroll(to: .yearlyCalendar)
-    }
-
-}
-
-extension HomeManager: PageScrollStateDelegate {
-
-    func willDisplay(page: Page) {
-        if page == .yearlyCalendar {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                self.yearlyCalendarManager.scrollToYear(self.monthlyCalendarManager.currentMonth)
-            }
-        }
     }
 
 }

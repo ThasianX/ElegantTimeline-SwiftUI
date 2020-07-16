@@ -1,6 +1,6 @@
 // Kevin Li - 8:23 PM - 7/9/20
 
-import ElegantCalendar
+import Combine
 import ElegantPages
 import SwiftUI
 
@@ -25,12 +25,6 @@ fileprivate let calendarEarlySwipe = EarlyCutOffConfiguration(
     pageTurnAnimation: .interactiveSpring(response: 0.35, dampingFraction: 0.86, blendDuration: 0.25))
 fileprivate let minDragDistance: CGFloat = calendarEarlySwipe.pageTurnCutOff / 5
 
-protocol PageScrollStateDelegate {
-
-    func willDisplay(page: Page)
-
-}
-
 class PageScrollState: ObservableObject {
 
     struct TransactionInfo {
@@ -51,19 +45,17 @@ class PageScrollState: ObservableObject {
     let pageWidth: CGFloat = screen.width
     let deltaCutoff: CGFloat = 0.8
 
-    var delegate: PageScrollStateDelegate!
+    private var anyCancellable: AnyCancellable?
 
     func scroll(to page: Page) {
         if activePage.isCalendar && page.isCalendar {
             withAnimation(calendarEarlySwipe.pageTurnAnimation) {
                 activePage = page
             }
-            delegate.willDisplay(page: activePage)
         } else {
             withAnimation(regularTurnAnimation) {
                 activePage = page
             }
-            delegate.willDisplay(page: activePage)
         }
     }
 
@@ -129,8 +121,6 @@ class PageScrollState: ObservableObject {
         translation = .zero
 
         activePage = (direction == .left) ? .yearlyCalendar : .monthlyCalendar
-
-        delegate.willDisplay(page: activePage)
     }
 
     // There is a bug where `onEnded` isn't called for the system supplied `DragGesture`
@@ -176,8 +166,6 @@ class PageScrollState: ObservableObject {
                 activePage = Page(rawValue: min(max(newIndex, Page.monthlyCalendar.rawValue), Page.menu.rawValue))!
                 translation = .zero
             }
-
-            delegate.willDisplay(page: activePage)
         }
     }
 
@@ -186,6 +174,19 @@ class PageScrollState: ObservableObject {
 
         return activePage == .yearlyCalendar ||
             (activePage == .monthlyCalendar && isSwipingTowardsYearlyCalendar)
+    }
+
+}
+
+extension PageScrollState {
+
+    @discardableResult
+    func onPageChanged(_ callback: ((Page) -> Void)?) -> Self {
+        anyCancellable = $activePage.sink { page in
+            callback?(page)
+        }
+
+        return self
     }
 
 }
