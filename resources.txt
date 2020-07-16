@@ -1,0 +1,17 @@
+https://www.hackingwithswift.com/articles/217/complete-guide-to-layout-in-swiftui
+https://swiftui-lab.com/alignment-guides/
+https://swiftui-lab.com/a-powerful-combo/
+https://www.hackingwithswift.com/books/ios-swiftui/triggering-events-repeatedly-using-a-timer
+https://stackoverflow.com/questions/56545444/how-to-remove-highlight-on-tap-of-list-with-swiftui
+https://stackoverflow.com/a/60136737/6074750
+https://gitserver.relocus.ru/mdw/mdw-ios/blob/6755e466441647fb763a3bc08a861edcbdc3dfd3/MDW/MDW/Extensions/Date%20+%20Extensions.swift
+https://stackoverflow.com/questions/56691630/swiftui-state-var-initialization-issue
+https://stackoverflow.com/questions/57121782/scroll-swiftui-list-to-new-selection
+https://github.com/siteline/SwiftUI-Introspect
+https://stackoverflow.com/questions/38454952/map-array-of-objects-to-dictionary-in-swift
+https://stackoverflow.com/a/20943198/6074750
+https://stackoverflow.com/questions/6535450/can-i-animate-the-uiscrollview-contentoffset-property-via-its-layer
+https://holko.pl/2014/07/06/inertia-bouncing-rubber-banding-uikit-dynamics/
+https://stackoverflow.com/questions/20892661/uitableview-scrolltorowatindexpath-scrolls-to-wrong-offset-with-estimatedrowheig
+https://stackoverflow.com/questions/5664787/load-image-from-bundle-with-ios/42505814
+https://stackoverflow.com/questions/34460823/round-double-to-0-5
