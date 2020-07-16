@@ -58,7 +58,7 @@ struct VisitsPreviewList: UIViewRepresentable {
 
         private let parent: VisitsPreviewList
 
-        private var visitsTracker: ListScrollState {
+        private var listScrollState: ListScrollState {
             parent.listScrollState
         }
 
@@ -71,7 +71,7 @@ struct VisitsPreviewList: UIViewRepresentable {
         }
 
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            visitsTracker.descendingDayComponents.count
+            listScrollState.descendingDayComponents.count
         }
 
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
