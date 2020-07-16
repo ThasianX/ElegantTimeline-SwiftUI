@@ -22,4 +22,16 @@ extension UITableViewDirectAccess {
         tableView.adjustedContentInset.bottom
     }
 
+    var listHeight: CGFloat {
+        Constants.List.listHeight
+    }
+
+    var listCenter: CGFloat {
+        listHeight / 2
+    }
+
+    var listContentHeight: CGFloat {
+        tableView.contentSize.height
+    }
+
 }

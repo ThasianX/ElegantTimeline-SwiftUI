@@ -2,33 +2,24 @@
 
 import SwiftUI
 
-protocol MonthYearSideBarProvider: ObservableObject {
-
-    var monthYear1Component: DateComponents { get }
-    var monthYear1Offset: CGFloat { get }
-    var monthYear2Component: DateComponents { get }
-    var monthYear2Offset: CGFloat { get }
-
-}
-
 fileprivate let angle: Angle = .degrees(-90)
 fileprivate let offsetLowerBound: CGFloat = Constants.List.listTopPadding
 
-struct MonthYearSideBar<Provider>: View where Provider: MonthYearSideBarProvider {
+struct MonthYearSideBar: View {
 
     @Environment(\.appTheme) private var appTheme: AppTheme
 
     @State private var size1: CGSize = .zero
     @State private var size2: CGSize = .zero
 
-    @ObservedObject var provider: Provider
+    @ObservedObject var state: MonthYearSideBarState
 
     private var offset1: CGFloat {
-        provider.monthYear1Offset - (size1.height / 2) + Constants.List.listTopPadding
+        state.monthYear1Offset - (size1.height / 2) + Constants.List.listTopPadding
     }
 
     private var offset2: CGFloat {
-        provider.monthYear2Offset - (size2.height / 2) + Constants.List.listTopPadding
+        state.monthYear2Offset - (size2.height / 2) + Constants.List.listTopPadding
     }
 
     var body: some View {
@@ -62,12 +53,12 @@ private extension MonthYearSideBar {
     }
 
     var isMonthYear1SameMonthAndYearAsToday: Bool {
-        appCalendar.isDate(provider.monthYear1Component.date, equalTo: Date(), toGranularity: .month) &&
-            appCalendar.isDate(provider.monthYear1Component.date, equalTo: Date(), toGranularity: .year)
+        appCalendar.isDate(state.monthYear1Component.date, equalTo: Date(), toGranularity: .month) &&
+            appCalendar.isDate(state.monthYear1Component.date, equalTo: Date(), toGranularity: .year)
     }
 
     var monthYear1FullMonthWithYear: String {
-        provider.monthYear1Component.date.fullMonthWithYear
+        state.monthYear1Component.date.fullMonthWithYear
     }
 
 }
@@ -86,12 +77,12 @@ private extension MonthYearSideBar {
     }
 
     var isMonthYear2SameMonthAndYearAsToday: Bool {
-        appCalendar.isDate(provider.monthYear2Component.date, equalTo: Date(), toGranularity: .month) &&
-            appCalendar.isDate(provider.monthYear2Component.date, equalTo: Date(), toGranularity: .year)
+        appCalendar.isDate(state.monthYear2Component.date, equalTo: Date(), toGranularity: .month) &&
+            appCalendar.isDate(state.monthYear2Component.date, equalTo: Date(), toGranularity: .year)
     }
 
     var monthYear2FullMonthWithYear: String {
-        provider.monthYear2Component.date.fullMonthWithYear
+        state.monthYear2Component.date.fullMonthWithYear
     }
 
 }

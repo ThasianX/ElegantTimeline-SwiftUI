@@ -22,9 +22,11 @@ struct Constants {
 
     struct List {
 
+        static let listHeight = screen.height
+
         static let numberOfBlocksOnScreen: Int = 6
         static let blockHeight: CGFloat = {
-            let visibleListHeight = screen.height - Self.listTopPadding
+            let visibleListHeight = Self.listHeight - Self.listTopPadding
             let blockHeight = visibleListHeight / CGFloat(Self.numberOfBlocksOnScreen)
             return blockHeight.floor(nearest: 0.5)
         }()

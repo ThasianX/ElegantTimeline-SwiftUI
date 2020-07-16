@@ -30,7 +30,7 @@ struct VisitsTimelineView: View {
 private extension VisitsTimelineView {
 
     var monthYearSideBarView: some View {
-        MonthYearSideBar(provider: listScrollState)
+        MonthYearSideBar(state: listScrollState.monthYearSideBarState)
     }
 
     var quoteBackgroundView: some View {
