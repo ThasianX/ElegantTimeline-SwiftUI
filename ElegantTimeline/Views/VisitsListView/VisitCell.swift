@@ -17,8 +17,8 @@ struct VisitCell: View {
 
             Spacer()
         }
-        .frame(height: VisitPreviewConstants.Calendar.cellHeight)
-        .padding(.vertical, VisitPreviewConstants.Calendar.cellVerticalPadding)
+        .frame(height: Constants.Calendar.cellHeight)
+        .padding(.vertical, Constants.Calendar.cellVerticalPadding)
     }
 
 }
@@ -28,7 +28,7 @@ private extension VisitCell {
     var tagView: some View {
         RoundedRectangle(cornerRadius: 16)
             .fill(visit.tagColor)
-            .frame(width: 5, height: VisitPreviewConstants.Calendar.cellHeight-4)
+            .frame(width: 5, height: Constants.Calendar.cellHeight-4)
     }
 
     var locationName: some View {

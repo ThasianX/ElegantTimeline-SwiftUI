@@ -1,6 +1,6 @@
 // Kevin Li - 8:23 PM - 7/9/20
 
-import ElegantCalendar
+import Combine
 import ElegantPages
 import SwiftUI
 
@@ -25,12 +25,6 @@ fileprivate let calendarEarlySwipe = EarlyCutOffConfiguration(
     pageTurnAnimation: .interactiveSpring(response: 0.35, dampingFraction: 0.86, blendDuration: 0.25))
 fileprivate let minDragDistance: CGFloat = calendarEarlySwipe.pageTurnCutOff / 5
 
-protocol PageScrollStateDelegate {
-
-    func willDisplay(page: Page)
-
-}
-
 class PageScrollState: ObservableObject {
 
     struct TransactionInfo {
@@ -44,31 +38,31 @@ class PageScrollState: ObservableObject {
 
     @Published var activePage: Page = .list
     @Published var translation: CGFloat = .zero
+    @Published var canDrag = true
 
-    private var isDragging = false
-    private var isTurningPage = false
+    private var isEarlyPageTurn = false
 
     let pageWidth: CGFloat = screen.width
     let deltaCutoff: CGFloat = 0.8
 
-    var delegate: PageScrollStateDelegate!
+    private var anyCancellable: AnyCancellable?
 
     func scroll(to page: Page) {
         if activePage.isCalendar && page.isCalendar {
             withAnimation(calendarEarlySwipe.pageTurnAnimation) {
                 activePage = page
             }
-            delegate.willDisplay(page: activePage)
         } else {
             withAnimation(regularTurnAnimation) {
                 activePage = page
             }
-            delegate.willDisplay(page: activePage)
         }
     }
 
     func horizontalDragChanged(_ value: DragGesture.Value) {
         let horizontalTranslation = value.translation.width
+        // This makes sure that nested vertical gestures that might have a bit of horizontal
+        // translation don't affect paging.
         guard abs(horizontalTranslation) > abs(value.translation.height) else {
             withAnimation(regularTurnAnimation) {
                 translation = .zero
@@ -76,15 +70,16 @@ class PageScrollState: ObservableObject {
             return
         }
 
-        guard !isTurningPage else { return }
+        // For early page turns, after the page turns and the user still has his finger
+        // on the screen, this prevents another page turn when their finger is let go of.
+        // Since there is no way to actually programatically end the gesture, this is
+        // the workaround that I've chosen
+        guard !isEarlyPageTurn else { return }
 
-        if abs(horizontalTranslation) > minDragDistance {
-            isDragging = true
-        }
-
-        if activePage == .yearlyCalendar || (activePage == .monthlyCalendar && horizontalTranslation > 0) {
+        // The early page turn animation should only occur for the calendar pages
+        if isCalendarPageTurn(for: horizontalTranslation) {
             withAnimation(calendarEarlySwipe.pageTurnAnimation) {
-                setTranslationForOffset(horizontalTranslation)
+                setAdjustedTranslationForOffset(horizontalTranslation)
                 turnPageIfNeededForChangingOffset(horizontalTranslation)
             }
         } else {
@@ -94,17 +89,22 @@ class PageScrollState: ObservableObject {
         }
     }
 
-    private func setTranslationForOffset(_ offset: CGFloat) {
-        translation = isTurningPage ? .zero : (offset / calendarEarlySwipe.pageTurnCutOff) * calendarEarlySwipe.scrollResistanceCutOff
+    private func setAdjustedTranslationForOffset(_ offset: CGFloat) {
+        let resistanceAdjustedTranslation = (offset / calendarEarlySwipe.pageTurnCutOff) * calendarEarlySwipe.scrollResistanceCutOff
+        translation = isEarlyPageTurn ? .zero : resistanceAdjustedTranslation
     }
 
     private func turnPageIfNeededForChangingOffset(_ offset: CGFloat) {
-        // swiping right: from the monthly calendar to the yearly calendar
-        if offset > 0 && offset > calendarEarlySwipe.pageTurnCutOff {
+        let isSwipingTowardsYearlyCalendar = offset > 0
+        let isSwipingTowardsMonthlyCalendar = offset < 0
+
+        if isSwipingTowardsYearlyCalendar &&
+            offset > calendarEarlySwipe.pageTurnCutOff {
             guard activePage != .yearlyCalendar else { return }
 
             scroll(direction: .left)
-        } else if offset < 0 && offset < -calendarEarlySwipe.pageTurnCutOff {
+        } else if isSwipingTowardsMonthlyCalendar &&
+            offset < -calendarEarlySwipe.pageTurnCutOff {
             guard activePage != .monthlyCalendar else { return }
 
             scroll(direction: .right)
@@ -112,18 +112,21 @@ class PageScrollState: ObservableObject {
     }
 
     private func scroll(direction: ScrollDirection) {
-        isTurningPage = true // Prevents user drag from continuing
+        // As was said earlier, for an early page turn, during that
+        // page turn process, `onDragChanged` will get called a few more times
+        // because there is simply no way to programmatically end a gesture.
+        // Setting `isEarlyPageTurn` to true prevents those intermediary
+        // calls from actually modifying the code
+        isEarlyPageTurn = true
         translation = .zero
 
-        if direction == .left {
-            activePage = .yearlyCalendar
-        } else {
-            activePage = .monthlyCalendar
-        }
-
-        delegate.willDisplay(page: activePage)
+        activePage = (direction == .left) ? .yearlyCalendar : .monthlyCalendar
     }
 
+    // There is a bug where `onEnded` isn't called for the system supplied `DragGesture`
+    // so implementing a custom `GestureState` helps resolve that issue.
+    // So now, if you drag a page and do some other gesture at the same time, `onEnded`
+    // is properly called, as it should be
     var horizontalGestureState: GestureState<TransactionInfo> {
         GestureState(initialValue: TransactionInfo()) { [weak self] (info, _) in
             self?.horizontalDragEnded(info.dragValue)
@@ -131,31 +134,59 @@ class PageScrollState: ObservableObject {
     }
 
     private func horizontalDragEnded(_ value: DragGesture.Value) {
-        guard isDragging else { return }
-        guard !isTurningPage else {
-            isTurningPage = false
+        // For an early page turn, all the hard work of turning the page and resetting
+        // the translation is actually done in `scroll(direction:)`. So when the user
+        // lets go of their drag gesture after the early page turn ends, all that needs
+        // to be done in `onEnded` is to just reset that state and return
+        guard !isEarlyPageTurn else {
+            isEarlyPageTurn = false
             return
         }
 
-        isDragging = false
-
+        // `predictedEndTranslation` is used instead of `translation` to account for the
+        // velocity that the user drags with
         let horizontalTranslation = value.predictedEndTranslation.width
 
-        if activePage == .yearlyCalendar || (activePage == .monthlyCalendar && horizontalTranslation > 0) {
+        if isCalendarPageTurn(for: horizontalTranslation) {
+            // Since this is a calendar page, this will only get called if
+            // an early page turn isn't completed(user doesn't swipe the
+            // necessary distance for a page turn). So this is just reset
+            // back to whatever page the user swiped from
             withAnimation(calendarEarlySwipe.pageTurnAnimation) {
                 translation = .zero
             }
         } else {
+            // Because we're using the `predictedEndTranslation`, this can be quite a huge number
+            // depending on the velocity so we want to cap the delta as a result
             let pageTurnDelta = (horizontalTranslation / pageWidth).clamped(to: -1...1)
+            // For regular pages, as long as you swipe 50% of the way there, the page will turn
             let newIndex = Int((CGFloat(activePage.rawValue) - pageTurnDelta).rounded())
 
             withAnimation(regularTurnAnimation) {
                 activePage = Page(rawValue: min(max(newIndex, Page.monthlyCalendar.rawValue), Page.menu.rawValue))!
                 translation = .zero
             }
-
-            delegate.willDisplay(page: activePage)
         }
+    }
+
+    private func isCalendarPageTurn(for offset: CGFloat) -> Bool {
+        let isSwipingTowardsYearlyCalendar = offset > 0
+
+        return activePage == .yearlyCalendar ||
+            (activePage == .monthlyCalendar && isSwipingTowardsYearlyCalendar)
+    }
+
+}
+
+extension PageScrollState {
+
+    @discardableResult
+    func onPageChanged(_ callback: ((Page) -> Void)?) -> Self {
+        anyCancellable = $activePage.sink { page in
+            callback?(page)
+        }
+
+        return self
     }
 
 }
@@ -185,7 +216,7 @@ extension PageScrollStateDirectAccess {
     }
 
     var delta: CGFloat {
-        translation / screen.width
+        translation / pageWidth
     }
 
     var isSwipingLeft: Bool {

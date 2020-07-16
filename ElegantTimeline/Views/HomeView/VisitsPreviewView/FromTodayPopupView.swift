@@ -2,25 +2,18 @@
 
 import SwiftUI
 
-protocol FromTodayPopupProvider: ObservableObject {
+struct FromTodayPopupView: View {
 
-    var showFromTodayPopup: Bool { get }
-    var weeksFromCurrentMonthToToday: Int { get }
-
-}
-
-struct FromTodayPopupView<Provider>: View where Provider: FromTodayPopupProvider {
-
-    @ObservedObject var provider: Provider
+    @ObservedObject var state: FromTodayPopupState
 
     var body: some View {
         fromTodayPopupView
-            .scaleEffect(provider.showFromTodayPopup ? 1 : 0)
-            .opacity(provider.showFromTodayPopup ? 1 : 0)
+            .scaleEffect(state.showFromTodayPopup ? 1 : 0)
+            .opacity(state.showFromTodayPopup ? 1 : 0)
     }
 
     private var fromTodayPopupView: some View {
-        let weeksToToday = provider.weeksFromCurrentMonthToToday
+        let weeksToToday = state.weeksFromCurrentMonthToToday
 
         let unitsFromToday: String
         if weeksToToday < 8 {

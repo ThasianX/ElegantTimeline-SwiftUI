@@ -12,8 +12,8 @@ struct DaySideBar: View {
             abbreviatedDayOfWeek
             dayOfMonth
         }
-        .frame(width: VisitPreviewConstants.sideBarWidth)
-        .padding(.trailing, VisitPreviewConstants.sideBarPadding)
+        .frame(width: Constants.List.sideBarWidth)
+        .padding(.trailing, Constants.List.sideBarPadding)
     }
 
 }

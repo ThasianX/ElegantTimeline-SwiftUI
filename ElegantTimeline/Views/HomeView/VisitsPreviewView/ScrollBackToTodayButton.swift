@@ -25,7 +25,7 @@ struct ScrollBackToTodayButton<Provider>: View where Provider: ScrollToTodayProv
     @ObservedObject var provider: Provider
 
     private var isCurrentDayWithinToday: Bool {
-        Calendar.current.isDateInToday(provider.currentDayComponent.date)
+        appCalendar.isDateInToday(provider.currentDayComponent.date)
     }
 
     var body: some View {

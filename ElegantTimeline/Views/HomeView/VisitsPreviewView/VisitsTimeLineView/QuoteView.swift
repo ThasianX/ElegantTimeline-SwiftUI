@@ -6,12 +6,12 @@ struct QuoteView: View {
 
     @Environment(\.appTheme) private var appTheme: AppTheme
 
-    @ObservedObject var sideBarTracker: VisitsSideBarTracker
+    @ObservedObject var quoteState: QuoteState
 
     var body: some View {
         HStack(spacing: 0) {
             Spacer()
-                .frame(width: VisitPreviewConstants.sideBarWidth + VisitPreviewConstants.sideBarPadding)
+                .frame(width: Constants.List.sideBarWidth + Constants.List.sideBarPadding)
 
             quotePreviewBlock
         }
@@ -28,23 +28,23 @@ private extension QuoteView {
 
             VStack(alignment: .leading) {
                 headerQuoteText
-                    .opacity(sideBarTracker.shouldShowHeader ? 1 : 0)
+                    .opacity(quoteState.shouldShowHeader ? 1 : 0)
 
                 Spacer()
 
                 footerQuoteText
-                    .opacity(sideBarTracker.shouldShowFooter ? 1 : 0)
+                    .opacity(quoteState.shouldShowFooter ? 1 : 0)
             }
             .padding(.horizontal, 24)
-            .offset(y: sideBarTracker.headerFooterOffset)
+            .offset(y: quoteState.headerFooterOffset)
         }
     }
 
     var headerQuoteText: some View {
         VStack(alignment: .leading) {
-            Text("Life is not a problem to be solved, but a reality to be experienced.")
+            Text("If you're not failing, you're probably not really moving forward.")
                 .font(.footnote)
-            Text("-Soren Kierkegaard")
+            Text("-John Maxwell")
                 .font(.caption)
                 .italic()
         }
@@ -52,9 +52,9 @@ private extension QuoteView {
 
     var footerQuoteText: some View {
         VStack(alignment: .leading) {
-            Text("Life is a series of natural and spontaneous changes. Don't resist them--that only creates sorrow. Let reality be reality. Let things flow naturally forward in whatever way they like.")
+            Text("Why worry about things you can't control when you can keep yourself busy controlling the things that depend on you?")
                 .font(.footnote)
-            Text("-Lao Tzu")
+            Text("-John Maxwell")
                 .font(.caption)
                 .italic()
         }

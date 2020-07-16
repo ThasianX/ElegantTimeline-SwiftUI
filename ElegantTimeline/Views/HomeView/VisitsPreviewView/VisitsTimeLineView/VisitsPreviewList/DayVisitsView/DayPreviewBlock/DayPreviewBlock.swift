@@ -13,8 +13,8 @@ struct DayPreviewBlock: View {
     let isFilled: Bool
 
     private var range: Range<Int> {
-        let exclusiveEndIndex = visitIndex + VisitPreviewConstants.numberOfCellsInBlock
-        guard visits.count > VisitPreviewConstants.numberOfCellsInBlock &&
+        let exclusiveEndIndex = visitIndex + Constants.List.numberOfCellsInBlock
+        guard visits.count > Constants.List.numberOfCellsInBlock &&
             exclusiveEndIndex <= visits.count else {
             return visitIndex..<visits.count
         }
@@ -26,18 +26,18 @@ struct DayPreviewBlock: View {
             backgroundColor
             if !visits.isEmpty {
                 visitsPreviewList
-                    .padding(.horizontal, VisitPreviewConstants.blockHorizontalPadding)
+                    .padding(.horizontal, Constants.List.blockHorizontalPadding)
                     .animation(.easeInOut)
             }
         }
-        .frame(height: VisitPreviewConstants.blockHeight)
+        .frame(height: Constants.List.blockHeight)
         .onReceive(autoTimer) { _ in
             self.shiftActivePreviewVisitIndex()
         }
     }
 
     private func shiftActivePreviewVisitIndex() {
-        let startingVisitIndexOfNextSlide = visitIndex + VisitPreviewConstants.numberOfCellsInBlock
+        let startingVisitIndexOfNextSlide = visitIndex + Constants.List.numberOfCellsInBlock
         let startingVisitIndexOfNextSlideIsValid = startingVisitIndexOfNextSlide < visits.count
         visitIndex = startingVisitIndexOfNextSlideIsValid ? startingVisitIndexOfNextSlide : 0
     }
@@ -53,7 +53,7 @@ private extension DayPreviewBlock {
     var visitsPreviewList: some View {
         VStack(spacing: 0) {
             Spacer()
-            VStack(spacing: VisitPreviewConstants.cellSpacing) {
+            VStack(spacing: Constants.List.cellSpacing) {
                 ForEach(visits[range]) { visit in
                     VisitPreviewCell(visit: visit)
                         .transition(.slideFadeLeading)
@@ -61,7 +61,7 @@ private extension DayPreviewBlock {
             }
             Spacer()
         }
-        .frame(height: VisitPreviewConstants.blockHeight)
+        .frame(height: Constants.List.blockHeight)
     }
 
 }

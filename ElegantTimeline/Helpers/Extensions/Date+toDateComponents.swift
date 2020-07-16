@@ -5,11 +5,11 @@ import Foundation
 extension Date {
 
     var dateComponents: DateComponents {
-        Calendar.current.dateComponents([.day, .month, .year], from: self)
+        appCalendar.dateComponents([.day, .month, .year], from: self)
     }
 
     var monthYearComponents: DateComponents {
-        Calendar.current.dateComponents([.month, .year], from: self)
+        appCalendar.dateComponents([.month, .year], from: self)
     }
     
 }

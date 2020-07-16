@@ -40,11 +40,11 @@ struct VisitsPreviewList: UIViewRepresentable {
     typealias UIViewType = UITableView
 
     let visitsProvider: VisitsProvider
-    let sideBarTracker: VisitsSideBarTracker
+    let listScrollState: ListScrollState
 
     func makeUIView(context: Context) -> UITableView {
         let tableView = UITableView.visitsPreview(source: context.coordinator)
-        sideBarTracker.attach(to: tableView)
+        listScrollState.attach(to: tableView)
         return tableView
     }
 
@@ -58,8 +58,8 @@ struct VisitsPreviewList: UIViewRepresentable {
 
         private let parent: VisitsPreviewList
 
-        private var visitsTracker: VisitsSideBarTracker {
-            parent.sideBarTracker
+        private var listScrollState: ListScrollState {
+            parent.listScrollState
         }
 
         private var visitsProvider: VisitsProvider {
@@ -71,7 +71,7 @@ struct VisitsPreviewList: UIViewRepresentable {
         }
 
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            visitsTracker.descendingDayComponents.count
+            listScrollState.descendingDayComponents.count
         }
 
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -115,8 +115,8 @@ private extension UITableView {
 
         // Both are crucial towards making the scroll smoother and necessary for the tableview
         // to scroll to a specific row properly
-        tableView.rowHeight = VisitPreviewConstants.blockHeight
-        tableView.estimatedRowHeight = VisitPreviewConstants.blockHeight
+        tableView.rowHeight = Constants.List.blockHeight
+        tableView.estimatedRowHeight = Constants.List.blockHeight
 
         tableView.dataSource = source
 

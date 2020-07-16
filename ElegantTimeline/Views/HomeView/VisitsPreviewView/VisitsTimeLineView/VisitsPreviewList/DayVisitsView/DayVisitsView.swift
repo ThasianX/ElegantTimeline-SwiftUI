@@ -12,7 +12,7 @@ struct DayVisitsView: View {
     let isFilled: Bool
 
     private var isDateInToday: Bool {
-        Calendar.current.isDateInToday(date)
+        appCalendar.isDateInToday(date)
     }
 
     var body: some View {
@@ -28,7 +28,7 @@ struct DayVisitsView: View {
                 }
             }
         }
-        .frame(height: VisitPreviewConstants.blockHeight)
+        .frame(height: Constants.List.blockHeight)
     }
 
     private var todayIndicator: some View {

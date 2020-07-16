@@ -7,7 +7,7 @@ typealias AutoTimer = Publishers.Autoconnect<Timer.TimerPublisher>
 
 struct TimerKey: EnvironmentKey {
 
-    static let defaultValue: AutoTimer = Timer.publish(every: VisitPreviewConstants.previewTime,
+    static let defaultValue: AutoTimer = Timer.publish(every: Constants.List.previewTime,
                                                        on: .main,
                                                        in: .common).autoconnect()
 
