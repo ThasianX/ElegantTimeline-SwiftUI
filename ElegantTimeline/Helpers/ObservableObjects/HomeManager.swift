@@ -4,8 +4,6 @@ import Combine
 import ElegantCalendar
 import SwiftUI
 
-let appCalendar = Calendar.current
-
 class HomeManager: ObservableObject {
 
     @Published var scrollState: PageScrollState = .init()
