@@ -42,9 +42,9 @@ private extension QuoteView {
 
     var headerQuoteText: some View {
         VStack(alignment: .leading) {
-            Text("Life is not a problem to be solved, but a reality to be experienced.")
+            Text("If you're not failing, you're probably not really moving forward.")
                 .font(.footnote)
-            Text("-Soren Kierkegaard")
+            Text("-John Maxwell")
                 .font(.caption)
                 .italic()
         }
@@ -52,9 +52,9 @@ private extension QuoteView {
 
     var footerQuoteText: some View {
         VStack(alignment: .leading) {
-            Text("Life is a series of natural and spontaneous changes. Don't resist them--that only creates sorrow. Let reality be reality. Let things flow naturally forward in whatever way they like.")
+            Text("Why worry about things you can't control when you can keep yourself busy controlling the things that depend on you?")
                 .font(.footnote)
-            Text("-Lao Tzu")
+            Text("-John Maxwell")
                 .font(.caption)
                 .italic()
         }
