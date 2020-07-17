@@ -5,18 +5,18 @@
         "package": "ElegantCalendar",
         "repositoryURL": "https://github.com/ThasianX/ElegantCalendar",
         "state": {
-          "branch": "feature/custom-width",
-          "revision": "00fb8b06ce7756faca19797a1c29bcad4811c6a2",
-          "version": null
+          "branch": null,
+          "revision": "a14d1f2e6f9cf2a23d3f0f8c450c1f0990e43148",
+          "version": "4.1.0"
         }
       },
       {
         "package": "ElegantPages",
         "repositoryURL": "https://github.com/ThasianX/ElegantPages",
         "state": {
-          "branch": "custom-width",
-          "revision": "9c6066505607064ff32dcb7d4072306a59dbebe6",
-          "version": null
+          "branch": null,
+          "revision": "7eb457484e04375d7e6a3ca442a98cbe75ead7b0",
+          "version": "1.4.0"
         }
       }
     ]
