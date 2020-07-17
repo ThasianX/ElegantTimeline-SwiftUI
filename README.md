@@ -2,9 +2,9 @@
 
 `ElegantTimeline` is a SwiftUI demonstration of a multi-faceted timline view with interactions between the calendar, list, and app theme. 
 
-If you are a developer, this repository is meant for you. Down below, I've listed all the features this demonstration app includes so you can learn more about a feature you're interested in implementing yourself.
+If you are a developer or designer, this repository is meant for you. Down below, I've listed all the features this demonstration app includes so you can learn more about a feature you're interested in implementing yourself.
 
-ALSO, please do this repository justice and run it on an actual device. Depending on how good your Mac is, you may not have the best experience since this demonstration does do some pretty hardcore renders :). The app will also look better if you run it on an iPhone X or above. The list snaps to the nearest cell based on the top notch bezel. How cool is that.
+ALSO, please do this repository justice and run it on an actual device. It will look so much more elegant with the bezels and rounded corners and run smoother as the simulator isn't suited for hardcore renders like deez. Also, the app will look better if you run it on an iPhone X or above. The list snaps to the nearest cell based on the top notch bezel. How cool is that.
 
 **The GIFs may take a while to load depending on your internet speed. If you want to view an individual GIF, just click it.**
 
