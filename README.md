@@ -25,6 +25,8 @@ Also, make sure to check out [TimePrints](https://github.com/ThasianX/TimePrints
 
 What you can learn: 
   - Custom gestures for different page turns: the calendar has a different animation for its page turn than the other views
+  - The paging animation when you move from the list to the menu view: rounding the corners and decreasing the height of the list view
+    - This feature actually gave me a headache. If you actually try to round the corners of the list view itself, the list gets offset and all kinds of wack happens. I've actually reduced all the sideeffects by just layering a view with a transparent inner `RoundedRectangle` with its edges in black.
   - Use of `GestureMask` while paging
   - Animating and offsetting the monthly calendar properly to have that bit of list background showing to the right
   - Overlaying the list and configuring opacity to achieve a smooth fade effect while paging
@@ -34,6 +36,7 @@ What you can learn:
  
 Relevant code:
   - [HomeView](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/master/ElegantTimeline/Views/HomeView/HomeView.swift): The root view that acts as the page view. You can command click into all the other views from here.
+  - [ResizingOverlayView](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/master/ElegantTimeline/Views/HomeView/VisitsPreviewView/ResizingOverlayView.swift): The view behind the list to menu animation.
   - [PageScrollState](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/master/ElegantTimeline/Helpers/ObservableObjects/PageScrollState.swift): Logic behind different animations for different page turns
   
 ### SideBar that tracks current month and year + Visits slideshow list + Weeks/Months ago popup
