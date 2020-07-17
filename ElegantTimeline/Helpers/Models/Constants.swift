@@ -22,7 +22,10 @@ struct Constants {
 
         static let listHeight = screen.height
 
-        static let numberOfBlocksOnScreen: Int = 6
+        static let numberOfBlocksOnScreen: Int = {
+            hasTopNotch ? 6 : 5
+        }()
+
         static let blockHeight: CGFloat = {
             let visibleListHeight = Self.listHeight - Self.listTopPadding
             let blockHeight = visibleListHeight / CGFloat(Self.numberOfBlocksOnScreen)
@@ -40,11 +43,19 @@ struct Constants {
         static let sideBarWidth: CGFloat = 35
         static let sideBarPadding: CGFloat = 4
 
-        // TODO: Need to refine this for different phones
-        static let listTopPadding: CGFloat = statusBarHeight - 18 // iphone 11
+        // 31 is a number I got after some experimentation using various iPhones
+        static let listTopPadding: CGFloat = {
+            hasTopNotch ? 31 : 0
+        }()
 
     }
 
+}
+
+// Basically, if iPhoneX and above or not. For iPhoneX, the list snaps the nearest cell
+// to the iPhone's top notch. Super cool if you ask me
+private var hasTopNotch: Bool {
+    UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.safeAreaInsets.top ?? 0 > 20
 }
 
 private extension CGFloat {
