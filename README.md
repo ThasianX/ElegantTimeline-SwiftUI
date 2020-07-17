@@ -6,7 +6,7 @@ If you are a developer, this repository is meant for you. Down below, I've liste
 
 ALSO, please do this repository justice and run it on an actual device. Depending on how good your Mac is, you may not have the best experience since this demonstration does do some pretty hardcore renders :). The app will also look better if you run it on an iPhone X or above. The list snaps to the nearest cell based on the top notch bezel. How cool is that.
 
-The GIFs may take a while to load depending on your internet speed. If you want to view an individual GIF, just click it.
+**The GIFs may take a while to load depending on your internet speed. If you want to view an individual GIF, just click it.**
 
 <br/>
 

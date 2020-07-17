@@ -3,8 +3,6 @@
 import Foundation
 import UIKit
 
-// TODO: Add app icon later
-
 let screen = UIScreen.main.bounds
 let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
 let statusBarHeight = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? .zero
