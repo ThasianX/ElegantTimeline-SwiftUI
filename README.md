@@ -8,9 +8,10 @@ ALSO, please do this repository justice and run it on an actual device. It will 
 
 **The GIFs may take a while to load depending on your internet speed. If you want to view an individual GIF, just click it.**
 
-<br/>
-
 <img src="https://github.com/ThasianX/GIFs/blob/master/ElegantTimeline/demo.gif" width="300"/> 
+
+#### I'm also working on a new library called [ElegantColorPicker](https://github.com/ThasianX/ElegantColorPicker). The eventual goal is to have the same effect as below. So watch that repository if you're interested. 
+<img src="https://github.com/ThasianX/GIFs/blob/master/ElegantColorPicker/timepage-colorpicker-demo.gif" width="300"/>
 
 ## Introduction
 
