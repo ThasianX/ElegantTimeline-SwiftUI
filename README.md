@@ -6,8 +6,6 @@ If you are a developer or designer, this repository is meant for you. Down below
 
 ALSO, please do this repository justice and run it on an actual device. It will look so much more elegant with the bezels and rounded corners and run smoother as the simulator isn't suited for hardcore renders like deez. Also, the app will look better if you run it on an iPhone X or above. The list snaps to the nearest cell based on the top notch bezel. How cool is that.
 
-**The GIFs may take a while to load depending on your internet speed. If you want to view an individual GIF, just click it.**
-
 <img src="https://github.com/ThasianX/GIFs/blob/master/ElegantTimeline/demo.gif" width="300"/> 
 
 #### I'm also working on a new library called [ElegantColorPicker](https://github.com/ThasianX/ElegantColorPicker). The eventual goal is to have the same effect as below. So watch that repository if you're interested. 
@@ -21,8 +19,10 @@ Also, make sure to check out [TimePrints](https://github.com/ThasianX/TimePrints
 
 ## Features
 
+**Click the image to go to the embedded youtube video**
+
 ### Paging + Theme Change
-<img src="https://github.com/ThasianX/GIFs/blob/master/ElegantTimeline/paging-theme-change-demo.gif" width="300"/>
+[<img src="Screenshots/paging-theme.png" width="30%">](https://www.youtube.com/watch?v=ZoYg1BM9ckY)
 
 What you can learn: 
   - Custom gestures for different page turns: the calendar has a different animation for its page turn than the other views
@@ -41,7 +41,7 @@ Relevant code:
   - [PageScrollState](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/master/ElegantTimeline/Helpers/ObservableObjects/PageScrollState.swift): Logic behind different animations for different page turns
   
 ### SideBar that tracks current month and year + Visits slideshow list + Weeks/Months ago popup
-<img src="https://github.com/ThasianX/GIFs/blob/master/ElegantTimeline/list-scroll-demo.gif" width="300"/>
+[<img src="Screenshots/list-scroll.png" width="30%">](https://www.youtube.com/watch?v=V6FX4XTXgJc)
 
 What you can learn: 
   - The SideBar really is just 2 `Text` that are juggled depending on the current offset. So you can see the logic behind that
@@ -56,7 +56,7 @@ Relevant code:
   - [FromTodayPopupView](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/master/ElegantTimeline/Views/HomeView/VisitsPreviewView/FromTodayPopupView.swift)
   
 ### Monthly Calendar and list interaction
-<img src="https://github.com/ThasianX/GIFs/blob/master/ElegantTimeline/monthly-calendar-list-interaction-demo.gif" width="300"/>
+[<img src="Screenshots/monthly-calendar-list.png" width="30%">](https://www.youtube.com/watch?v=Lyay084Pjuw)
 
 What you can learn: 
   - The interaction
@@ -73,7 +73,7 @@ Relevant code:
   - [ListScrollState](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/master/ElegantTimeline/Helpers/ObservableObjects/ListScrollState.swift): Implements the necessary `UITableViewDelegate` methods for this to work 
 
 ### Yearly Calendar and list interaction
-<img src="https://github.com/ThasianX/GIFs/blob/master/ElegantTimeline/yearly-calendar-list-interaction-demo.gif" width="300"/>
+[<img src="Screenshots/yearly-calendar-list.png" width="30%">](https://www.youtube.com/watch?v=Lc4uCDbri3M)
 
 What you can learn: 
   - The interaction
@@ -87,7 +87,7 @@ Relevant code:
   - [ListScrollState](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/master/ElegantTimeline/Helpers/ObservableObjects/ListScrollState.swift): Implements the necessary `UITableViewDelegate` methods for this to work 
 
 ### Fast Scrolling
-<img src="https://github.com/ThasianX/GIFs/blob/master/ElegantTimeline/fast-scroll-demo.gif" width="300"/>
+[<img src="Screenshots/fast-scroll.png" width="30%">](https://www.youtube.com/watch?v=Bh26YVNtrGY)
 
 What you can learn: 
   - How it works
@@ -104,7 +104,7 @@ Relevant code:
   - [VisitsTimelineView](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/master/ElegantTimeline/Views/HomeView/VisitsPreviewView/VisitsTimeLineView/VisitsTimelineView.swift): Fast scrolling gesture originates here
   
 ### Scrolling back to today
-<img src="https://github.com/ThasianX/GIFs/blob/master/ElegantTimeline/scroll-back-to-today-demo.gif" width="300"/>
+[<img src="Screenshots/scroll-back-to-today.png" width="30%">](https://www.youtube.com/watch?v=uFuSwcdO4K8)
 
 What you can learn: 
   - The custom scale animation that occurs when you tap the button and the fade out animation afterwards
@@ -115,7 +115,7 @@ Relevant code:
   - [ListScrollState](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/master/ElegantTimeline/Helpers/ObservableObjects/ListScrollState.swift): Logic behind scrolling back to today
   
 ### Header and footer quote
-<img src="https://github.com/ThasianX/GIFs/blob/master/ElegantTimeline/header-footer-quote-demo.gif" width="300"/>
+[<img src="Screenshots/header-footer.png" width="30%">](https://www.youtube.com/watch?v=RdyOjXkFQI4)
 
 What you can learn: 
   - Just a pretty cool easter egg I added. Based off of the current list's scroll offset and whether it's scrolled past its edges or not
