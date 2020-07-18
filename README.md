@@ -19,7 +19,7 @@ Also, make sure to check out [TimePrints](https://github.com/ThasianX/TimePrints
 
 ## Features
 
-**Click the image to go to the embedded youtube video**
+**The screenshots below link to embedded youtube videos demonstrating the feature even further**
 
 ### Paging + Theme Change
 [<img src="Screenshots/paging-theme.png" width="30%">](https://www.youtube.com/watch?v=ZoYg1BM9ckY)
