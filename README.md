@@ -6,8 +6,6 @@ If you are a developer or designer, this repository is meant for you. Down below
 
 ALSO, please do this repository justice and run it on an actual device. It will look so much more elegant with the bezels and rounded corners and run smoother as the simulator isn't suited for hardcore renders like deez. Also, the app will look better if you run it on an iPhone X or above. The list snaps to the nearest cell based on the top notch bezel. How cool is that.
 
-**The GIFs may take a while to load depending on your internet speed. If you want to view an individual GIF, just click it.**
-
 <img src="https://github.com/ThasianX/GIFs/blob/master/ElegantTimeline/demo.gif" width="300"/> 
 
 #### I'm also working on a new library called [ElegantColorPicker](https://github.com/ThasianX/ElegantColorPicker). The eventual goal is to have the same effect as below. So watch that repository if you're interested. 
@@ -20,6 +18,8 @@ ALSO, please do this repository justice and run it on an actual device. It will 
 Also, make sure to check out [TimePrints](https://github.com/ThasianX/TimePrints), an app that I'm working on that'll utilize this UI for visits tracking. Funny thing is, I've been so busy developing the components that eventually be implemented inside my app that I haven't actually worked much on my app in the past month.
 
 ## Features
+
+**Click the image to go to the embedded youtube video**
 
 ### Paging + Theme Change
 [<img src="Screenshots/paging-theme.png" width="30%">](https://www.youtube.com/watch?v=ZoYg1BM9ckY)
