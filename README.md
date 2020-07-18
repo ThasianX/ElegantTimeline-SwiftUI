@@ -22,7 +22,7 @@ Also, make sure to check out [TimePrints](https://github.com/ThasianX/TimePrints
 ## Features
 
 ### Paging + Theme Change
-<img src="https://github.com/ThasianX/GIFs/blob/master/ElegantTimeline/paging-theme-change-demo.gif" width="300"/>
+[![Paging Theme Change](https://img.youtube.com/vi/ZoYg1BM9ckY/0.jpg)](https://www.youtube.com/watch?v=ZoYg1BM9ckY)
 
 What you can learn: 
   - Custom gestures for different page turns: the calendar has a different animation for its page turn than the other views
