@@ -8,8 +8,10 @@ ALSO, please do this repository justice and run it on an actual device. It will 
 
 <img src="https://github.com/ThasianX/GIFs/blob/master/ElegantTimeline/demo.gif" width="300"/> 
 
-#### I'm also working on a new library called [ElegantColorPicker](https://github.com/ThasianX/ElegantColorPicker). The eventual goal is to have the same effect as below. So watch that repository if you're interested. 
-<img src="https://github.com/ThasianX/GIFs/blob/master/ElegantColorPicker/timepage-colorpicker-demo.gif" width="300"/>
+## Requirements
+
+- iOS 13.1+(Weird bug on iOS 13.0 with  SwiftUI.AccessibilityNode`)
+- Xcode 11.4+(Swift 5.2)
 
 ## Introduction
 
@@ -122,11 +124,6 @@ What you can learn:
 
 Relevant code:
   - [QuoteView](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/master/ElegantTimeline/Views/HomeView/VisitsPreviewView/VisitsTimeLineView/QuoteView.swift)
-  
-## Requirements
-
-- iOS 13.0+
-- Xcode 11.0+
 
 ## Resources
 
