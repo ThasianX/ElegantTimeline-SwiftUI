@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/ThasianX/ElegantCalendar",
         "state": {
           "branch": null,
-          "revision": "a14d1f2e6f9cf2a23d3f0f8c450c1f0990e43148",
-          "version": "4.1.0"
+          "revision": "112afd0e1c81edc3d4cc222e237359250548eaa0",
+          "version": "4.2.0"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/ThasianX/ElegantPages",
         "state": {
           "branch": null,
-          "revision": "7eb457484e04375d7e6a3ca442a98cbe75ead7b0",
-          "version": "1.4.0"
+          "revision": "47d166799f2313ad9e47c9c22687021d396d940f",
+          "version": "1.4.1"
         }
       }
     ]
