@@ -41,6 +41,7 @@ private extension HomeView {
                 .zIndex(1)
             visitsPreviewView
             menuView
+            themePickerView
         }
         .environmentObject(scrollState)
     }
@@ -78,7 +79,11 @@ private extension HomeView {
     }
 
     var menuView: some View {
-        MenuView(changeTheme: changeTheme)
+        MenuView()
+    }
+
+    var themePickerView: some View {
+        ThemePickerView(changeTheme: changeTheme)
     }
 
 }
@@ -97,7 +102,7 @@ private extension HomeView {
             // Because the monthly calendar's width is less than the pageWidth,
             // we have to account for that
             offset += listWidthToShowInCalendar
-        case .menu:
+        case .menu, .themePicker:
             // Because the menu has a fraction of the screen's width,
             // we have to account for that in the offset
             offset += pageWidth * (1 - deltaCutoff)

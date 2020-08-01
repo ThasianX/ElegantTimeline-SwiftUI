@@ -37,6 +37,7 @@ private extension ResizingOverlayView {
     var centerPageHeight: CGFloat {
         // Center page's height should only be modified for the center and last page
         guard !activePage.isCalendar else { return centerMaxHeight }
+        guard activePage != .themePicker else { return centerMinHeight }
 
         if isSwipingLeft {
             // If we're at the last page and we're swiping left into the empty
@@ -77,6 +78,7 @@ private extension ResizingOverlayView {
     var centerCornerRadius: CGFloat {
         // Corner radius should only start being modified for the center and last page
         guard !activePage.isCalendar else { return centerMinRadius }
+        guard activePage != .themePicker else { return centerMaxRadius }
 
         if isSwipingLeft {
             // If we're at the last page and we're swiping left into the empty

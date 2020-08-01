@@ -11,6 +11,9 @@
 		1E15AC6F24AEA01800623E98 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E15AC6E24AEA01800623E98 /* HomeView.swift */; };
 		1E15AC7324AEA18C00623E98 /* HomeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E15AC7224AEA18C00623E98 /* HomeManager.swift */; };
 		1E161B0024D5F7A300CA2B7F /* ElegantCalendar.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E161AFF24D5F7A300CA2B7F /* ElegantCalendar.xcassets */; };
+		1E161B0324D5FF3400CA2B7F /* ElegantColorPalette in Frameworks */ = {isa = PBXBuildFile; productRef = 1E161B0224D5FF3400CA2B7F /* ElegantColorPalette */; };
+		1E161B0624D5FF5000CA2B7F /* ThemePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E161B0524D5FF5000CA2B7F /* ThemePickerView.swift */; };
+		1E161B0824D6034A00CA2B7F /* PaletteSegmentedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E161B0724D6034A00CA2B7F /* PaletteSegmentedView.swift */; };
 		1E1EBE0424AF0C5E00FBBD41 /* Calendar+DateOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1EBE0324AF0C5E00FBBD41 /* Calendar+DateOperations.swift */; };
 		1E5017FB2488B4C1002496DE /* View+CaptureSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5017FA2488B4C1002496DE /* View+CaptureSize.swift */; };
 		1E66EC3824AC19CD0070F16E /* EnvironmentKey+Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E66EC3724AC19CD0070F16E /* EnvironmentKey+Timer.swift */; };
@@ -63,6 +66,8 @@
 		1E15AC6E24AEA01800623E98 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		1E15AC7224AEA18C00623E98 /* HomeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeManager.swift; sourceTree = "<group>"; };
 		1E161AFF24D5F7A300CA2B7F /* ElegantCalendar.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = ElegantCalendar.xcassets; path = ../../../SourcePackages/checkouts/ElegantCalendar/ElegantCalendar.xcassets; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E161B0524D5FF5000CA2B7F /* ThemePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePickerView.swift; sourceTree = "<group>"; };
+		1E161B0724D6034A00CA2B7F /* PaletteSegmentedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteSegmentedView.swift; sourceTree = "<group>"; };
 		1E1EBE0324AF0C5E00FBBD41 /* Calendar+DateOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+DateOperations.swift"; sourceTree = "<group>"; };
 		1E5017FA2488B4C1002496DE /* View+CaptureSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+CaptureSize.swift"; sourceTree = "<group>"; };
 		1E66EC3724AC19CD0070F16E /* EnvironmentKey+Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentKey+Timer.swift"; sourceTree = "<group>"; };
@@ -119,12 +124,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E0D92E024A52355007F41DE /* ElegantCalendar in Frameworks */,
+				1E161B0324D5FF3400CA2B7F /* ElegantColorPalette in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1E161B0424D5FF4000CA2B7F /* ThemePickerView */ = {
+			isa = PBXGroup;
+			children = (
+				1E161B0524D5FF5000CA2B7F /* ThemePickerView.swift */,
+				1E161B0724D6034A00CA2B7F /* PaletteSegmentedView.swift */,
+			);
+			path = ThemePickerView;
+			sourceTree = "<group>";
+		};
 		1E8A3DD7248557C200CBA65E = {
 			isa = PBXGroup;
 			children = (
@@ -200,6 +215,7 @@
 				1E15AC6E24AEA01800623E98 /* HomeView.swift */,
 				1E995B0224A69C3C00F436BE /* VisitsPreviewView */,
 				1E67992824AEB1C300C18735 /* MenuView.swift */,
+				1E161B0424D5FF4000CA2B7F /* ThemePickerView */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -328,6 +344,7 @@
 			name = ElegantTimeline;
 			packageProductDependencies = (
 				1E0D92DF24A52355007F41DE /* ElegantCalendar */,
+				1E161B0224D5FF3400CA2B7F /* ElegantColorPalette */,
 			);
 			productName = TrackableList;
 			productReference = 1E8A3DE0248557C200CBA65E /* ElegantTimeline.app */;
@@ -359,6 +376,7 @@
 			mainGroup = 1E8A3DD7248557C200CBA65E;
 			packageReferences = (
 				1E0D92DE24A52355007F41DE /* XCRemoteSwiftPackageReference "ElegantCalendar" */,
+				1E161B0124D5FF3400CA2B7F /* XCRemoteSwiftPackageReference "ElegantColorPalette" */,
 			);
 			productRefGroup = 1E8A3DE1248557C200CBA65E /* Products */;
 			projectDirPath = "";
@@ -389,6 +407,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E8A3DFA24855E6400CBA65E /* Date+toString.swift in Sources */,
+				1E161B0824D6034A00CA2B7F /* PaletteSegmentedView.swift in Sources */,
 				1EC22FEA24C03FB00095F3C3 /* QuoteState.swift in Sources */,
 				1E15AC6F24AEA01800623E98 /* HomeView.swift in Sources */,
 				1E67992924AEB1C300C18735 /* MenuView.swift in Sources */,
@@ -424,6 +443,7 @@
 				1E995AF924A573BC00F436BE /* LightDarkThemePreview.swift in Sources */,
 				1E8A3E0324858AF900CBA65E /* Dictionary+SortedKeys.swift in Sources */,
 				1E5017FB2488B4C1002496DE /* View+CaptureSize.swift in Sources */,
+				1E161B0624D5FF5000CA2B7F /* ThemePickerView.swift in Sources */,
 				1E8A3DE6248557C200CBA65E /* SceneDelegate.swift in Sources */,
 				1E8A3E0124858A9B00CBA65E /* DateComponents+Comparable.swift in Sources */,
 				1EBDB47924AAA71D00F0C3E5 /* QuoteView.swift in Sources */,
@@ -636,6 +656,14 @@
 				minimumVersion = 4.2.0;
 			};
 		};
+		1E161B0124D5FF3400CA2B7F /* XCRemoteSwiftPackageReference "ElegantColorPalette" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ThasianX/ElegantColorPalette";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -643,6 +671,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1E0D92DE24A52355007F41DE /* XCRemoteSwiftPackageReference "ElegantCalendar" */;
 			productName = ElegantCalendar;
+		};
+		1E161B0224D5FF3400CA2B7F /* ElegantColorPalette */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1E161B0124D5FF3400CA2B7F /* XCRemoteSwiftPackageReference "ElegantColorPalette" */;
+			productName = ElegantColorPalette;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

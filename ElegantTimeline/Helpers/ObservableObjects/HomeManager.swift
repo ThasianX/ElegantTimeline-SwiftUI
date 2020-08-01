@@ -154,8 +154,11 @@ extension HomeManagerDirectAccess {
         manager.monthlyCalendarManager
     }
 
+    // TODO: modify this so lag doesn't occur. Lag is only occuring bc of changing the color theme of the calendar
     func changeTheme(to theme: AppTheme) {
-        manager.appTheme = theme
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.manager.appTheme = theme
+        }
     }
 
 }

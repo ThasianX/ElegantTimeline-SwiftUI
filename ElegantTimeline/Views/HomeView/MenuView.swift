@@ -2,22 +2,23 @@
 
 import SwiftUI
 
+fileprivate let menuOptions = ["What's New", "Search", "RSVP", "Smart Alerts", "Siri Shortcuts", "Preferences", "Themes", "User Guides", "Help & Support", "About", "My Account"]
+
 struct MenuView: View, PageScrollStateDirectAccess {
 
     @EnvironmentObject var scrollState: PageScrollState
-    let changeTheme: (AppTheme) -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 15) {
+        VStack(alignment: .leading, spacing: 24) {
             header
-            themePickerList
+            menuOptionsStack
         }
-        .padding(.leading, 24)
+        .padding(.leading, 30)
         .rotation3DEffect(menuRotationAngle,
                           axis: (x: 0, y: 10.0, z: 0),
                           anchor: .leading)
         .opacity(menuOpacity)
-        .frame(width: pageWidth * deltaCutoff)
+        .frame(width: pageWidth * deltaCutoff, alignment: .leading)
     }
 
 }
@@ -27,59 +28,31 @@ private extension MenuView {
     var header: some View {
         HStack(spacing: 4) {
             Text("ELEGANT")
-                .font(.system(size: 30, weight: .semibold))
+                .font(.system(size: 28, weight: .semibold))
             Text("TIMELINE")
-                .font(.system(size: 30, weight: .light))
+                .font(.system(size: 28, weight: .light))
         }
-        .padding(.bottom, 5)
     }
 
-    var themePickerList: some View {
-        VStack(alignment: .leading, spacing: 25) {
-            ForEach(AppTheme.allThemes, id: \.self) {
-                AppThemePickerCell(theme: $0, onTap: self.changeTheme)
+    var menuOptionsStack: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            ForEach(menuOptions, id: \.self) { option in
+                self.makeText(for: option)
             }
         }
     }
 
-}
-
-struct AppThemePickerCell: View {
-
-    let theme: AppTheme
-    let onTap: (AppTheme) -> Void
-
-    var body: some View {
-        HStack {
-            pickerContent
-            Spacer()
-        }
+    private func makeText(for option: String) -> some View {
+        Text(option)
+            .font(.system(size: 18, weight: .light))
+            .onTapGesture {
+                self.menuOptionTapped(option)
+            }
     }
 
-    private var pickerContent: some View {
-        HStack(spacing: 16) {
-            Circle()
-                .fill(theme.primary)
-                .frame(width: 25, height: 25)
-
-            Text(theme.name)
-                .font(.system(size: 18))
-        }
-        .padding(12)
-        .contentShape(Rectangle())
-        .background(roundedComplementaryBackground)
-        .onTapGesture(perform: setTheme)
-    }
-
-    private var roundedComplementaryBackground: some View {
-        RoundedRectangle(cornerRadius: 16, style: .circular)
-            .fill(theme.complementary)
-            .opacity(0.7)
-    }
-
-    private func setTheme() {
-        withAnimation(.easeInOut(duration: 1)) {
-            onTap(theme)
+    private func menuOptionTapped(_ option: String) {
+        if option == "Themes" {
+            self.scrollState.scroll(to: .themePicker)
         }
     }
 
@@ -91,8 +64,9 @@ fileprivate let menuOpenDegrees: Double = 0
 private extension MenuView {
 
     var menuRotationAngle: Angle {
-        // Center page's height should only be modified for the center and last page
+        // Menu's rotation angle should only be modified for the list and menu page
         guard !activePage.isCalendar else { return .init(degrees: menuClosedDegrees) }
+        guard activePage != .themePicker else { return .init(degrees: menuOpenDegrees) }
 
         if isSwipingLeft {
             // If we're at the last page and we're swiping left into the empty
@@ -132,6 +106,7 @@ private extension MenuView {
     var menuOpacity: Double {
         // Menu page's opacity should only be modified when either the center or menu is active
         guard !activePage.isCalendar else { return menuClosedOpacity }
+        guard activePage != .themePicker else { return menuOpenOpacity }
 
         if isSwipingLeft {
             // If we're at the last page and we're swiping left into the empty
@@ -167,7 +142,8 @@ private extension MenuView {
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {
         DarkThemePreview {
-            MenuView(changeTheme: { _ in })
+            MenuView()
+                .environmentObject(PageScrollState())
         }
     }
 }

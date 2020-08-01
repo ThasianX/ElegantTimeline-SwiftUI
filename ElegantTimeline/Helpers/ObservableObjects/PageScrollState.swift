@@ -10,6 +10,7 @@ enum Page: Int {
     case monthlyCalendar = 1
     case list = 2
     case menu = 3
+    case themePicker = 4
 
     var isCalendar: Bool {
         self == .yearlyCalendar || self == .monthlyCalendar
@@ -43,7 +44,7 @@ class PageScrollState: ObservableObject {
     private var isEarlyPageTurn = false
 
     let pageWidth: CGFloat = screen.width
-    let deltaCutoff: CGFloat = 0.8
+    let deltaCutoff: CGFloat = 0.75
 
     private var anyCancellable: AnyCancellable?
 
@@ -53,6 +54,7 @@ class PageScrollState: ObservableObject {
                 activePage = page
             }
         } else {
+            // TODO: Should use a different animation when going to/from the color picker
             withAnimation(regularTurnAnimation) {
                 activePage = page
             }
@@ -83,6 +85,7 @@ class PageScrollState: ObservableObject {
                 turnPageIfNeededForChangingOffset(horizontalTranslation)
             }
         } else {
+            // TODO: Logic here needs to be different for the color picker. It should limit based on the drag gesture's start location + be an early cutoff animation
             withAnimation(regularTurnAnimation) {
                 translation = horizontalTranslation
             }

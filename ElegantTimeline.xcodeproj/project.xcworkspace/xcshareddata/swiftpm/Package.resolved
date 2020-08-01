@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "ElegantColorPalette",
+        "repositoryURL": "https://github.com/ThasianX/ElegantColorPalette",
+        "state": {
+          "branch": null,
+          "revision": "5ac2966335eb35a3dd0dee04f99d0e8abd4c449a",
+          "version": "1.2.0"
+        }
+      },
+      {
         "package": "ElegantPages",
         "repositoryURL": "https://github.com/ThasianX/ElegantPages",
         "state": {
