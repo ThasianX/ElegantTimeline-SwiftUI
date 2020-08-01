@@ -7,21 +7,27 @@ struct ThemePickerView: View, PageScrollStateDirectAccess {
 
     @EnvironmentObject var scrollState: PageScrollState
 
-    @State private var selectedPalette: PaletteSelection = .color
-    @State private var selectedColor: PaletteColor? = nil
+    @State private var selectedColor: PaletteColor?
 
-    let changeTheme: (AppTheme) -> Void
+    init(currentTheme: AppTheme) {
+        let paletteColor = PaletteColor(name: currentTheme.name, uiColor: currentTheme.primaryuiColor)
+        _selectedColor = State(initialValue: paletteColor)
+    }
 
-    // TODO: Fix the slight offset of this view
+    // TODO: Fix the slight offset of this view. Should probably only change the app theme once i exit out of this view
     var body: some View {
         VStack(spacing: 0) {
             headerView
                 .padding(.bottom, 20)
             separatorView
-            paletteWithSegmentedView
-                .edgesIgnoringSafeArea(.bottom)
+            if scrollState.activePage == .themePicker {
+                paletteView
+                    .edgesIgnoringSafeArea(.bottom)
+            } else {
+                Spacer()
+            }
         }
-        .padding(.top, 32)
+        .padding(.top, 64)
         .frame(width: pageWidth, alignment: .center)
     }
 }
@@ -29,9 +35,26 @@ struct ThemePickerView: View, PageScrollStateDirectAccess {
 private extension ThemePickerView {
 
     var headerView: some View {
-        Text("THEMES")
-            .font(.headline)
-            .tracking(2)
+        HStack {
+            backButton
+            Spacer()
+            Text("THEMES")
+                .font(.headline)
+                .tracking(2)
+            Spacer()
+        }
+        .padding(.horizontal, 32)
+    }
+
+    var backButton: some View {
+        Button(action: {
+            self.scrollState.scroll(to: .menu)
+        }) {
+            Image.arrowLeft
+                .resizable()
+                .frame(width: 20, height: 20)
+                .foregroundColor(selectedColor!.color)
+        }
     }
 
     var separatorView: some View {
@@ -42,33 +65,16 @@ private extension ThemePickerView {
             .padding(.horizontal, 32)
     }
 
-    var paletteWithSegmentedView: some View {
-        ZStack(alignment: .top) {
-            paletteView
-            paletteSegmentedView
-        }
-    }
-
-    var paletteSegmentedView: some View {
-        PaletteSegmentedView(selectedPalette: $selectedPalette,
-                             selectedColor: selectedColor)
-    }
-
     var paletteView: some View {
         ColorPaletteBindingView(
             selectedColor: $selectedColor,
-            colors: isColorPaletteSelected ? PaletteColor.allColors : PaletteColor.allBwColors)
-            .didSelectColor { self.changeTheme(self.appTheme(for: $0)) }
+            colors: AppTheme.allPaletteColors)
     }
 
-    var isColorPaletteSelected: Bool {
-        selectedPalette == .color
-    }
+}
 
-    func appTheme(for paletteColor: PaletteColor) -> AppTheme {
-        AppTheme(name: paletteColor.name,
-                 primary: paletteColor.color,
-                 complementary: paletteColor.color)
-    }
+private extension AppTheme {
+
+    static let allPaletteColors = Self.allThemes.map { PaletteColor(name: $0.name, uiColor: $0.primaryuiColor) }
 
 }

@@ -83,7 +83,7 @@ private extension HomeView {
     }
 
     var themePickerView: some View {
-        ThemePickerView(changeTheme: changeTheme)
+        ThemePickerView(currentTheme: appTheme)
     }
 
 }
