@@ -10,6 +10,7 @@
 		1E0D92E024A52355007F41DE /* ElegantCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 1E0D92DF24A52355007F41DE /* ElegantCalendar */; };
 		1E15AC6F24AEA01800623E98 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E15AC6E24AEA01800623E98 /* HomeView.swift */; };
 		1E15AC7324AEA18C00623E98 /* HomeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E15AC7224AEA18C00623E98 /* HomeManager.swift */; };
+		1E161B0024D5F7A300CA2B7F /* ElegantCalendar.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E161AFF24D5F7A300CA2B7F /* ElegantCalendar.xcassets */; };
 		1E1EBE0424AF0C5E00FBBD41 /* Calendar+DateOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1EBE0324AF0C5E00FBBD41 /* Calendar+DateOperations.swift */; };
 		1E5017FB2488B4C1002496DE /* View+CaptureSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5017FA2488B4C1002496DE /* View+CaptureSize.swift */; };
 		1E66EC3824AC19CD0070F16E /* EnvironmentKey+Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E66EC3724AC19CD0070F16E /* EnvironmentKey+Timer.swift */; };
@@ -55,13 +56,13 @@
 		1EC22FE824C03F470095F3C3 /* FromTodayPopupState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC22FE724C03F470095F3C3 /* FromTodayPopupState.swift */; };
 		1EC22FEA24C03FB00095F3C3 /* QuoteState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC22FE924C03FB00095F3C3 /* QuoteState.swift */; };
 		1EE035E824B298B500DE6850 /* UITableViewDirectAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE035E724B298B500DE6850 /* UITableViewDirectAccess.swift */; };
-		1EE7DDB024BD5BF5008BA2EC /* ElegantCalendar.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1EE7DDAF24BD5BF5008BA2EC /* ElegantCalendar.xcassets */; };
 		1EFC6BC724BFE197002B96D7 /* Date+DaysFromToday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFC6BC624BFE197002B96D7 /* Date+DaysFromToday.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1E15AC6E24AEA01800623E98 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		1E15AC7224AEA18C00623E98 /* HomeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeManager.swift; sourceTree = "<group>"; };
+		1E161AFF24D5F7A300CA2B7F /* ElegantCalendar.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = ElegantCalendar.xcassets; path = ../../../SourcePackages/checkouts/ElegantCalendar/ElegantCalendar.xcassets; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E1EBE0324AF0C5E00FBBD41 /* Calendar+DateOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+DateOperations.swift"; sourceTree = "<group>"; };
 		1E5017FA2488B4C1002496DE /* View+CaptureSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+CaptureSize.swift"; sourceTree = "<group>"; };
 		1E66EC3724AC19CD0070F16E /* EnvironmentKey+Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentKey+Timer.swift"; sourceTree = "<group>"; };
@@ -109,7 +110,6 @@
 		1EC22FE724C03F470095F3C3 /* FromTodayPopupState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FromTodayPopupState.swift; sourceTree = "<group>"; };
 		1EC22FE924C03FB00095F3C3 /* QuoteState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteState.swift; sourceTree = "<group>"; };
 		1EE035E724B298B500DE6850 /* UITableViewDirectAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewDirectAccess.swift; sourceTree = "<group>"; };
-		1EE7DDAF24BD5BF5008BA2EC /* ElegantCalendar.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = ElegantCalendar.xcassets; path = "${BUILD_DIR}/../../SourcePackages/checkouts/ElegantCalendar/ElegantCalendar.xcassets"; sourceTree = "<group>"; };
 		1EFC6BC624BFE197002B96D7 /* Date+DaysFromToday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+DaysFromToday.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,7 +128,7 @@
 		1E8A3DD7248557C200CBA65E = {
 			isa = PBXGroup;
 			children = (
-				1EE7DDAF24BD5BF5008BA2EC /* ElegantCalendar.xcassets */,
+				1E161AFF24D5F7A300CA2B7F /* ElegantCalendar.xcassets */,
 				1E8A3DE2248557C200CBA65E /* ElegantTimeline */,
 				1E8A3DE1248557C200CBA65E /* Products */,
 			);
@@ -377,7 +377,7 @@
 				1E8A3DF0248557C300CBA65E /* LaunchScreen.storyboard in Resources */,
 				1E8A3DED248557C300CBA65E /* Preview Assets.xcassets in Resources */,
 				1E8A3DEA248557C300CBA65E /* Assets.xcassets in Resources */,
-				1EE7DDB024BD5BF5008BA2EC /* ElegantCalendar.xcassets in Resources */,
+				1E161B0024D5F7A300CA2B7F /* ElegantCalendar.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -633,7 +633,7 @@
 			repositoryURL = "https://github.com/ThasianX/ElegantCalendar";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 4.1.0;
+				minimumVersion = 4.2.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
