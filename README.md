@@ -4,7 +4,7 @@
 
 If you are a developer or designer, this repository is meant for you. Down below, I've listed all the features this demonstration app includes so you can learn more about a feature you're interested in implementing yourself.
 
-ALSO, please do this repository justice and run it on an actual device. It will look so much more elegant with the bezels and rounded corners and run smoother as the simulator isn't suited for hardcore renders like deez. Also, the app will look better if you run it on an iPhone X or above. The list snaps to the nearest cell based on the top notch bezel. How cool is that.
+ALSO, please do this repository justice and run it on an actual device. It will look so much more elegant with the bezels and rounded corners and run smoother as the simulator isn't suited for hardcore renders like deez. The app is compatible and looks good on any iPhone but for best experience, run it on an iPhone X or above. The list snaps to the nearest cell based on the top notch bezel. How cool is that.
 
 <img src="https://github.com/ThasianX/GIFs/blob/master/ElegantTimeline/demo.gif" width="300"/> 
 
