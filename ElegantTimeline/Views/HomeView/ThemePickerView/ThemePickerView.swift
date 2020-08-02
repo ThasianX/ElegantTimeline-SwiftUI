@@ -14,18 +14,14 @@ struct ThemePickerView: View, PageScrollStateDirectAccess {
         _selectedColor = State(initialValue: paletteColor)
     }
 
-    // TODO: Fix the slight offset of this view. Should probably only change the app theme once i exit out of this view
+    // TODO: Should probably only change the app theme once i exit out of this view
     var body: some View {
         VStack(spacing: 0) {
             headerView
                 .padding(.bottom, 20)
             separatorView
-            if scrollState.activePage == .themePicker {
-                paletteView
-                    .edgesIgnoringSafeArea(.bottom)
-            } else {
-                Spacer()
-            }
+            paletteView
+                .edgesIgnoringSafeArea(.bottom)
         }
         .padding(.top, 64)
         .frame(width: pageWidth, alignment: .center)
@@ -68,7 +64,7 @@ private extension ThemePickerView {
     var paletteView: some View {
         ColorPaletteBindingView(
             selectedColor: $selectedColor,
-            colors: AppTheme.allPaletteColors)
+            colors: (scrollState.activePage == .themePicker) ? AppTheme.allPaletteColors : [])
     }
 
 }

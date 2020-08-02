@@ -102,10 +102,14 @@ private extension HomeView {
             // Because the monthly calendar's width is less than the pageWidth,
             // we have to account for that
             offset += listWidthToShowInCalendar
-        case .menu, .themePicker:
+        case .menu:
             // Because the menu has a fraction of the screen's width,
             // we have to account for that in the offset
             offset += pageWidth * (1 - deltaCutoff)
+        case .themePicker:
+            // Accounts for the menu and the monthly calendar's width difference
+            // to the screen width
+            offset += pageWidth * (1 - deltaCutoff) + listWidthToShowInCalendar
         }
 
         return offset
