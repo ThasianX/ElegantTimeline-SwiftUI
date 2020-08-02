@@ -16,15 +16,18 @@ struct ThemePickerView: View, PageScrollStateDirectAccess {
 
     // TODO: Should probably only change the app theme once i exit out of this view
     var body: some View {
-        VStack(spacing: 0) {
-            headerView
-                .padding(.bottom, 20)
-            separatorView
-            paletteView
-                .edgesIgnoringSafeArea(.bottom)
+        ZStack {
+            VStack(spacing: 0) {
+                headerView
+                    .padding(.bottom, 20)
+                separatorView
+                paletteView
+            }
+            .padding(.top, 64)
+
+            backGestureOverlay
         }
-        .padding(.top, 64)
-        .frame(width: pageWidth, alignment: .center)
+        .frame(width: pageWidth)
     }
 }
 
@@ -65,6 +68,25 @@ private extension ThemePickerView {
         ColorPaletteBindingView(
             selectedColor: $selectedColor,
             colors: (scrollState.activePage == .themePicker) ? AppTheme.allPaletteColors : [])
+    }
+
+    var backGestureOverlay: some View {
+        HStack {
+            Rectangle()
+                .fill(Color.clear)
+                .frame(width: 30)
+                .contentShape(Rectangle())
+                .gesture(
+                    DragGesture()
+                        .onChanged { value in
+                            if value.startLocation.x < 30 &&
+                                value.translation.width > 20 {
+                                self.scrollState.scroll(to: .menu)
+                            }
+                        }
+                )
+            Spacer()
+        }
     }
 
 }

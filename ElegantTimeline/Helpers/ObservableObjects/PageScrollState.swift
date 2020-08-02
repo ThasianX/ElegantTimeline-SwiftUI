@@ -44,7 +44,7 @@ class PageScrollState: ObservableObject {
     private var isEarlyPageTurn = false
 
     let pageWidth: CGFloat = screen.width
-    let deltaCutoff: CGFloat = 0.75
+    let deltaCutoff: CGFloat = 0.8
 
     private var anyCancellable: AnyCancellable?
 
