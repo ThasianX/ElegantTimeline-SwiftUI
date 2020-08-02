@@ -10,8 +10,8 @@ ALSO, please do this repository justice and run it on an actual device. It will 
 
 ## Requirements
 
-- iOS 13.1+(Weird bug on iOS 13.0 with  SwiftUI.AccessibilityNode`)
-- Xcode 11.4+(Swift 5.2)
+- iOS 13.1+(Weird bug on iOS 13.0 with SwiftUI.AccessibilityNode`)
+- Xcode 11
 
 ## Introduction
 
@@ -24,7 +24,7 @@ Also, make sure to check out [TimePrints](https://github.com/ThasianX/TimePrints
 **The screenshots below link to embedded youtube videos demonstrating the feature even further**
 
 ### Paging + Theme Change
-[<img src="Screenshots/paging-theme.png" width="30%">](https://www.youtube.com/watch?v=ZoYg1BM9ckY)
+[<img src="Screenshots/paging-theme.png" width="30%">](https://www.youtube.com/watch?v=4QAHiKmmnjQ)
 
 What you can learn: 
   - Custom gestures for different page turns: the calendar has a different animation for its page turn than the other views
@@ -35,12 +35,13 @@ What you can learn:
   - Overlaying the list and configuring opacity to achieve a smooth fade effect while paging
   - Animating and rotating a partial screen menu
   - The animation behind the theme change
-  - Propogation of new theme down to all subviews
+  - Propogation of new theme down to all subviews. Actually quite tricky because if you propogate new theme changes everytime you select a new theme, there'll be a lot of lag. Thus, theme propogation happens as the user exits the theme picker view. But again, propogation doesn't apply immediately to all the views. First, it propogates the new theme to the list overlay view, as rerendering that view with a new theme is super quick. Doing so allows the spring transition animation to remain stable and only after the animation completes is the calendar's theme rerendered(which is more render intensive).
  
 Relevant code:
   - [HomeView](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/master/ElegantTimeline/Views/HomeView/HomeView.swift): The root view that acts as the page view. You can command click into all the other views from here.
   - [ResizingOverlayView](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/master/ElegantTimeline/Views/HomeView/VisitsPreviewView/ResizingOverlayView.swift): The view behind the list to menu animation.
   - [PageScrollState](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/master/ElegantTimeline/Helpers/ObservableObjects/PageScrollState.swift): Logic behind different animations for different page turns
+  - [HomeManager](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/master/ElegantTimeline/Helpers/ObservableObjects/HomeManager.swift): Logic behind the theme propogation.
   
 ### SideBar that tracks current month and year + Visits slideshow list + Weeks/Months ago popup
 [<img src="Screenshots/list-scroll.png" width="30%">](https://www.youtube.com/watch?v=V6FX4XTXgJc)
