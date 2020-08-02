@@ -12,15 +12,26 @@ struct ResizingOverlayView: View, PageScrollStateDirectAccess {
 
     var body: some View {
         VStack(spacing: 0) {
+            // Used to capture top areas that the black stroke border can't reach
             Color.black
                 .edgesIgnoringSafeArea(.top)
 
-            // transparent content layer. This is used to round the corners of the content as the
-            // menu appears
-            RoundedRectangle(cornerRadius: centerCornerRadius, style: .continuous)
-                .stroke(Color.black, style: StrokeStyle(lineWidth: strokeWidth, lineCap: .round, lineJoin: .round))
-                .frame(width: pageWidth + strokeWidth, height: centerPageHeight + 60)
+            // This is used to round the corners of the list content as the menu appears.
+            // The magic number belows were obtained after testing on various sized phones
+            // and determining the best overall trim that fits all of them
+            ZStack {
+                RoundedRectangle(cornerRadius: centerCornerRadius, style: .continuous)
+                    .trim(from: -0.9, to: 0.2)
+                    .stroke(Color.black, lineWidth: strokeWidth)
+                    .frame(width: pageWidth + strokeWidth, height: centerPageHeight + 60)
 
+                RoundedRectangle(cornerRadius: centerCornerRadius, style: .continuous)
+                    .trim(from: 0.44, to: 0.7)
+                    .stroke(Color.black, lineWidth: strokeWidth)
+                    .frame(width: pageWidth + strokeWidth, height: centerPageHeight + 60)
+            }
+
+            // Used to capture bottom areas that the black stroke border can't reach
             Color.black
                 .edgesIgnoringSafeArea(.bottom)
         }
@@ -37,6 +48,7 @@ private extension ResizingOverlayView {
     var centerPageHeight: CGFloat {
         // Center page's height should only be modified for the center and last page
         guard !activePage.isCalendar else { return centerMaxHeight }
+        guard activePage != .themePicker else { return centerMinHeight }
 
         if isSwipingLeft {
             // If we're at the last page and we're swiping left into the empty
@@ -77,6 +89,7 @@ private extension ResizingOverlayView {
     var centerCornerRadius: CGFloat {
         // Corner radius should only start being modified for the center and last page
         guard !activePage.isCalendar else { return centerMinRadius }
+        guard activePage != .themePicker else { return centerMaxRadius }
 
         if isSwipingLeft {
             // If we're at the last page and we're swiping left into the empty

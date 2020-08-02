@@ -1,5 +1,6 @@
 // Kevin Li - 4:07 PM - 7/2/20
 
+import ElegantColorPalette
 import ElegantCalendar
 import SwiftUI
 
@@ -19,7 +20,6 @@ struct HomeView: View, HomeManagerDirectAccess {
 
     var body: some View {
         horizontalPagingStack
-            .environment(\.appTheme, appTheme)
             .contentShape(Rectangle())
             .frame(width: pageWidth, alignment: .leading)
             .offset(x: pageOffset)
@@ -37,15 +37,22 @@ private extension HomeView {
                 .frame(width: pageWidth)
             monthlyCalendarView
                 .frame(width: pageWidth - listWidthToShowInCalendar)
-                .offset(x: calendarOffset)
-                .zIndex(1)
+                .offset(x: monthlyCalendarOffset)
+                .zIndex(2) // Should take overlapping precedence over the visits view
             visitsPreviewView
+                .zIndex(1) // Should take overlapping precedence over the menu view
             menuView
+                .offset(x: menuOffset)
+            themePickerView
+                .offset(x: themePickerOffset)
+                .zIndex(1) // Should take overlapping precedence over the menu and visits view
         }
         .environmentObject(scrollState)
     }
 
-    var calendarOffset: CGFloat {
+    // Gives the monthly calendar the layering effect over the visits view
+    // Also accounts for the slight bit of the visits view background that's visible
+    var monthlyCalendarOffset: CGFloat {
         var offset: CGFloat
 
         if activePage == .list && isSwipingRight {
@@ -62,23 +69,46 @@ private extension HomeView {
         return offset
     }
 
+    // Gives the menu a disappearing effect as the theme picker comes into view
+    var menuOffset: CGFloat {
+        (activePage == .themePicker) ? -pageWidth : 0
+    }
+
+    // Gives the theme picker the entrace effect as it becomes visible
+    var themePickerOffset: CGFloat {
+        var offset: CGFloat
+
+        if activePage == .themePicker {
+            offset = -(pageWidth * deltaCutoff) + listWidthToShowInCalendar
+        } else {
+            offset = 0
+        }
+
+        return offset
+    }
+
     var yearlyCalendarView: some View {
         YearlyCalendarView(calendarManager: yearlyCalendarManager)
-            .theme(CalendarTheme(primary: appTheme.primary))
+            .theme(calendarTheme)
     }
 
     var monthlyCalendarView: some View {
         MonthlyCalendarView(calendarManager: monthlyCalendarManager)
-            .theme(CalendarTheme(primary: appTheme.primary))
+            .theme(calendarTheme)
     }
 
     var visitsPreviewView: some View {
         VisitsPreviewView(visitsProvider: visitsProvider,
                           listScrollState: listScrollState)
+            .environment(\.appTheme, appTheme)
     }
 
     var menuView: some View {
-        MenuView(changeTheme: changeTheme)
+        MenuView()
+    }
+
+    var themePickerView: some View {
+        ThemePickerView(currentTheme: appTheme, changeTheme: changeTheme)
     }
 
 }
@@ -98,9 +128,12 @@ private extension HomeView {
             // we have to account for that
             offset += listWidthToShowInCalendar
         case .menu:
-            // Because the menu has a fraction of the screen's width,
-            // we have to account for that in the offset
-            offset += pageWidth * (1 - deltaCutoff)
+            // Accounts for leaving a bit of the list view background visible
+            offset += pageWidth * (1 - deltaCutoff) + listWidthToShowInCalendar
+        case .themePicker:
+            // Offsets the tiny portion of the list view out of bounds. The `themePickerOffset`
+            // accounts for the entrance animation
+            offset += pageWidth
         }
 
         return offset
@@ -125,7 +158,7 @@ private extension HomeView {
     }
 
     var gesturesToMask: GestureMask {
-        if scrollState.canDrag {
+        if scrollState.canDrag && activePage != .themePicker {
             if activePage == .monthlyCalendar && isSwipingLeft {
                 return .gesture
             } else {

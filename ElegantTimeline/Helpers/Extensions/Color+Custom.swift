@@ -4,30 +4,6 @@ import SwiftUI
 
 extension Color {
 
-    static let brilliantViolet = Color("brilliantViolet")
-    static let brilliantVioletComplement = Color("brilliantVioletComplement")
-
-    static let kiwiGreen = Color("kiwiGreen")
-    static let kiwiGreenComplement = Color("kiwiGreenComplement")
-
-    static let mauvePurple = Color("mauvePurple")
-    static let mauvePurpleComplement = Color("mauvePurpleComplement")
-
-    static let royalBlue = Color("royalBlue")
-    static let royalBlueComplement = Color("royalBlueComplement")
-
-    static let craftBrown = Color("craftBrown")
-    static let craftBrownComplement = Color("craftBrownComplement")
-
-    static let fluorescentPink = Color("fluorescentPink")
-    static let fluorescentPinkComplement = Color("fluorescentPinkComplement")
-
-    static let orangeYellow = Color("orangeYellow")
-    static let orangeYellowComplement = Color("orangeYellowComplement")
-
-    static let red = Color("red")
-    static let redComplement = Color("redComplement")
-
     static let systemBackground = Color(UIColor.systemBackground)
 
     static let turquoise = Color(red: 24, green: 147, blue: 120)

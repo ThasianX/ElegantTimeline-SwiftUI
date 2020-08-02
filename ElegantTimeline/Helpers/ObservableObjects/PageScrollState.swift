@@ -10,14 +10,20 @@ enum Page: Int {
     case monthlyCalendar = 1
     case list = 2
     case menu = 3
+    case themePicker = 4
 
     var isCalendar: Bool {
         self == .yearlyCalendar || self == .monthlyCalendar
     }
 
+    var isMenuRelated: Bool {
+        self == .menu || self == .themePicker
+    }
+
 }
 
 fileprivate let regularTurnAnimation: Animation = .spring(response: 0.3, dampingFraction: 1)
+fileprivate let menuTurnAnimation: Animation = .spring(response: 0.3, dampingFraction: 0.8)
 
 fileprivate let calendarEarlySwipe = EarlyCutOffConfiguration(
     scrollResistanceCutOff: 40,
@@ -53,7 +59,7 @@ class PageScrollState: ObservableObject {
                 activePage = page
             }
         } else {
-            withAnimation(regularTurnAnimation) {
+            withAnimation(page.isMenuRelated ? menuTurnAnimation : regularTurnAnimation) {
                 activePage = page
             }
         }
