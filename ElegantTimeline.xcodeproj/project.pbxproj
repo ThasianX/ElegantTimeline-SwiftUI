@@ -129,14 +129,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1E161B0424D5FF4000CA2B7F /* ThemePickerView */ = {
-			isa = PBXGroup;
-			children = (
-				1E161B0524D5FF5000CA2B7F /* ThemePickerView.swift */,
-			);
-			path = ThemePickerView;
-			sourceTree = "<group>";
-		};
 		1E8A3DD7248557C200CBA65E = {
 			isa = PBXGroup;
 			children = (
@@ -212,7 +204,7 @@
 				1E15AC6E24AEA01800623E98 /* HomeView.swift */,
 				1E995B0224A69C3C00F436BE /* VisitsPreviewView */,
 				1E67992824AEB1C300C18735 /* MenuView.swift */,
-				1E161B0424D5FF4000CA2B7F /* ThemePickerView */,
+				1E161B0524D5FF5000CA2B7F /* ThemePickerView.swift */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
