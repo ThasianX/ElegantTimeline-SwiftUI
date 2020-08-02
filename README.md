@@ -15,7 +15,7 @@ ALSO, please do this repository justice and run it on an actual device. It will 
 
 ## Introduction
 
-`ElegantTimeline` is inspired by [TimePage](https://us.moleskine.com/timepage/p0486) and is part of a larger repository of elegant demonstrations like this: [TimePage Clone](https://github.com/ThasianX/TimePage-Clone). It uses [ElegantPages](https://github.com/ThasianX/ElegantPages) and [ElegantCalendar](https://github.com/ThasianX/ElegantCalendar), two libraries I wrote specifically for this demonstration.
+`ElegantTimeline` is inspired by [TimePage](https://us.moleskine.com/timepage/p0486) and is part of a larger repository of elegant demonstrations like this: [TimePage Clone](https://github.com/ThasianX/TimePage-Clone). It uses [ElegantColorPalette](https://github.com/ThasianX/ElegantColorPalette)(theme picker), [ElegantPages](https://github.com/ThasianX/ElegantPages) and [ElegantCalendar](https://github.com/ThasianX/ElegantCalendar), libraries I wrote specifically for this demonstration. Specifically, check out ElegantColorPalette as it is UIKit and SwiftUI compatible!
 
 Also, make sure to check out [TimePrints](https://github.com/ThasianX/TimePrints), an app that I'm working on that'll utilize this UI for visits tracking. Funny thing is, I've been so busy developing the components that eventually be implemented inside my app that I haven't actually worked much on my app in the past month.
 
