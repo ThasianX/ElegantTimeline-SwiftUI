@@ -9,12 +9,14 @@ struct ThemePickerView: View, PageScrollStateDirectAccess {
 
     @State private var selectedColor: PaletteColor?
 
-    init(currentTheme: AppTheme) {
+    let changeTheme: (AppTheme) -> Void
+
+    init(currentTheme: AppTheme, changeTheme: @escaping (AppTheme) -> Void) {
         let paletteColor = PaletteColor(name: currentTheme.name, uiColor: currentTheme.primaryuiColor)
         _selectedColor = State(initialValue: paletteColor)
+        self.changeTheme = changeTheme
     }
 
-    // TODO: Should probably only change the app theme once i exit out of this view
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
@@ -46,9 +48,7 @@ private extension ThemePickerView {
     }
 
     var backButton: some View {
-        Button(action: {
-            self.scrollState.scroll(to: .menu)
-        }) {
+        Button(action: changeThemeAndReturnToMenu) {
             Image.arrowLeft
                 .resizable()
                 .frame(width: 20, height: 20)
@@ -70,6 +70,9 @@ private extension ThemePickerView {
             colors: (scrollState.activePage == .themePicker) ? AppTheme.allPaletteColors : [])
     }
 
+    // Have to limit the actual width of the view that contains the drag gesture
+    // because SKScene will cancel all internal touches whenever it sees that a
+    // `DragGesture` layered on top of the SKScene is active.
     var backGestureOverlay: some View {
         HStack {
             Rectangle()
@@ -79,9 +82,8 @@ private extension ThemePickerView {
                 .gesture(
                     DragGesture()
                         .onChanged { value in
-                            if value.startLocation.x < 30 &&
-                                value.translation.width > 20 {
-                                self.scrollState.scroll(to: .menu)
+                            if value.translation.width > 20 {
+                                self.changeThemeAndReturnToMenu()
                             }
                         }
                 )
@@ -89,10 +91,19 @@ private extension ThemePickerView {
         }
     }
 
+    func changeThemeAndReturnToMenu() {
+        scrollState.scroll(to: .menu)
+        changeTheme(.theme(for: selectedColor!))
+    }
+
 }
 
 private extension AppTheme {
 
     static let allPaletteColors = Self.allThemes.map { PaletteColor(name: $0.name, uiColor: $0.primaryuiColor) }
+
+    static func theme(for paletteColor: PaletteColor) -> AppTheme {
+        AppTheme.allThemes.first(where: { $0.name == paletteColor.name })!
+    }
 
 }

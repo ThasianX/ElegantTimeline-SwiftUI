@@ -20,7 +20,6 @@ struct HomeView: View, HomeManagerDirectAccess {
 
     var body: some View {
         horizontalPagingStack
-            .environment(\.appTheme, appTheme)
             .contentShape(Rectangle())
             .frame(width: pageWidth, alignment: .leading)
             .offset(x: pageOffset)
@@ -41,7 +40,7 @@ private extension HomeView {
                 .offset(x: calendarOffset)
                 .zIndex(1)
             visitsPreviewView
-            menuView
+            menuView // TOOD: there should be a `menuOffset` like the `calendarOffset` when going from the menu -> theme view. it should be an animation where the menu view moves left and the theme picker view overlays gradually on top of the menu view.
             themePickerView
         }
         .environmentObject(scrollState)
@@ -66,17 +65,18 @@ private extension HomeView {
 
     var yearlyCalendarView: some View {
         YearlyCalendarView(calendarManager: yearlyCalendarManager)
-            .theme(CalendarTheme(primary: appTheme.primary))
+            .theme(calendarTheme)
     }
 
     var monthlyCalendarView: some View {
         MonthlyCalendarView(calendarManager: monthlyCalendarManager)
-            .theme(CalendarTheme(primary: appTheme.primary))
+            .theme(calendarTheme)
     }
 
     var visitsPreviewView: some View {
         VisitsPreviewView(visitsProvider: visitsProvider,
                           listScrollState: listScrollState)
+            .environment(\.appTheme, appTheme)
     }
 
     var menuView: some View {
@@ -84,7 +84,7 @@ private extension HomeView {
     }
 
     var themePickerView: some View {
-        ThemePickerView(currentTheme: appTheme)
+        ThemePickerView(currentTheme: appTheme, changeTheme: changeTheme)
     }
 
 }

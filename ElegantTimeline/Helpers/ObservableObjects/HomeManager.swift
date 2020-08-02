@@ -8,6 +8,7 @@ class HomeManager: ObservableObject {
 
     @Published var scrollState: PageScrollState = .init()
     @Published var appTheme: AppTheme = .royalBlue
+    @Published var calendarTheme: CalendarTheme = .royalBlue
 
     let visitsProvider: VisitsProvider
     let listScrollState: ListScrollState
@@ -138,6 +139,10 @@ extension HomeManagerDirectAccess {
         manager.appTheme
     }
 
+    var calendarTheme: CalendarTheme {
+        manager.calendarTheme
+    }
+
     var visitsProvider: VisitsProvider {
         manager.visitsProvider
     }
@@ -154,10 +159,17 @@ extension HomeManagerDirectAccess {
         manager.monthlyCalendarManager
     }
 
-    // TODO: modify this so lag doesn't occur. Lag is only occuring bc of changing the color theme of the calendar
+    // I'm guessing this is how TimePage does their theme change as well. It just makes no sense to change the
+    // theme of the app everytime a new color is selected in the theme picker view. That would cause way too much
+    // lag in the app. The main problem I encountered was changing the theme of the calendar, which is UI intensive.
+    // If I change the calendar theme in conjunction with the app's theme, the transition from the theme picker view
+    // to the menu view becomes stuttery. Thus, the only solution is as you're transitioning from the theme picker to
+    // the menu, change thhe list's theme, which is pretty fast. Only after that transition is complete then do you
+    // change the calendar's theme. It's so quick that the user never even notices the slight pause in the main thread.
     func changeTheme(to theme: AppTheme) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.manager.appTheme = theme
+        manager.appTheme = theme
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.manager.calendarTheme = CalendarTheme(primary: theme.primary)
         }
     }
 
