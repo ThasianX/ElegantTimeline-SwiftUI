@@ -16,9 +16,14 @@ enum Page: Int {
         self == .yearlyCalendar || self == .monthlyCalendar
     }
 
+    var isMenuRelated: Bool {
+        self == .menu || self == .themePicker
+    }
+
 }
 
 fileprivate let regularTurnAnimation: Animation = .spring(response: 0.3, dampingFraction: 1)
+fileprivate let menuTurnAnimation: Animation = .spring(response: 0.3, dampingFraction: 0.8)
 
 fileprivate let calendarEarlySwipe = EarlyCutOffConfiguration(
     scrollResistanceCutOff: 40,
@@ -54,8 +59,7 @@ class PageScrollState: ObservableObject {
                 activePage = page
             }
         } else {
-            // TODO: Should use a different animation when going to/from the color picker
-            withAnimation(regularTurnAnimation) {
+            withAnimation(page.isMenuRelated ? menuTurnAnimation : regularTurnAnimation) {
                 activePage = page
             }
         }
@@ -85,7 +89,6 @@ class PageScrollState: ObservableObject {
                 turnPageIfNeededForChangingOffset(horizontalTranslation)
             }
         } else {
-            // TODO: Logic here needs to be different for the color picker. It should limit based on the drag gesture's start location + be an early cutoff animation
             withAnimation(regularTurnAnimation) {
                 translation = horizontalTranslation
             }
