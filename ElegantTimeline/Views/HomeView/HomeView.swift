@@ -1,5 +1,6 @@
 // Kevin Li - 4:07 PM - 7/2/20
 
+import ElegantColorPalette
 import ElegantCalendar
 import SwiftUI
 
@@ -134,7 +135,7 @@ private extension HomeView {
     }
 
     var gesturesToMask: GestureMask {
-        if scrollState.canDrag {
+        if scrollState.canDrag && activePage != .themePicker {
             if activePage == .monthlyCalendar && isSwipingLeft {
                 return .gesture
             } else {

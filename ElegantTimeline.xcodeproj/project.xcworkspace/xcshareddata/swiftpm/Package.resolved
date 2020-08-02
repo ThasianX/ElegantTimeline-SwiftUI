@@ -14,9 +14,9 @@
         "package": "ElegantColorPalette",
         "repositoryURL": "https://github.com/ThasianX/ElegantColorPalette",
         "state": {
-          "branch": null,
-          "revision": "62029a60642184a106b615092f8b7c851159b8fd",
-          "version": "1.2.1"
+          "branch": "feature/multiple-gestures",
+          "revision": "430e06ace4c917c9340d542d0f3787e282227526",
+          "version": null
         }
       },
       {
