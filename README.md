@@ -40,6 +40,7 @@ What you can learn:
 Relevant code:
   - [HomeView](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/master/ElegantTimeline/Views/HomeView/HomeView.swift): The root view that acts as the page view. You can command click into all the other views from here.
   - [ResizingOverlayView](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/master/ElegantTimeline/Views/HomeView/VisitsPreviewView/ResizingOverlayView.swift): The view behind the list to menu animation.
+  - [ThemePickerView](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/feature/elegant-color-palette/ElegantTimeline/Views/HomeView/ThemePickerView.swift): Responsible for the theme scene with the balls.
   - [PageScrollState](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/master/ElegantTimeline/Helpers/ObservableObjects/PageScrollState.swift): Logic behind different animations for different page turns
   - [HomeManager](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/master/ElegantTimeline/Helpers/ObservableObjects/HomeManager.swift): Logic behind the theme propogation.
   
