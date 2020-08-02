@@ -36,13 +36,14 @@ struct ThemePickerView: View, PageScrollStateDirectAccess {
 private extension ThemePickerView {
 
     var headerView: some View {
-        HStack {
-            backButton
-            Spacer()
+        ZStack {
             Text("THEMES")
                 .font(.headline)
                 .tracking(2)
-            Spacer()
+            HStack {
+                backButton
+                Spacer()
+            }
         }
         .padding(.horizontal, 32)
     }
