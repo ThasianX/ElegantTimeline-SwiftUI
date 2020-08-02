@@ -37,16 +37,22 @@ private extension HomeView {
                 .frame(width: pageWidth)
             monthlyCalendarView
                 .frame(width: pageWidth - listWidthToShowInCalendar)
-                .offset(x: calendarOffset)
-                .zIndex(1)
+                .offset(x: monthlyCalendarOffset)
+                .zIndex(2) // Should take overlapping precedence over the visits view
             visitsPreviewView
-            menuView // TOOD: there should be a `menuOffset` like the `calendarOffset` when going from the menu -> theme view. it should be an animation where the menu view moves left and the theme picker view overlays gradually on top of the menu view.
+                .zIndex(1) // Should take overlapping precedence over the menu view
+            menuView
+                .offset(x: menuOffset)
             themePickerView
+                .offset(x: themePickerOffset)
+                .zIndex(1) // Should take overlapping precedence over the menu and visits view
         }
         .environmentObject(scrollState)
     }
 
-    var calendarOffset: CGFloat {
+    // Gives the monthly calendar the layering effect over the visits view
+    // Also accounts for the slight bit of the visits view background that's visible
+    var monthlyCalendarOffset: CGFloat {
         var offset: CGFloat
 
         if activePage == .list && isSwipingRight {
@@ -56,6 +62,24 @@ private extension HomeView {
             if isSwipingLeft {
                 offset -= listSideBarWidth * -delta
             }
+        } else {
+            offset = 0
+        }
+
+        return offset
+    }
+
+    // Gives the menu a disappearing effect as the theme picker comes into view
+    var menuOffset: CGFloat {
+        (activePage == .themePicker) ? -pageWidth : 0
+    }
+
+    // Gives the theme picker the entrace effect as it becomes visible
+    var themePickerOffset: CGFloat {
+        var offset: CGFloat
+
+        if activePage == .themePicker {
+            offset = -(pageWidth * deltaCutoff) + listWidthToShowInCalendar
         } else {
             offset = 0
         }
@@ -103,10 +127,13 @@ private extension HomeView {
             // Because the monthly calendar's width is less than the pageWidth,
             // we have to account for that
             offset += listWidthToShowInCalendar
-        case .menu, .themePicker:
-            // Accounts for the menu width difference and the monthly calendar's width difference
-            // to the screen width
+        case .menu:
+            // Accounts for leaving a bit of the list view background visible
             offset += pageWidth * (1 - deltaCutoff) + listWidthToShowInCalendar
+        case .themePicker:
+            // Offsets the tiny portion of the list view out of bounds. The `themePickerOffset`
+            // accounts for the entrance animation
+            offset += pageWidth
         }
 
         return offset
