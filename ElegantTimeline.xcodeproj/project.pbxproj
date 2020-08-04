@@ -15,9 +15,11 @@
 		1E161B0624D5FF5000CA2B7F /* ThemePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E161B0524D5FF5000CA2B7F /* ThemePickerView.swift */; };
 		1E1EBE0424AF0C5E00FBBD41 /* Calendar+DateOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1EBE0324AF0C5E00FBBD41 /* Calendar+DateOperations.swift */; };
 		1E5017FB2488B4C1002496DE /* View+CaptureSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5017FA2488B4C1002496DE /* View+CaptureSize.swift */; };
+		1E66931924D9D54900887BE4 /* ThemePickerOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E66931824D9D54900887BE4 /* ThemePickerOverlay.swift */; };
 		1E66EC3824AC19CD0070F16E /* EnvironmentKey+Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E66EC3724AC19CD0070F16E /* EnvironmentKey+Timer.swift */; };
 		1E67992924AEB1C300C18735 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67992824AEB1C300C18735 /* MenuView.swift */; };
 		1E717C6E24B9970D0040877E /* VisitsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E717C6D24B9970D0040877E /* VisitsProvider.swift */; };
+		1E7332EF24DA0F9B0010C8E2 /* AppTheme+PaletteColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7332EE24DA0F9B0010C8E2 /* AppTheme+PaletteColor.swift */; };
 		1E80E5BF24BD727B0030F5E0 /* Comparable+Clamped.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E80E5BE24BD727B0030F5E0 /* Comparable+Clamped.swift */; };
 		1E80E5C124BD770C0030F5E0 /* Image+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E80E5C024BD770C0030F5E0 /* Image+Custom.swift */; };
 		1E854E3124AECC6300E50973 /* Color+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E854E3024AECC6300E50973 /* Color+Custom.swift */; };
@@ -68,9 +70,11 @@
 		1E161B0524D5FF5000CA2B7F /* ThemePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePickerView.swift; sourceTree = "<group>"; };
 		1E1EBE0324AF0C5E00FBBD41 /* Calendar+DateOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+DateOperations.swift"; sourceTree = "<group>"; };
 		1E5017FA2488B4C1002496DE /* View+CaptureSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+CaptureSize.swift"; sourceTree = "<group>"; };
+		1E66931824D9D54900887BE4 /* ThemePickerOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePickerOverlay.swift; sourceTree = "<group>"; };
 		1E66EC3724AC19CD0070F16E /* EnvironmentKey+Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentKey+Timer.swift"; sourceTree = "<group>"; };
 		1E67992824AEB1C300C18735 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		1E717C6D24B9970D0040877E /* VisitsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitsProvider.swift; sourceTree = "<group>"; };
+		1E7332EE24DA0F9B0010C8E2 /* AppTheme+PaletteColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppTheme+PaletteColor.swift"; sourceTree = "<group>"; };
 		1E80E5BE24BD727B0030F5E0 /* Comparable+Clamped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Clamped.swift"; sourceTree = "<group>"; };
 		1E80E5C024BD770C0030F5E0 /* Image+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Custom.swift"; sourceTree = "<group>"; };
 		1E854E3024AECC6300E50973 /* Color+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Custom.swift"; sourceTree = "<group>"; };
@@ -202,6 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				1E15AC6E24AEA01800623E98 /* HomeView.swift */,
+				1E66931824D9D54900887BE4 /* ThemePickerOverlay.swift */,
 				1E995B0224A69C3C00F436BE /* VisitsPreviewView */,
 				1E67992824AEB1C300C18735 /* MenuView.swift */,
 				1E161B0524D5FF5000CA2B7F /* ThemePickerView.swift */,
@@ -225,6 +230,7 @@
 		1EAAC53C24875D26006DBB8E /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				1E7332EE24DA0F9B0010C8E2 /* AppTheme+PaletteColor.swift */,
 				1E1EBE0324AF0C5E00FBBD41 /* Calendar+DateOperations.swift */,
 				1E854E3024AECC6300E50973 /* Color+Custom.swift */,
 				1E80E5BE24BD727B0030F5E0 /* Comparable+Clamped.swift */,
@@ -410,9 +416,11 @@
 				1E8D768924B813C10027073E /* VisitCell.swift in Sources */,
 				1E66EC3824AC19CD0070F16E /* EnvironmentKey+Timer.swift in Sources */,
 				1E8A3DFC24855F0600CBA65E /* VisitsPreviewView.swift in Sources */,
+				1E66931924D9D54900887BE4 /* ThemePickerOverlay.swift in Sources */,
 				1EC22FE824C03F470095F3C3 /* FromTodayPopupState.swift in Sources */,
 				1E995B0424A69C7300F436BE /* VisitsTimelineView.swift in Sources */,
 				1E8A3E0924859EF400CBA65E /* MonthYearSideBar.swift in Sources */,
+				1E7332EF24DA0F9B0010C8E2 /* AppTheme+PaletteColor.swift in Sources */,
 				1EAAC53B24875D14006DBB8E /* DateComponents+Strideable.swift in Sources */,
 				1E995AFF24A5CBEF00F436BE /* DayVisitsView.swift in Sources */,
 				1E8A3E0724859EE200CBA65E /* Constants.swift in Sources */,

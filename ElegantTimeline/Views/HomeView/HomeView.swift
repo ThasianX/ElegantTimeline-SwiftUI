@@ -13,18 +13,27 @@ struct HomeView: View, HomeManagerDirectAccess {
     @ObservedObject var manager: HomeManager
     @GestureState var stateTransaction: PageScrollState.TransactionInfo
 
+    @State private var showOverlay: Bool = true
+
     init(manager: HomeManager) {
         self.manager = manager
         _stateTransaction = manager.scrollState.horizontalGestureState
     }
 
     var body: some View {
-        horizontalPagingStack
-            .contentShape(Rectangle())
-            .frame(width: pageWidth, alignment: .leading)
-            .offset(x: pageOffset)
-            .offset(x: boundedTranslation)
-            .simultaneousGesture(pagingGesture, including: gesturesToMask)
+        ZStack {
+            horizontalPagingStack
+                .contentShape(Rectangle())
+                .frame(width: pageWidth, alignment: .leading)
+                .offset(x: pageOffset)
+                .offset(x: boundedTranslation)
+                .simultaneousGesture(pagingGesture, including: gesturesToMask)
+            if showOverlay {
+                // The animations are all contained in the overlay. The state of
+                // whether the overlay is active or not is just to conserve memory
+                themePickerOverlay
+            }
+        }
     }
 
 }
@@ -109,6 +118,19 @@ private extension HomeView {
 
     var themePickerView: some View {
         ThemePickerView(currentTheme: appTheme, changeTheme: changeTheme)
+    }
+
+    var themePickerOverlay: some View {
+        ThemePickerOverlay(onThemeSelected: changeListTheme, onFinalize: hideOverlay)
+    }
+
+    func changeListTheme(_ appTheme: AppTheme) {
+        manager.appTheme = appTheme
+    }
+
+    func hideOverlay() {
+        self.manager.calendarTheme = CalendarTheme(primary: self.manager.appTheme.primary)
+        showOverlay = false
     }
 
 }
