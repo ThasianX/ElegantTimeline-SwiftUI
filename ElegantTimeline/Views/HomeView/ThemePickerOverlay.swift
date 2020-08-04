@@ -3,26 +3,51 @@
 import ElegantColorPalette
 import SwiftUI
 
-// TODO: add animation for onappear like timepage
 // TODO: Prevent center node from being dragged.
 // TODO: disable timer when theme picker overlay is active
 // TODO: add api to expose the selected node
+// TODO: add animation modifier for the swiftui binding view
+// TODO: get a better starting color that isn't any of the given choices
 
 struct ThemePickerOverlay: View {
 
     let onThemeSelected: (AppTheme) -> Void
     let onFinalize: () -> Void
 
-    @State private var selectedColor: PaletteColor?
+    @State private var selectedColor: PaletteColor? = nil
+    @State private var showStartAnimation: Bool = false
     @State private var showExitAnimation: Bool = false
 
     var body: some View {
         ZStack {
             themePickerView
+                .opacity(showStartAnimation ? 1 : 0)
             favoriteColorText
+                .offset(y: showStartAnimation ? -20 : 40)
+                .opacity((showStartAnimation && selectedColor == nil) ? 1 : 0)
+                .scaleEffect((selectedColor == nil) ? 1 : 0)
             nextStepButton
+                .scaleEffect((selectedColor == nil) ? 0 : 1)
+                .opacity((selectedColor == nil) ? 0 : (showExitAnimation ? 0 : 1))
         }
-        .background(Color.black.opacity(showExitAnimation ? 0 : 0.5).edgesIgnoringSafeArea(.all))
+        .background(overlayBackground)
+        .onAppear(perform: startEntranceAnimation)
+    }
+
+}
+
+private extension ThemePickerOverlay {
+
+    var overlayBackground: some View {
+        Color.black.opacity(showExitAnimation ? 0 : (showStartAnimation ? 0.7 : 1))
+            .edgesIgnoringSafeArea(.all)
+    }
+
+    func startEntranceAnimation() {
+        // 0.75 sec gives the other views enough time to load
+        withAnimation(Animation.easeInOut(duration: 1).delay(0.75)) {
+            showStartAnimation = true
+        }
     }
 
 }
@@ -30,9 +55,14 @@ struct ThemePickerOverlay: View {
 private extension ThemePickerOverlay {
 
     var themePickerView: some View {
-        ColorPaletteBindingView(selectedColor: $selectedColor,
+        ColorPaletteBindingView(selectedColor: .constant(nil),
                                 colors: showExitAnimation ? [] : AppTheme.allPaletteColors)
-            .didSelectColor { self.onThemeSelected(.theme(for: $0)) }
+            .didSelectColor { color in
+                self.onThemeSelected(.theme(for: color))
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    self.selectedColor = color
+                }
+            }
             .nodeStyle(NoNameNodeStyle())
     }
 
@@ -45,9 +75,6 @@ private extension ThemePickerOverlay {
                 .foregroundColor(.white)
                 .contentShape(Circle())
         }
-        .scaleEffect((selectedColor == nil) ? 0 : 1)
-        .opacity((selectedColor == nil) ? 0 : (showExitAnimation ? 0 : 1))
-        .animation(.easeInOut)
     }
 
     func exitOverlay() {
@@ -61,11 +88,7 @@ private extension ThemePickerOverlay {
 
     var favoriteColorText: some View {
         Text("What's your favorite color?")
-            .font(.headline)
-            .offset(y: -30)
-            .scaleEffect((selectedColor == nil) ? 1 : 0)
-            .opacity((selectedColor == nil) ? 1 : 0)
-            .animation(.easeInOut)
+            .font(.system(size: 20, weight: .light))
     }
 
 }
