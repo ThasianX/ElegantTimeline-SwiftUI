@@ -82,7 +82,6 @@ struct VisitsPreviewList: UIViewRepresentable {
             let rootView = dayVisitsView(
                 dayComponent: visitsProvider.descendingDayComponents[index],
                 isFilled: (index % 2) == 0)
-                .environment(\.autoTimer, parent.autoTimer)
                 .id(index) // id is crucial as it resets state for a reused cell
                 .erased
 

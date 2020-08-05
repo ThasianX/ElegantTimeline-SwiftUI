@@ -13,7 +13,7 @@ struct HomeView: View, HomeManagerDirectAccess {
     @ObservedObject var manager: HomeManager
     @GestureState var stateTransaction: PageScrollState.TransactionInfo
 
-    @State private var showOverlay: Bool = true
+    @State private var isSetup: Bool = true
 
     init(manager: HomeManager) {
         self.manager = manager
@@ -28,7 +28,7 @@ struct HomeView: View, HomeManagerDirectAccess {
                 .offset(x: pageOffset)
                 .offset(x: boundedTranslation)
                 .simultaneousGesture(pagingGesture, including: gesturesToMask)
-            if showOverlay {
+            if isSetup {
                 // The animations are all contained in the overlay. The state of
                 // whether the overlay is active or not is just to conserve memory
                 themePickerOverlay
@@ -110,6 +110,7 @@ private extension HomeView {
         VisitsPreviewView(visitsProvider: visitsProvider,
                           listScrollState: listScrollState)
             .environment(\.appTheme, appTheme)
+            .environment(\.isSetup, isSetup)
     }
 
     var menuView: some View {
@@ -129,8 +130,8 @@ private extension HomeView {
     }
 
     func hideOverlay() {
-        self.manager.calendarTheme = CalendarTheme(primary: self.manager.appTheme.primary)
-        showOverlay = false
+        manager.calendarTheme = CalendarTheme(primary: manager.appTheme.primary)
+        isSetup = false
     }
 
 }
