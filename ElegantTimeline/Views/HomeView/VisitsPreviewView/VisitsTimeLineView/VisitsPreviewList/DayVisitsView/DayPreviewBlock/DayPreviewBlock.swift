@@ -58,7 +58,8 @@ private extension DayPreviewBlock {
             Spacer()
             VStack(spacing: Constants.List.cellSpacing) {
                 ForEach(visits[range]) { visit in
-                    VisitPreviewCell(visit: visit)
+                    VisitPreviewCell(visit: visit,
+                                     isBackgroundWhite: self.appTheme == ._white)
                         .transition(self.isSetup ? .identity : .slideFadeLeading)
                 }
             }

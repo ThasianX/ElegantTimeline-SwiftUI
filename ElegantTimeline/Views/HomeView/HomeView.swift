@@ -52,9 +52,12 @@ private extension HomeView {
                 .zIndex(1) // Should take overlapping precedence over the menu view
             menuView
                 .offset(x: menuOffset)
-            themePickerView
-                .offset(x: themePickerOffset)
-                .zIndex(1) // Should take overlapping precedence over the menu and visits view
+            if !isSetup {
+                // lazily setup the app's theme picker view after the setup
+                themePickerView
+                    .offset(x: themePickerOffset)
+                    .zIndex(1) // Should take overlapping precedence over the menu and visits view
+            }
         }
         .environmentObject(scrollState)
     }

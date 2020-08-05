@@ -5,8 +5,7 @@ import SwiftUI
 
 // TODO: Prevent center node from being dragged.
 // TODO: add api to expose the selected node
-// TODO: add animation modifier for the swiftui binding view
-// TODO: get a better starting color that isn't any of the given choices
+// TODO: add animation modifier for the swiftui color picker binding view
 
 struct ThemePickerOverlay: View {
 

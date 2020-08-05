@@ -5,6 +5,7 @@ import SwiftUI
 struct VisitPreviewCell: View {
 
     let visit: Visit
+    let isBackgroundWhite: Bool
 
     var body: some View {
         HStack(spacing: 10) {
@@ -34,12 +35,14 @@ private extension VisitPreviewCell {
             .font(.system(size: 16))
             .fontWeight(.light)
             .lineLimit(1)
+            .foregroundColor(isBackgroundWhite ? .black : .white)
     }
 
     var visitDurationAndAddress: some View {
         Text("\(visit.duration)    \(visit.locationCity)")
             .font(.system(size: 8))
             .lineLimit(1)
+            .foregroundColor(isBackgroundWhite ? .black : .white)
     }
 
 }
@@ -48,7 +51,8 @@ struct LocationPreviewCell_Previews: PreviewProvider {
 
     static var previews: some View {
         DarkThemePreview {
-            VisitPreviewCell(visit: .mock(withDate: Date()))
+            VisitPreviewCell(visit: .mock(withDate: Date()),
+                             isBackgroundWhite: false)
         }
     }
     

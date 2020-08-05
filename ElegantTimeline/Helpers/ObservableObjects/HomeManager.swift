@@ -7,8 +7,8 @@ import SwiftUI
 class HomeManager: ObservableObject {
 
     @Published var scrollState: PageScrollState = .init()
-    @Published var appTheme: AppTheme = .royalBlue
-    @Published var calendarTheme: CalendarTheme = .royalBlue
+    @Published var appTheme: AppTheme = ._white
+    @Published var calendarTheme: CalendarTheme = ._white
 
     let visitsProvider: VisitsProvider
     let listScrollState: ListScrollState
@@ -172,5 +172,11 @@ extension HomeManagerDirectAccess {
             self.manager.calendarTheme = CalendarTheme(primary: theme.primary)
         }
     }
+
+}
+
+private extension CalendarTheme {
+
+    static let _white = CalendarTheme(primary: Color(._white))
 
 }
