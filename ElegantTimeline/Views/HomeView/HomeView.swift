@@ -125,7 +125,7 @@ private extension HomeView {
     }
 
     var themePickerOverlay: some View {
-        ThemePickerOverlay(onThemeSelected: changeListTheme, onFinalize: hideOverlay)
+        StartupThemePickerOverlay(onThemeSelected: changeListTheme, onFinalize: hideOverlay)
     }
 
     func changeListTheme(_ appTheme: AppTheme) {
