@@ -5,8 +5,6 @@ import SwiftUI
 
 // TODO: Prevent center node from being dragged.
 // TODO: add api to expose the selected node
-// TODO: add animation modifier for the swiftui color picker binding view
-
 struct ThemePickerOverlay: View {
 
     let onThemeSelected: (AppTheme) -> Void
@@ -53,13 +51,11 @@ private extension ThemePickerOverlay {
 private extension ThemePickerOverlay {
 
     var themePickerView: some View {
-        ColorPaletteBindingView(selectedColor: .constant(nil),
+        ColorPaletteBindingView(selectedColor: $selectedColor,
                                 colors: showExitAnimation ? [] : AppTheme.allPaletteColors)
+            .bindingAnimation(.easeInOut(duration: 0.5))
             .didSelectColor { color in
                 self.onThemeSelected(.theme(for: color))
-                withAnimation(.easeInOut(duration: 0.5)) {
-                    self.selectedColor = color
-                }
             }
             .nodeStyle(NoNameNodeStyle())
     }
