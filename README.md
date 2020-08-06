@@ -23,6 +23,17 @@ Also, make sure to check out [TimePrints](https://github.com/ThasianX/TimePrints
 
 **The screenshots below link to embedded youtube videos demonstrating the feature even further**
 
+### Startup Theme Picker
+[<img src="Screenshots/startup-theme-picker.png" width="30%">](https://www.youtube.com/watch?v=5hpL3DuWSr0)
+
+What you can learn:
+  - Leveraging `ElegantColorPalette` and `SpriteKit` to create a totally unique and amazing theme picker
+  - The physics behind `SKNodes`
+  - The custom fade and splash animation when the user finalizes their color choice
+  
+Relevant code:
+  - [StartupThemePickerOverlay](https://github.com/ThasianX/ElegantTimeline-SwiftUI/blob/feature/startup-themepicker/ElegantTimeline/Views/HomeView/StartupThemePickerOverlay/StartupThemePickerOverlay.swift): The overlay view that drives the startup theme picker
+
 ### Paging + Theme Change
 [<img src="Screenshots/paging-theme.png" width="30%">](https://www.youtube.com/watch?v=4QAHiKmmnjQ)
 
