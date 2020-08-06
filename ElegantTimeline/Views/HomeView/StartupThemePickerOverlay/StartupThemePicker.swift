@@ -22,6 +22,7 @@ struct StartupThemePicker: UIViewRepresentable {
             .canMoveFocusedNode(false)
             .rotation(multiplier: 5)
             .spawnConfiguration(widthRatio: 1, heightRatio: 1)
+            .focus(speed: 1000)
     }
 
     private func groupedCallback(_ color: PaletteColor) {
