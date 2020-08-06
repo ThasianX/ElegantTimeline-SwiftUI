@@ -15,9 +15,12 @@
 		1E161B0624D5FF5000CA2B7F /* ThemePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E161B0524D5FF5000CA2B7F /* ThemePickerView.swift */; };
 		1E1EBE0424AF0C5E00FBBD41 /* Calendar+DateOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1EBE0324AF0C5E00FBBD41 /* Calendar+DateOperations.swift */; };
 		1E5017FB2488B4C1002496DE /* View+CaptureSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5017FA2488B4C1002496DE /* View+CaptureSize.swift */; };
+		1E66931924D9D54900887BE4 /* StartupThemePickerOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E66931824D9D54900887BE4 /* StartupThemePickerOverlay.swift */; };
 		1E66EC3824AC19CD0070F16E /* EnvironmentKey+Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E66EC3724AC19CD0070F16E /* EnvironmentKey+Timer.swift */; };
 		1E67992924AEB1C300C18735 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67992824AEB1C300C18735 /* MenuView.swift */; };
 		1E717C6E24B9970D0040877E /* VisitsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E717C6D24B9970D0040877E /* VisitsProvider.swift */; };
+		1E7332EF24DA0F9B0010C8E2 /* AppTheme+PaletteColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7332EE24DA0F9B0010C8E2 /* AppTheme+PaletteColor.swift */; };
+		1E7332F124DA454A0010C8E2 /* EnvironmentKey+IsSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E7332F024DA454A0010C8E2 /* EnvironmentKey+IsSetup.swift */; };
 		1E80E5BF24BD727B0030F5E0 /* Comparable+Clamped.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E80E5BE24BD727B0030F5E0 /* Comparable+Clamped.swift */; };
 		1E80E5C124BD770C0030F5E0 /* Image+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E80E5C024BD770C0030F5E0 /* Image+Custom.swift */; };
 		1E854E3124AECC6300E50973 /* Color+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E854E3024AECC6300E50973 /* Color+Custom.swift */; };
@@ -38,6 +41,7 @@
 		1E8A3E0D24859F7000CBA65E /* VisitPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A3E0C24859F7000CBA65E /* VisitPreviewCell.swift */; };
 		1E8A3E0F2485AAE000CBA65E /* DayPreviewBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A3E0E2485AAE000CBA65E /* DayPreviewBlock.swift */; };
 		1E8A3E112485AEAD00CBA65E /* EnvironmentKey+AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8A3E102485AEAD00CBA65E /* EnvironmentKey+AppTheme.swift */; };
+		1E8C6D7124DB3DED00FAEAED /* StartupThemePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8C6D7024DB3DED00FAEAED /* StartupThemePicker.swift */; };
 		1E8D768724B813250027073E /* VisitsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8D768624B813250027073E /* VisitsListView.swift */; };
 		1E8D768924B813C10027073E /* VisitCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8D768824B813C10027073E /* VisitCell.swift */; };
 		1E8D768B24B816A50027073E /* PageScrollState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8D768A24B816A40027073E /* PageScrollState.swift */; };
@@ -68,9 +72,12 @@
 		1E161B0524D5FF5000CA2B7F /* ThemePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePickerView.swift; sourceTree = "<group>"; };
 		1E1EBE0324AF0C5E00FBBD41 /* Calendar+DateOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+DateOperations.swift"; sourceTree = "<group>"; };
 		1E5017FA2488B4C1002496DE /* View+CaptureSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+CaptureSize.swift"; sourceTree = "<group>"; };
+		1E66931824D9D54900887BE4 /* StartupThemePickerOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupThemePickerOverlay.swift; sourceTree = "<group>"; };
 		1E66EC3724AC19CD0070F16E /* EnvironmentKey+Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentKey+Timer.swift"; sourceTree = "<group>"; };
 		1E67992824AEB1C300C18735 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		1E717C6D24B9970D0040877E /* VisitsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitsProvider.swift; sourceTree = "<group>"; };
+		1E7332EE24DA0F9B0010C8E2 /* AppTheme+PaletteColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppTheme+PaletteColor.swift"; sourceTree = "<group>"; };
+		1E7332F024DA454A0010C8E2 /* EnvironmentKey+IsSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentKey+IsSetup.swift"; sourceTree = "<group>"; };
 		1E80E5BE24BD727B0030F5E0 /* Comparable+Clamped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comparable+Clamped.swift"; sourceTree = "<group>"; };
 		1E80E5C024BD770C0030F5E0 /* Image+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Custom.swift"; sourceTree = "<group>"; };
 		1E854E3024AECC6300E50973 /* Color+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Custom.swift"; sourceTree = "<group>"; };
@@ -93,6 +100,7 @@
 		1E8A3E0C24859F7000CBA65E /* VisitPreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitPreviewCell.swift; sourceTree = "<group>"; };
 		1E8A3E0E2485AAE000CBA65E /* DayPreviewBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPreviewBlock.swift; sourceTree = "<group>"; };
 		1E8A3E102485AEAD00CBA65E /* EnvironmentKey+AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentKey+AppTheme.swift"; sourceTree = "<group>"; };
+		1E8C6D7024DB3DED00FAEAED /* StartupThemePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupThemePicker.swift; sourceTree = "<group>"; };
 		1E8D768624B813250027073E /* VisitsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitsListView.swift; sourceTree = "<group>"; };
 		1E8D768824B813C10027073E /* VisitCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitCell.swift; sourceTree = "<group>"; };
 		1E8D768A24B816A40027073E /* PageScrollState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageScrollState.swift; sourceTree = "<group>"; };
@@ -180,6 +188,15 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		1E8C6D7224DB5BB200FAEAED /* StartupThemePickerOverlay */ = {
+			isa = PBXGroup;
+			children = (
+				1E66931824D9D54900887BE4 /* StartupThemePickerOverlay.swift */,
+				1E8C6D7024DB3DED00FAEAED /* StartupThemePicker.swift */,
+			);
+			path = StartupThemePickerOverlay;
+			sourceTree = "<group>";
+		};
 		1E8D768C24B816FA0027073E /* VisitsListView */ = {
 			isa = PBXGroup;
 			children = (
@@ -202,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				1E15AC6E24AEA01800623E98 /* HomeView.swift */,
+				1E8C6D7224DB5BB200FAEAED /* StartupThemePickerOverlay */,
 				1E995B0224A69C3C00F436BE /* VisitsPreviewView */,
 				1E67992824AEB1C300C18735 /* MenuView.swift */,
 				1E161B0524D5FF5000CA2B7F /* ThemePickerView.swift */,
@@ -225,6 +243,7 @@
 		1EAAC53C24875D26006DBB8E /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				1E7332EE24DA0F9B0010C8E2 /* AppTheme+PaletteColor.swift */,
 				1E1EBE0324AF0C5E00FBBD41 /* Calendar+DateOperations.swift */,
 				1E854E3024AECC6300E50973 /* Color+Custom.swift */,
 				1E80E5BE24BD727B0030F5E0 /* Comparable+Clamped.swift */,
@@ -236,6 +255,7 @@
 				1EAAC5342485DBED006DBB8E /* DateComponents+Subcomponents.swift */,
 				1E8A3E0224858AF900CBA65E /* Dictionary+SortedKeys.swift */,
 				1E8A3E102485AEAD00CBA65E /* EnvironmentKey+AppTheme.swift */,
+				1E7332F024DA454A0010C8E2 /* EnvironmentKey+IsSetup.swift */,
 				1E66EC3724AC19CD0070F16E /* EnvironmentKey+Timer.swift */,
 				1E80E5C024BD770C0030F5E0 /* Image+Custom.swift */,
 				1E5017FA2488B4C1002496DE /* View+CaptureSize.swift */,
@@ -401,6 +421,7 @@
 				1E67992924AEB1C300C18735 /* MenuView.swift in Sources */,
 				1EE035E824B298B500DE6850 /* UITableViewDirectAccess.swift in Sources */,
 				1EAAC5352485DBED006DBB8E /* DateComponents+Subcomponents.swift in Sources */,
+				1E7332F124DA454A0010C8E2 /* EnvironmentKey+IsSetup.swift in Sources */,
 				1EFC6BC724BFE197002B96D7 /* Date+DaysFromToday.swift in Sources */,
 				1EAAC5332485C5A0006DBB8E /* Date+toDateComponents.swift in Sources */,
 				1E8A3E0524859ECB00CBA65E /* DaySideBar.swift in Sources */,
@@ -409,10 +430,13 @@
 				1E995AFB24A5845900F436BE /* FromTodayPopupView.swift in Sources */,
 				1E8D768924B813C10027073E /* VisitCell.swift in Sources */,
 				1E66EC3824AC19CD0070F16E /* EnvironmentKey+Timer.swift in Sources */,
+				1E8C6D7124DB3DED00FAEAED /* StartupThemePicker.swift in Sources */,
 				1E8A3DFC24855F0600CBA65E /* VisitsPreviewView.swift in Sources */,
+				1E66931924D9D54900887BE4 /* StartupThemePickerOverlay.swift in Sources */,
 				1EC22FE824C03F470095F3C3 /* FromTodayPopupState.swift in Sources */,
 				1E995B0424A69C7300F436BE /* VisitsTimelineView.swift in Sources */,
 				1E8A3E0924859EF400CBA65E /* MonthYearSideBar.swift in Sources */,
+				1E7332EF24DA0F9B0010C8E2 /* AppTheme+PaletteColor.swift in Sources */,
 				1EAAC53B24875D14006DBB8E /* DateComponents+Strideable.swift in Sources */,
 				1E995AFF24A5CBEF00F436BE /* DayVisitsView.swift in Sources */,
 				1E8A3E0724859EE200CBA65E /* Constants.swift in Sources */,
@@ -649,7 +673,7 @@
 			repositoryURL = "https://github.com/ThasianX/ElegantColorPalette";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.0;
+				minimumVersion = 1.2.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

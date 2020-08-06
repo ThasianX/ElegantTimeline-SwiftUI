@@ -104,6 +104,11 @@ extension AppTheme {
     static let wednesdayPink = AppTheme(name: "Wednesday Pink",
                                         primaryuiColor: .wednesdayPink,
                                         complementaryuiColor: .wednesdayPinkComplement)
+
+    // Dummy color used for the initial color theme selection. Not actually part of the themes.
+    static let _white = AppTheme(name: "Off White",
+                                primaryuiColor: ._white,
+                                complementaryuiColor: ._whiteComplement)
 }
 
 extension UIColor {
@@ -149,6 +154,10 @@ extension UIColor {
     static let sunflowerYellowComplement = UIColor(red: 188, green: 143, blue: 49)
     static let underwaterBlueComplement = UIColor(red: 24, green: 136, blue: 146)
     static let wednesdayPinkComplement = UIColor(red: 171, green: 98, blue: 153)
+
+    // Dummy color used for the initial color theme selection. Not actually part of the themes.
+    static let _white = UIColor(red: 245, green: 250, blue: 250)
+    static let _whiteComplement = UIColor(red: 240, green: 245, blue: 246)
 
 }
 

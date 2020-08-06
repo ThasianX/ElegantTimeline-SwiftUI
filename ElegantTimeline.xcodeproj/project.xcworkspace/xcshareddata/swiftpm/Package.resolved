@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/ThasianX/ElegantCalendar",
         "state": {
           "branch": null,
-          "revision": "112afd0e1c81edc3d4cc222e237359250548eaa0",
-          "version": "4.2.0"
+          "revision": "64e422511f1620aaa4744acd1c345e7d6e2f5a29",
+          "version": "4.3.0"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/ThasianX/ElegantColorPalette",
         "state": {
           "branch": null,
-          "revision": "4abfee7b82a31f664795865de937f8713c236565",
-          "version": "1.1.0"
+          "revision": "cf8628ad84314db868659db57cafb3e1403b3fe6",
+          "version": "1.2.0"
         }
       },
       {

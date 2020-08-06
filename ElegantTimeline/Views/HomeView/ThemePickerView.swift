@@ -98,13 +98,3 @@ private extension ThemePickerView {
     }
 
 }
-
-private extension AppTheme {
-
-    static let allPaletteColors = Self.allThemes.map { PaletteColor(name: $0.name, uiColor: $0.primaryuiColor) }
-
-    static func theme(for paletteColor: PaletteColor) -> AppTheme {
-        AppTheme.allThemes.first(where: { $0.name == paletteColor.name })!
-    }
-
-}

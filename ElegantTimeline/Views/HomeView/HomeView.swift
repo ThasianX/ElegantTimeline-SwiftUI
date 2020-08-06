@@ -13,18 +13,27 @@ struct HomeView: View, HomeManagerDirectAccess {
     @ObservedObject var manager: HomeManager
     @GestureState var stateTransaction: PageScrollState.TransactionInfo
 
+    @State private var isSetup: Bool = true
+
     init(manager: HomeManager) {
         self.manager = manager
         _stateTransaction = manager.scrollState.horizontalGestureState
     }
 
     var body: some View {
-        horizontalPagingStack
-            .contentShape(Rectangle())
-            .frame(width: pageWidth, alignment: .leading)
-            .offset(x: pageOffset)
-            .offset(x: boundedTranslation)
-            .simultaneousGesture(pagingGesture, including: gesturesToMask)
+        ZStack {
+            horizontalPagingStack
+                .contentShape(Rectangle())
+                .frame(width: pageWidth, alignment: .leading)
+                .offset(x: pageOffset)
+                .offset(x: boundedTranslation)
+                .simultaneousGesture(pagingGesture, including: gesturesToMask)
+            if isSetup {
+                // The animations are all contained in the overlay. The state of
+                // whether the overlay is active or not is just to conserve memory
+                themePickerOverlay
+            }
+        }
     }
 
 }
@@ -43,9 +52,12 @@ private extension HomeView {
                 .zIndex(1) // Should take overlapping precedence over the menu view
             menuView
                 .offset(x: menuOffset)
-            themePickerView
-                .offset(x: themePickerOffset)
-                .zIndex(1) // Should take overlapping precedence over the menu and visits view
+            if !isSetup {
+                // lazily setup the app's theme picker view after the setup
+                themePickerView
+                    .offset(x: themePickerOffset)
+                    .zIndex(1) // Should take overlapping precedence over the menu and visits view
+            }
         }
         .environmentObject(scrollState)
     }
@@ -101,6 +113,7 @@ private extension HomeView {
         VisitsPreviewView(visitsProvider: visitsProvider,
                           listScrollState: listScrollState)
             .environment(\.appTheme, appTheme)
+            .environment(\.isSetup, isSetup)
     }
 
     var menuView: some View {
@@ -109,6 +122,19 @@ private extension HomeView {
 
     var themePickerView: some View {
         ThemePickerView(currentTheme: appTheme, changeTheme: changeTheme)
+    }
+
+    var themePickerOverlay: some View {
+        StartupThemePickerOverlay(onThemeSelected: changeListTheme, onFinalize: hideOverlay)
+    }
+
+    func changeListTheme(_ appTheme: AppTheme) {
+        manager.appTheme = appTheme
+    }
+
+    func hideOverlay() {
+        manager.calendarTheme = CalendarTheme(primary: manager.appTheme.primary)
+        isSetup = false
     }
 
 }

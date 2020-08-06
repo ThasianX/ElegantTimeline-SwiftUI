@@ -6,6 +6,7 @@ struct DayPreviewBlock: View {
 
     @Environment(\.appTheme) private var appTheme: AppTheme
     @Environment(\.autoTimer) private var autoTimer: AutoTimer
+    @Environment(\.isSetup) private var isSetup: Bool
 
     @State private var visitIndex = 0
 
@@ -32,7 +33,9 @@ struct DayPreviewBlock: View {
         }
         .frame(height: Constants.List.blockHeight)
         .onReceive(autoTimer) { _ in
-            self.shiftActivePreviewVisitIndex()
+            if !self.isSetup {
+                self.shiftActivePreviewVisitIndex()
+            }
         }
     }
 
@@ -55,8 +58,9 @@ private extension DayPreviewBlock {
             Spacer()
             VStack(spacing: Constants.List.cellSpacing) {
                 ForEach(visits[range]) { visit in
-                    VisitPreviewCell(visit: visit)
-                        .transition(.slideFadeLeading)
+                    VisitPreviewCell(visit: visit,
+                                     isBackgroundWhite: self.appTheme == ._white)
+                        .transition(self.isSetup ? .identity : .slideFadeLeading)
                 }
             }
             Spacer()
