@@ -14,9 +14,9 @@
         "package": "ElegantColorPalette",
         "repositoryURL": "https://github.com/ThasianX/ElegantColorPalette",
         "state": {
-          "branch": "feature/api-selectednode",
-          "revision": "627fce16cece40191c74c15a93bd3c22980df00c",
-          "version": null
+          "branch": null,
+          "revision": "cf8628ad84314db868659db57cafb3e1403b3fe6",
+          "version": "1.2.0"
         }
       },
       {
