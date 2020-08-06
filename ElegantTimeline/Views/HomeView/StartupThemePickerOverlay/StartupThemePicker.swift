@@ -4,8 +4,6 @@ import ElegantColorPalette
 import SpriteKit
 import SwiftUI
 
-// TODO: add customizable spawn size to the view. make it fullscreen like timepage
-
 struct StartupThemePicker: UIViewRepresentable {
 
     typealias UIViewType = ColorPaletteView
@@ -22,6 +20,8 @@ struct StartupThemePicker: UIViewRepresentable {
             .didSelectColor(groupedCallback)
             .nodeStyle(NoNameNodeStyle())
             .canMoveFocusedNode(false)
+            .rotation(multiplier: 5)
+            .spawnConfiguration(widthRatio: 1, heightRatio: 1)
     }
 
     private func groupedCallback(_ color: PaletteColor) {
@@ -80,7 +80,7 @@ private struct NoNameNodeStyle: NodeStyle {
     func updateNode(configuration: Configuration) -> ColorNode {
         configuration.node
             .scaleFade(!configuration.isFirstShown,
-                       scale: configuration.isPressed ? 0.9 : 1,
+                       scale: configuration.isPressed ? 0.9 : (configuration.isFocusing ? 1.3 : 1),
                        opacity: configuration.isPressed ? 0.3 : 1)
             .startUp(configuration.isFirstShown)
     }
